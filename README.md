@@ -1,5 +1,11 @@
-# Battle Bridge
+# MultiBeast
 ## A coverage manager for the Aspen Ideas Festival
+
+_And she comes to me in this lonely land
+And looks down from the multi-beast
+On which she rides like the wind
+The wind from beyond the mountain_
+- The Helping Friendly Book
 
 A React-based web application for planning and processing Comms Team coverage during the Aspen Ideas Festival. Written with much ❤️.
 
