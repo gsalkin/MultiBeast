@@ -1,7 +1,5 @@
 var Mongoose = require('mongoose');
-
 var Schema = Mongoose.Schema;
-
 var sessionSchema = new Schema({
 	ArtsVisionFork: {
 		EventID: Number,
@@ -47,7 +45,11 @@ var sessionSchema = new Schema({
 			type: Boolean,
 			default: false
 		},
-		Podcast: {
+		Audio: {
+			type: Boolean,
+			default: false
+		},
+		Restriction: {
 			type: Boolean,
 			default: false
 		},
@@ -57,7 +59,14 @@ var sessionSchema = new Schema({
 		}
 	},
 	AspenChecklistFork: {
-		QuickClip: Array,
+		QuickClip: {
+			type: Array,
+			default: [{}]
+		},
+		QuickClipRendered: {
+			type: Boolean,
+			default: false
+		},
 		Recorded: {
 			type: Boolean,
 			default: false
@@ -65,6 +74,14 @@ var sessionSchema = new Schema({
 		Rendered: {
 			type: Boolean,
 			default: false
+		},
+		AudioURL: {
+			type: String,
+			default: ''
+		},
+		TranscriptURL: {
+			type: String,
+			default: ''
 		},
 		AlbumURL: {
 			type: String,
@@ -77,6 +94,10 @@ var sessionSchema = new Schema({
 		SessionURL: {
 			type: String,
 			default: ''
+		},
+		Status: {
+			type: String,
+			default: 'Ready'
 		},
 		Complete: {
 			type: Boolean,

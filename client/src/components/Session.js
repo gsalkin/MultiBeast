@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
+import { HashLink as Link } from 'react-router-hash-link';
 import Header from './Header';
 import SessionCoverage from './SessionCoverage';
 import SessionWorkflow from './SessionWorkflow';
-import { convertTimes, stringifySpeakers } from '../helpers';
+import { convertTimes, stringifySpeakers, dateClassHelper } from '../helpers';
 
 class Session extends React.Component {
 	constructor(props) {
@@ -75,6 +76,11 @@ class Session extends React.Component {
 		return (
 			<div className="container-fluid">
 				<Header />
+				<div className="row">
+					<div className="col-3 offset-1">
+					<Link className="btn btn-outline-dark" to={'/view/all/#event-' + EventID}>← Back</Link>
+					</div>
+				</div>
 				<div className="container">
 					<div className="row">
 						<div className="col-12">
@@ -82,7 +88,7 @@ class Session extends React.Component {
 							<span className="badge badge-success">{EventID}</span> {SessionName}
 							</h2>
 							<h4>
-							<span className="badge badge-primary">{SessionDate}</span> <span className="badge badge-info">{convertTimes(StartTime)} - {convertTimes(EndTime)}</span> <span className="badge badge-warning">{SessionLocation}</span>
+							<span className={dateClassHelper(SessionDate)}>{SessionDate}</span> <span className="badge badge-info">{convertTimes(StartTime)} - {convertTimes(EndTime)}</span> <span className="badge badge-warning">{SessionLocation}</span>
 							</h4>
 							{SessionSpeakers && (
 								<Fragment>
@@ -99,7 +105,6 @@ class Session extends React.Component {
 								updateSession={this.updateSession}
 							/>
 							<hr />
-							<h4>Workflow</h4>
 							<SessionWorkflow
 								details={this.state.AspenChecklistFork}
 								updateSession={this.updateSession}

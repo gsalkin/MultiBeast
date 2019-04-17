@@ -188,7 +188,8 @@ router.post('/api/update/session/:id', (req, res) => {
 				'AspenCoverageFork.QuickClip': req.body.coverage.quickclip,
 				'AspenCoverageFork.Photo': req.body.coverage.photo,
 				'AspenCoverageFork.Transcript': req.body.coverage.transcript,
-				'AspenCoverageFork.Podcast': req.body.coverage.podcast,
+				'AspenCoverageFork.Audio': req.body.coverage.audio,
+				'AspenCoverageFork.Restriction': req.body.coverage.restriction,
 				'AspenCoverageFork.AspenNotes': req.body.coverage.notes,
 			}
 		})
@@ -206,11 +207,15 @@ router.post('/api/update/session/:id', (req, res) => {
 			{'ArtsVisionFork.EventID': req.params.id},
 			{ $set: {
 				'AspenChecklistFork.QuickClip': req.body.workflow.quickclip,
+				'AspenChecklistFork.QuickClipRendered': req.body.workflow.quickclipRendered,
 				'AspenChecklistFork.Recorded': req.body.workflow.recorded,
 				'AspenChecklistFork.Rendered': req.body.workflow.rendered,
 				'AspenChecklistFork.AlbumURL': req.body.workflow.albumURL,
 				'AspenChecklistFork.YouTubeURL': req.body.workflow.youtubeURL,
 				'AspenChecklistFork.SessionURL': req.body.workflow.sessionURL,
+				'AspenChecklistFork.TranscriptURL': req.body.workflow.transcriptURL,
+				'AspenChecklistFork.AudioURL': req.body.workflow.audioURL,
+				'AspenChecklistFork.Status': req.body.workflow.status,
 				'AspenChecklistFork.Complete': req.body.workflow.complete,
 			}
 		})

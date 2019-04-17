@@ -23,12 +23,13 @@ app.use(passport.session());
 app.use(express.static('public'));
 app.use(router);
 
-require('../config/passport')(passport);
+require('./config/passport')(passport);
 
 mongoose.set('useFindAndModify', false);
+mongoose.set('debug', true);
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
 	.then(() => console.log('MongoDB Connected!'))
-	//.then(() => apiEngine.populateDB())
+	.then(() => apiEngine.populateDB())
 	.catch(err => console.log(err));
 // setInterval( apiEngine.populateDB(), 60000 );
 

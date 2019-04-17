@@ -1,5 +1,5 @@
 import React from 'react';
-import { stringifySpeakers, convertTimes, classHelper } from '../helpers';
+import { stringifySpeakers, convertTimes, classHelper, dateClassHelper } from '../helpers';
 
 class SessionListItem extends React.Component {
 	render() {
@@ -12,7 +12,9 @@ class SessionListItem extends React.Component {
 				EndTime,
 				EventID,
 				SessionSpeakers,
-				Meta: { Status }
+			},
+			AspenChecklistFork: {
+				Status
 			}
 		} = this.props.data;
 
@@ -22,16 +24,17 @@ class SessionListItem extends React.Component {
 					<div className="d-flex w-100 justify-content-between">
 						<h4 className="mb-1">
 							<small className="text-muted">
-								{SessionDate} | {convertTimes(StartTime)} to {convertTimes(EndTime)}
+								<span className={dateClassHelper(SessionDate)}>{SessionDate}</span> <span className="badge badge-pill badge-info">{convertTimes(StartTime)} to {convertTimes(EndTime)}</span>
 							</small>
 							<br />
 							{SessionName}
 						</h4>
-						<p>
+						<h5>
 							<strong>#{EventID}</strong>
-							<br />
-							<span className={classHelper(Status)}>{Status}</span>
-						</p>
+							<br/>
+							<span className={'badge ' + classHelper(Status)}>{Status}</span>
+						</h5>
+						{/*  */}
 					</div>
 					<p className="mb-1">{SessionLocation}</p>
 					<small>{stringifySpeakers(SessionSpeakers)}</small>
