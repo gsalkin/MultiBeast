@@ -1,5 +1,5 @@
 {
-	"name": "beast-2",
+	"name": "MultiBeast",
 	"version": "1.0.0",
 	"description": "A React-based web application for planning and processing Comms Team coverage during the Aspen Ideas Festival. Written in React + Express + MongoDB and much ❤️.",
 	"dependencies": {
