@@ -1,19 +1,17 @@
 import React from 'react';
+import format from 'date-fns/format';
 
 class SessionCoverage extends React.Component {
-
 	videoRef = React.createRef();
 	roverRef = React.createRef();
 	livestreamRef = React.createRef();
 	quickclipRef = React.createRef();
 	photoRef = React.createRef();
 	transcriptRef = React.createRef();
-	podcastRef = React.createRef();
+	audioRef = React.createRef();
+	restrictionRef = React.createRef();
 	coverageNotesRef = React.createRef();
 
-	handleInputChange = event => {
-		const value = event.target.value;
-	}
 	createCoverage = event => {
 		event.preventDefault();
 		const body = {
@@ -24,8 +22,14 @@ class SessionCoverage extends React.Component {
 				quickclip: this.quickclipRef.current.checked,
 				photo: this.photoRef.current.checked,
 				transcript: this.transcriptRef.current.checked,
-				podcast: this.podcastRef.current.checked,
-				notes: this.coverageNotesRef.current.value
+				audio: this.audioRef.current.checked,
+				restriction: this.restrictionRef.current.checked,
+				notes: this.coverageNotesRef.current.value.length > 1 ? 
+					this.props.details.AspenNotes +
+					'\n\n' +
+					format(Date.now(), 'YYYY-MM-DD@h:mmA') +
+					': ' +
+					this.coverageNotesRef.current.value : this.props.details.AspenNotes
 			}
 		};
 		this.props.updateSession(body);
@@ -60,7 +64,6 @@ class SessionCoverage extends React.Component {
 								ref={this.roverRef}
 								id="inputRover"
 								defaultChecked={this.props.details.VideoRover}
-								
 							/>
 							<label htmlFor="inputRover" className="form-check-label col-form-label col-form-label-lg">
 								Send Rover
@@ -76,13 +79,12 @@ class SessionCoverage extends React.Component {
 								ref={this.livestreamRef}
 								name="livestream"
 								defaultChecked={this.props.details.LiveStream}
-								
 							/>
 							<label
 								htmlFor="inputLivestream"
 								className="form-check-label col-form-label col-form-label-lg"
 							>
-								Live Stream
+								Livestream
 							</label>
 						</div>
 					</div>
@@ -95,7 +97,6 @@ class SessionCoverage extends React.Component {
 								ref={this.quickclipRef}
 								name="quickclip"
 								defaultChecked={this.props.details.QuickClip}
-								
 							/>
 							<label
 								htmlFor="inputQuickclip"
@@ -114,7 +115,6 @@ class SessionCoverage extends React.Component {
 								ref={this.photoRef}
 								name="photo"
 								defaultChecked={this.props.details.Photo}
-								
 							/>
 							<label htmlFor="inputPhoto" className="form-check-label col-form-label col-form-label-lg">
 								Photo Priority
@@ -130,7 +130,6 @@ class SessionCoverage extends React.Component {
 								ref={this.transcriptRef}
 								name="transcript"
 								defaultChecked={this.props.details.Transcript}
-								
 							/>
 							<label
 								htmlFor="inputTranscript"
@@ -145,14 +144,28 @@ class SessionCoverage extends React.Component {
 							<input
 								type="checkbox"
 								className="form-check-input"
-								id="inputPodcast"
-								ref={this.podcastRef}
-								name="podcast"
-								defaultChecked={this.props.details.Podcast}
-								
+								id="inputAudio"
+								ref={this.audioRef}
+								name="audio"
+								defaultChecked={this.props.details.Audio}
 							/>
 							<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-lg">
-								Podcast Priority
+								Audio Priority
+							</label>
+						</div>
+					</div>
+					<div className="form-group">
+						<div className="form-check form-check-inline">
+							<input
+								type="checkbox"
+								className="form-check-input"
+								id="inputrestriction"
+								ref={this.restrictionRef}
+								name="restriction"
+								defaultChecked={this.props.details.Restriction}
+							/>
+							<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-lg">
+								Restriction
 							</label>
 						</div>
 					</div>
@@ -162,10 +175,12 @@ class SessionCoverage extends React.Component {
 						<p>{this.props.details.AspenNotes}</p>
 					</pre>
 				</div>
-				
+
 				<div className="form-row">
 					<div className="form-group col-8 offset-2">
-						<label htmlFor="inputCoverageNotes" className="col-form-label col-form-label-lg">Notes <small>(Please copy and paste the above if appending new information)</small>:</label>
+						<label htmlFor="inputCoverageNotes" className="col-form-label col-form-label-lg">
+							Notes <small>(Please copy and paste the above if appending new information)</small>:
+						</label>
 						<textarea
 							className="form-control"
 							name="coveragenotes"
@@ -173,15 +188,19 @@ class SessionCoverage extends React.Component {
 							ref={this.coverageNotesRef}
 							rows="5"
 							defaultValue={this.props.details.AspenNotes}
-							onChange={this.handleInputChange.bind(this)}
-						></textarea>
+							//onChange={this.handleInputChange.bind(this)}
+						/>
 					</div>
 				</div>
 				<div className="form-row">
 					<div className="form-group col-3 offset-2">
-						<button type="submit" form="coveragePlanForm" className="btn btn-primary">Save Coverage</button>
+						<button type="submit" form="coveragePlanForm" className="btn btn-primary">
+							Save Coverage
+						</button>
 						&nbsp;
-                		<button type="submit" form="coveragePlanForm" className="btn btn-dark">Save &amp; Exit</button>
+						<button type="submit" form="coveragePlanForm" className="btn btn-dark">
+							Save &amp; Exit
+						</button>
 					</div>
 				</div>
 			</form>
