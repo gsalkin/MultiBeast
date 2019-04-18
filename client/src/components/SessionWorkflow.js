@@ -11,7 +11,7 @@ class SessionWorkflow extends React.Component {
 	}
 	componentWillReceiveProps(props) { // Technically we shouldn't use componentWillRecieveProps because it will be deprecated in React 17, but 🤷🏻‍♂️
 		this.setState({
-		qc: props.details.QuickClip.length > 1 ? props.details.QuickClip : []
+		qc: props.details.QuickClip.length !== 0 ? props.details.QuickClip : []
 		})
 	}
 
@@ -63,13 +63,18 @@ class SessionWorkflow extends React.Component {
 			outro: this.outroRef.current.value,
 			caption: this.captionRef.current.value
 		};
-
-		this.setState({qc: [...this.state.qc, qcInstance]})	
+		this.setState({qc: [...this.state.qc, qcInstance]})
+		event.currentTarget.reset();
 	};
 
 	deleteQuickClip = event => {
 		event.preventDefault();
-		console.log(event.target.parentElement);
+		let index = event.target.parentNode.id;
+		let array = this.state.qc;
+		array.splice(index, 1)
+		this.setState({
+			qc: array
+		})
 	}
 
 	render() {
@@ -87,6 +92,7 @@ class SessionWorkflow extends React.Component {
 									ref={this.recordedRef}
 									id="inputRecorded"
 									defaultChecked={this.props.details.Recorded}
+									value="Recorded"
 								/>
 								<label htmlFor="inputRecorded" className="form-check-label">
 									Recorded
@@ -100,6 +106,7 @@ class SessionWorkflow extends React.Component {
 									id="inputRendered"
 									ref={this.renderedRef}
 									defaultChecked={this.props.details.Rendered}
+									value="Rendered"
 								/>
 								<label htmlFor="inputRendered" className="form-check-label">
 									Rendered
@@ -113,6 +120,7 @@ class SessionWorkflow extends React.Component {
 									id="inputQuickClipRendered"
 									ref={this.quickclipRenderedRef}
 									defaultChecked={this.props.details.QuickClipRendered}
+									
 								/>
 								<label htmlFor="inputQuickClipRendered" className="form-check-label">
 									QuickClips Rendered
@@ -178,7 +186,7 @@ class SessionWorkflow extends React.Component {
 							<h5>QuickClips Entry Form</h5>
 							<div className="p-3 mb-2 bg-warning text-dark">
 								<small>
-									Please save content back to database or these entries will be erased on refreshes.
+									Please save QuickClips before refreshing page.
 								</small>
 							</div>
 							<div className="input-group mb-3">
@@ -230,7 +238,7 @@ class SessionWorkflow extends React.Component {
 								Add QuickClip Entry <br />
 							</button>
 						</form>
-						{this.state.qc.length > 1 && (
+						{this.state.qc.length !== 0 && (
 							<div className="table-responsive">
 								<table className="table">
 									<thead>
@@ -245,7 +253,7 @@ class SessionWorkflow extends React.Component {
 									</thead>
 									<tbody>
 										{this.state.qc.map( (object, index) => (
-											<QuickClip key={index} data={this.state.qc[index]} deleteQuickClip={this.deleteQuickClip}/>
+											<QuickClip index={index} key={index} data={this.state.qc[index]} deleteQuickClip={this.deleteQuickClip}/>
 										))}
 									</tbody>
 								</table>
