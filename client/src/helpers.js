@@ -4,7 +4,7 @@ export function stringifySpeakers(array) {
 	let count = array.length;
 	let speakerString = '';
 	for (let i = 0; i < count; i++) {
-		if (i == count - 1) { 
+		if (i === count - 1) { 
 			speakerString = speakerString + array[i]
 		} else {
 			speakerString = speakerString + array[i] + ',\n';
@@ -27,6 +27,8 @@ export function classHelper(status) {
 			className = 'badge-secondary'
 			break;
 		case 'In Progress':
+		case 'Recorded':
+		case 'Rendered':
 			className = 'badge-primary'
 			break;
 		case 'Complete':

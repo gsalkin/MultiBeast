@@ -52,8 +52,6 @@ class Session extends React.Component {
 			return response.json();
 		})
 		.then( json => {
-			console.log(json);
-			
 			this.setState({
 				ArtsVisionFork: json[0].ArtsVisionFork,
 				AspenChecklistFork: json[0].AspenChecklistFork,
