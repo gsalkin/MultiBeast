@@ -8,11 +8,13 @@ class SessionWorkflow extends React.Component {
 			status: '',
 			qc: []
 		};
+		
 	}
 	componentWillReceiveProps(props) { // Technically we shouldn't use componentWillRecieveProps because it will be deprecated in React 17, but 🤷🏻‍♂️
 		this.setState({
 		qc: props.details.QuickClip.length !== 0 ? props.details.QuickClip : []
 		})
+		
 	}
 
 	// Quickclip Refs
@@ -56,6 +58,7 @@ class SessionWorkflow extends React.Component {
 
 	saveQuickClip = event => {
 		event.preventDefault();
+		
 		const qcInstance = {
 			timecodeIn: this.timecodeInRef.current.value,
 			timecodeOut: this.timecodeOutRef.current.value,
@@ -69,6 +72,7 @@ class SessionWorkflow extends React.Component {
 
 	deleteQuickClip = event => {
 		event.preventDefault();
+		console.log('3: ' + this.state.qc);
 		let index = event.target.parentNode.id;
 		let array = this.state.qc;
 		array.splice(index, 1)
@@ -238,7 +242,7 @@ class SessionWorkflow extends React.Component {
 								Add QuickClip Entry <br />
 							</button>
 						</form>
-						{this.state.qc.length !== 0 && (
+						{this.state.qc.length >= 1 && (
 							<div className="table-responsive">
 								<table className="table">
 									<thead>

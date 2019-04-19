@@ -61,7 +61,7 @@ var sessionSchema = new Schema({
 	AspenChecklistFork: {
 		QuickClip: {
 			type: Array,
-			default: [{}]
+			default: []
 		},
 		QuickClipRendered: {
 			type: Boolean,
