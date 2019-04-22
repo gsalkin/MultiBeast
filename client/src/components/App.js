@@ -23,10 +23,12 @@ class App extends React.Component {
 		let param = this.props.match.params.param;
 		var url = ''
 		if (!param) {
-			url = '/api/view/all'
+			url = '/api/view/' + type
 		} else {
 			url = '/api/view/' + type + '/' + param
 		}
+		console.log(url);
+		
 		this.callApi(url).then(body => {
 			this.setState({
 				sessions: body
@@ -34,21 +36,37 @@ class App extends React.Component {
 		});
 	}
 
-	filterDate = date => {
-		this.callApi('/api/view/date/' + date).then(body => {
-			this.setState({
-				sessions: body
-			});
-		});
-	};
+	// assembleDates() {
+	// 	let length = this.state.sessions.length;
+	// 	for (let i = 0; i < length; i++) {
+	// 		console.log(this.state.sessions[i])
+	// 		// for (let j = i - 1; j < length; j++) {
+	// 		// 	console.log(this.state.sessions[i]);
+				
+	// 		// 	// if (this.state.sessions[i].SessionDate) {
+					
+	// 		// 	// }
+				
+	// 		// }
+			
+	// 	}
+	// }
 
-	filterLocation = location => {
-		this.callApi('/api/view/location/' + location).then(body => {
-			this.setState({
-				sessions:body
-			})
-		})
-	}
+	// filterDate = date => {
+	// 	this.callApi('/api/view/date/' + date).then(body => {
+	// 		this.setState({
+	// 			sessions: body
+	// 		});
+	// 	});
+	// };
+
+	// filterLocation = location => {
+	// 	this.callApi('/api/view/location/' + location).then(body => {
+	// 		this.setState({
+	// 			sessions:body
+	// 		})
+	// 	})
+	// }
 
 	filterType(type) {}
 	render() {
@@ -61,6 +79,7 @@ class App extends React.Component {
 							filterDate={this.filterDate}
 							filterLocation={this.filterLocation}
 							filterType={this.filterType}
+							fire={this.assembleDates}
 						/>
 					</div>
 					<div className="col-10">

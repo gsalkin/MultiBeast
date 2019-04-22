@@ -97,8 +97,8 @@ router.get('/api/view/location/:location', (req, res) => {
 });
 
 // Catch-all coverage routes for Rover/QuickClip/LiveStream
-router.get('/api/view/all/:meta', userAuthenticated, (req, res) => {
-	let searchKey = 'ArtsVisionCoverageFork.' + req.params.meta;
+router.get('/api/view/all/:meta', (req, res) => {
+	let searchKey = 'AspenCoverageFork.' + req.params.meta;
 	Session.find(
 		{
 			[searchKey]: true
@@ -116,8 +116,8 @@ router.get('/api/view/all/:meta', userAuthenticated, (req, res) => {
 router.get('/api/view/all/video', userAuthenticated, (req, res) => {
 	Session.find(
 		{
-			'ArtsVisionCoverageFork.VideoVenue': true,
-			'ArtsVisionCoverageFork.VideoRover': true
+			'AspenCoverageFork.VideoVenue': true,
+			'AspenCoverageFork.VideoRover': true
 		},
 		(err, result) => {
 			res.json(result);
@@ -145,7 +145,7 @@ router.get('/api/view/:location?date=:date', userAuthenticated, (req, res) => {
 	});
 });
 router.get('/api/view/all/:meta?date=:date', userAuthenticated, (req, res) => {
-	let searchKey = 'ArtsVisionCoverageFork.' + req.params.meta;
+	let searchKey = 'AspenCoverageFork.' + req.params.meta;
 	let date = req.query.date;
 	Session.find(
 		{
@@ -163,8 +163,8 @@ router.get('/api/view/all/:meta?date=:date', userAuthenticated, (req, res) => {
 router.get('/api/view/all/video?date=:date', userAuthenticated, (req, res) => {
 	Session.find(
 		{
-			'ArtsVisionCoverageFork.VideoVenue': true,
-			'ArtsVisionCoverageFork.VideoRover': true,
+			'AspenCoverageFork.VideoVenue': true,
+			'AspenCoverageFork.VideoRover': true,
 			'ArtsVisionFork.SessionDate': req.query.date
 		},
 		(err, result) => {
