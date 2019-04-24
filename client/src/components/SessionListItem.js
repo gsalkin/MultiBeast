@@ -1,14 +1,21 @@
 import React from 'react';
-import { stringifySpeakers, convertTimes, classHelper, dateClassHelper } from '../helpers';
+import * as Helpers from '../helpers';
 
 class SessionListItem extends React.Component {
 	render() {
 		const {
-			ArtsVisionFork: { SessionName, SessionDate, SessionLocation, StartTime, EndTime, EventID, SessionSpeakers },
+			ArtsVisionFork: { SessionName, SessionDate, SessionLocation, StartTime, EndTime, EventID, SessionSpeakers, SessionFest },
 			AspenChecklistFork: { Status },
 			AspenCoverageFork: { VideoVenue, VideoRover, LiveStream, QuickClip, Audio, Photo, Transcript, Restriction }
 		} = this.props.data;
-
+		
+		const seasonClass = function() {
+			if (Helpers.seasonMarker(SessionFest) == 'Aspen Ideas Health') {
+				return 'purple__aspen'
+			} else {
+				return 'brightblue__aspen'
+			}
+		}
 		return (
 			<div
 				className="list-group-item list-group-item-action"
@@ -18,11 +25,14 @@ class SessionListItem extends React.Component {
 				<div className="d-flex w-100 justify-content-between">
 					<h4 className="mb-1">
 						<small className="text-muted">
-							<a className={dateClassHelper(SessionDate)} href={'/view/date/' + SessionDate}>
+							<a href={'/view/all/' + encodeURIComponent(SessionFest)} className={'badge ' + seasonClass() }>{Helpers.seasonMarker(SessionFest)}</a>
+							&nbsp;
+							<a className={Helpers.dateClassHelper(SessionDate)} href={'/view/date/' + SessionDate}>
 								{SessionDate}
-							</a>{' '}
-							<span className="badge badge-pill badge-info">
-								{convertTimes(StartTime)} to {convertTimes(EndTime)}
+							</a>
+							&nbsp;
+							<span className="badge border border-primary rounded-lg">
+								{Helpers.convertTimes(StartTime)} to {Helpers.convertTimes(EndTime)}
 							</span>
 						</small>
 						<br />
@@ -33,14 +43,14 @@ class SessionListItem extends React.Component {
 					<h5>
 						<strong>#{EventID}</strong>
 						<br />
-						<span className={'badge ' + classHelper(Status)}>{Status}</span>
+						<span className={'badge ' + Helpers.classHelper(Status)}>{Status}</span>
 					</h5>
 				</div>
 				<a href={'/view/location/' + encodeURIComponent(SessionLocation)} className="mb-1">
 					{SessionLocation}
 				</a>
 				<br />
-				<small>{stringifySpeakers(SessionSpeakers)}</small>
+				<small>{Helpers.stringifySpeakers(SessionSpeakers)}</small>
 				<hr />
 				{VideoVenue && (
 					<a href={'/view/all/VideoVenue'} className="badge badge-pill badge-dark">Recording ✓</a>
@@ -71,7 +81,7 @@ class SessionListItem extends React.Component {
 				)}
 				&nbsp;
 				{Restriction && (
-					<a href={'/view/all/Restriction'} className="badge badge-pill badge-danger">Restriction *</a>
+					<a href={'/view/all/Restriction'} className="badge badge-pill badge-danger">Restriction X</a>
 				)}
 			</div>
 		);

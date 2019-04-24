@@ -54,6 +54,16 @@ router.get('/api/view/all', (req, res) => {
 	});
 });
 
+router.get('/api/view/all/:season', (req, res) => {
+	let season = decodeURI(req.params.season)
+	Session.find({
+		'ArtsVisionFork.SessionFest': season
+	},
+	(err, result) => {
+		res.json(result)
+	})
+} ) 
+
 /* Individual session routes */
 router.get('/api/view/session/:id', async (req, res) => {
 	await Session.find(
