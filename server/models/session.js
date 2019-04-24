@@ -4,6 +4,9 @@ var sessionSchema = new Schema({
 	ArtsVisionFork: {
 		EventID: Number,
 		SessionName: String,
+		SessionTrack: String,
+		SessionType: String,
+		SessionFest: String,
 		SessionSpeakers: Array,
 		SessionDate: String,
 		StartTime: String,
@@ -13,8 +16,7 @@ var sessionSchema = new Schema({
 		Meta: {
 			Status: String,
 			LastEdit: {
-				type: String,
-				default: Date.now()
+				type: String
 			},
 			LastUser: String,
 			Updated: Boolean

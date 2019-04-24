@@ -36,7 +36,12 @@ var apiEngine = {
 				ArtsVisionFork: {
 					EventID: api[i].Data['Event Id'],
 					SessionName: api[i].Data.Text,
-					SessionSpeakers: api[i].Entities ? Utils.collateSpeakers(api[i].Entities['AspenInstEvent.Participant'].Rows) : [],
+					SessionSpeakers: api[i].Entities
+						? Utils.collateSpeakers(api[i].Entities['AspenInstEvent.Participant'].Rows)
+						: 'N/A',
+					SessionTrack: api[i].Data.ProjectName,
+					SessionType: api[i].Data.Type,
+					SessionFest: api[i].Data.Season,
 					SessionDate: api[i].Data.Date,
 					StartTime: api[i].Data.StartTime,
 					EndTime: api[i].Data.EndTime,
@@ -82,7 +87,14 @@ var apiEngine = {
 			if (db[i].ArtsVisionFork.Meta.LastEdit !== api[i].Data.UpdateDate) {
 				Session.findOneAndUpdate(
 					{ 'ArtsVisionFork.EventID': db[i].ArtsVisionFork.EventID },
-					{	'ArtsVisionFork.SessionName': api[i].Data.Text,
+					{
+						'ArtsVisionFork.SessionTrack': api[i].Data.ProjectName,
+						'ArtsVisionFork.SessionType': api[i].Data.Type,
+						'ArtsVisionFork.SessionFest': api[i].Data.Season,
+						'ArtsVisionFork.SessionSpeakers': api[i].Entities
+							? Utils.collateSpeakers(api[i].Entities['AspenInstEvent.Participant'].Rows)
+							: 'N/A',
+						'ArtsVisionFork.SessionName': api[i].Data.Text,
 						'ArtsVisionFork.SessionDate': api[i].Data.Date,
 						'ArtsVisionFork.SessionLocation': api[i].Data.Location,
 						'ArtsVisionFork.StartTime': api[i].Data.StartTime,
