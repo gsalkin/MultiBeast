@@ -123,7 +123,7 @@ router.get('/api/view/all/:meta', (req, res) => {
 });
 
 // All Video requires VideoVenue + VideoRover
-router.get('/api/view/all/video', userAuthenticated, (req, res) => {
+router.get('/api/view/video', (req, res) => {
 	Session.find(
 		{
 			'AspenCoverageFork.VideoVenue': true,
@@ -139,9 +139,9 @@ router.get('/api/view/all/video', userAuthenticated, (req, res) => {
 });
 
 /* All relevant routes filtered by dates */
-router.get('/api/view/:location?date=:date', userAuthenticated, (req, res) => {
+router.get('/api/view/location/:location/date/:date', (req, res) => {
 	let location = decodeURI(req.params.location);
-	let date = req.query.date;
+	let date = req.params.date;
 	Session.find(
 		{
 			'ArtsVisionFork.SessionLocation': location,
@@ -154,7 +154,8 @@ router.get('/api/view/:location?date=:date', userAuthenticated, (req, res) => {
 		'ArtsVisionFork.StartTime': 1
 	});
 });
-router.get('/api/view/all/:meta?date=:date', userAuthenticated, (req, res) => {
+
+router.get('/api/view/:meta/date/:date', (req, res) => {
 	let searchKey = 'AspenCoverageFork.' + req.params.meta;
 	let date = req.query.date;
 	Session.find(
@@ -170,7 +171,7 @@ router.get('/api/view/all/:meta?date=:date', userAuthenticated, (req, res) => {
 	});
 });
 
-router.get('/api/view/all/video?date=:date', userAuthenticated, (req, res) => {
+router.get('/api/view/video/date/:date', (req, res) => {
 	Session.find(
 		{
 			'AspenCoverageFork.VideoVenue': true,
