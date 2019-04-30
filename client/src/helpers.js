@@ -92,13 +92,13 @@ export function dateClassHelper(date) {
 export function copyToClipboard(target) {}
 
 export function seasonMarker(season) {
-	if (season == null) {
+	if (season === null) {
 		return;
 	} else {
 		let fest = season.split(' ');
-		if (fest[0] == 'AIF') {
+		if (fest[0] === 'AIF') {
 			return 'Aspen Ideas Festival';
-		} else if (fest[0] == 'SH' || fest[0] == 'AIH') {
+		} else if (fest[0] === 'SH' || fest[0] === 'AIH') {
 			return 'Aspen Ideas Health';
 		}
 	}
