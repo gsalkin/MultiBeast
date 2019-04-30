@@ -8,7 +8,7 @@ const router = express.Router();
 router.post(
 	'/auth/login',
 	passport.authenticate('local-login', {
-		successRedirect: '/api/view/all',
+		successRedirect: '/api/v1/all',
 		failureRedirect: '/auth/error',
 		failureFlash: false
 	})
@@ -37,15 +37,15 @@ function userAuthenticated(req, res, next) {
 }
 
 router.get('/auth/error', (req, res) => {
-	res.sendFile(path.join(__dirname + '/views/error.html'));
+	res.sendFile(path.join(__dirname + '/v1s/error.html'));
 });
 
 router.get('/admin', (req, res) => {
-	res.sendFile(path.join(__dirname + '/views/admin.html'));
+	res.sendFile(path.join(__dirname + '/v1s/admin.html'));
 });
 
-/* View all route */
-router.get('/api/view/all', (req, res) => {
+/* view all route */
+router.get('/api/v1/all', (req, res) => {
 	Session.find({}, (err, result) => {
 		res.json(result);
 	}).sort({
@@ -54,18 +54,23 @@ router.get('/api/view/all', (req, res) => {
 	});
 });
 
-router.get('/api/view/all/:season', (req, res) => {
-	let season = decodeURI(req.params.season)
-	Session.find({
-		'ArtsVisionFork.SessionFest': season
-	},
-	(err, result) => {
-		res.json(result)
-	})
-} ) 
+router.get('/api/v1/all/:season', (req, res) => {
+	let season = decodeURI(req.params.season);
+	Session.find(
+		{
+			'ArtsVisionFork.SessionFest': season
+		},
+		(err, result) => {
+			res.json(result);
+		}
+	).sort({
+		'ArtsVisionFork.SessionDate': 1,
+		'ArtsVisionFork.StartTime': 1
+	});
+});
 
 /* Individual session routes */
-router.get('/api/view/session/:id', async (req, res) => {
+router.get('/api/v1/session/:id', async (req, res) => {
 	await Session.find(
 		{
 			'ArtsVisionFork.EventID': req.params.id
@@ -77,7 +82,7 @@ router.get('/api/view/session/:id', async (req, res) => {
 });
 
 /* Routes for date */
-router.get('/api/view/date/:date', (req, res) => {
+router.get('/api/v1/date/:date', (req, res) => {
 	Session.find(
 		{
 			'ArtsVisionFork.SessionDate': req.params.date
@@ -91,7 +96,7 @@ router.get('/api/view/date/:date', (req, res) => {
 });
 
 /* Routes for location */
-router.get('/api/view/location/:location', (req, res) => {
+router.get('/api/v1/location/:location', (req, res) => {
 	let location = decodeURI(req.params.location);
 	Session.find(
 		{
@@ -107,7 +112,7 @@ router.get('/api/view/location/:location', (req, res) => {
 });
 
 // Catch-all coverage routes for Rover/QuickClip/LiveStream
-router.get('/api/view/all/:meta', (req, res) => {
+router.get('/api/v1/type/:meta', (req, res) => {
 	let searchKey = 'AspenCoverageFork.' + req.params.meta;
 	Session.find(
 		{
@@ -123,12 +128,9 @@ router.get('/api/view/all/:meta', (req, res) => {
 });
 
 // All Video requires VideoVenue + VideoRover
-router.get('/api/view/video', (req, res) => {
+router.get('/api/v1/video', (req, res) => {
 	Session.find(
-		{
-			'AspenCoverageFork.VideoVenue': true,
-			'AspenCoverageFork.VideoRover': true
-		},
+		{ $or: [{ 'AspenCoverageFork.VideoVenue': true }, { 'AspenCoverageFork.VideoRover': true }] },
 		(err, result) => {
 			res.json(result);
 		}
@@ -138,8 +140,11 @@ router.get('/api/view/video', (req, res) => {
 	});
 });
 
-/* All relevant routes filtered by dates */
-router.get('/api/view/location/:location/date/:date', (req, res) => {
+/**
+ * Filter Location by Date
+ * Client sends same request regardless of origin being location or date URL
+ * **/
+router.get('/api/v1/location/:location/date/:date', (req, res) => {
 	let location = decodeURI(req.params.location);
 	let date = req.params.date;
 	Session.find(
@@ -155,9 +160,12 @@ router.get('/api/view/location/:location/date/:date', (req, res) => {
 	});
 });
 
-router.get('/api/view/:meta/date/:date', (req, res) => {
+/**
+ * Filter Truth/False metas by date
+ */
+router.get('/api/v1/:meta/date/:date', (req, res) => {
 	let searchKey = 'AspenCoverageFork.' + req.params.meta;
-	let date = req.query.date;
+	let date = req.params.date;
 	Session.find(
 		{
 			[searchKey]: true,
@@ -171,12 +179,31 @@ router.get('/api/view/:meta/date/:date', (req, res) => {
 	});
 });
 
-router.get('/api/view/video/date/:date', (req, res) => {
+/**
+ * Filter Truth/False metas by location
+ */
+router.get('/api/v1/:meta/location/:location', (req, res) => {
+	let searchKey = 'AspenCoverageFork.' + req.params.meta;
+	let location = req.params.location;
 	Session.find(
 		{
-			'AspenCoverageFork.VideoVenue': true,
-			'AspenCoverageFork.VideoRover': true,
-			'ArtsVisionFork.SessionDate': req.query.date
+			[searchKey]: true,
+			'ArtsVisionFork.SessionLocation': location
+		},
+		(err, result) => {
+			res.json(result);
+		}
+	).sort({
+		'ArtsVisionFork.SessionDate': 1,
+		'ArtsVisionFork.StartTime': 1
+	});
+});
+
+router.get('/api/v1/video/date/:date', (req, res) => {
+	Session.find(
+		{ $or: [{ 'AspenCoverageFork.VideoVenue': true }, { 'AspenCoverageFork.VideoRover': true }] },
+		{
+			'ArtsVisionFork.SessionDate': req.params.date
 		},
 		(err, result) => {
 			res.json(result);
@@ -186,59 +213,62 @@ router.get('/api/view/video/date/:date', (req, res) => {
 	});
 });
 
-
 /* POST Route to update Sessions */
 router.post('/api/update/session/:id', (req, res) => {
 	if (req.body.coverage) {
 		Session.findOneAndUpdate(
-			{'ArtsVisionFork.EventID': req.params.id},
-			{ $set: {
-				'AspenCoverageFork.VideoVenue': req.body.coverage.video,
-				'AspenCoverageFork.VideoRover': req.body.coverage.rover,
-				'AspenCoverageFork.LiveStream': req.body.coverage.livestream,
-				'AspenCoverageFork.QuickClip': req.body.coverage.quickclip,
-				'AspenCoverageFork.Photo': req.body.coverage.photo,
-				'AspenCoverageFork.Transcript': req.body.coverage.transcript,
-				'AspenCoverageFork.Audio': req.body.coverage.audio,
-				'AspenCoverageFork.Restriction': req.body.coverage.restriction,
-				'AspenCoverageFork.AspenNotes': req.body.coverage.notes,
+			{ 'ArtsVisionFork.EventID': req.params.id },
+			{
+				$set: {
+					'AspenCoverageFork.VideoVenue': req.body.coverage.video,
+					'AspenCoverageFork.VideoRover': req.body.coverage.rover,
+					'AspenCoverageFork.LiveStream': req.body.coverage.livestream,
+					'AspenCoverageFork.QuickClip': req.body.coverage.quickclip,
+					'AspenCoverageFork.Photo': req.body.coverage.photo,
+					'AspenCoverageFork.Transcript': req.body.coverage.transcript,
+					'AspenCoverageFork.Audio': req.body.coverage.audio,
+					'AspenCoverageFork.Restriction': req.body.coverage.restriction,
+					'AspenCoverageFork.AspenNotes': req.body.coverage.notes
+				}
 			}
-		})
-		.then( () => {
-			return Session.find({ 'ArtsVisionFork.EventID': req.params.id }).limit(1);
-		})
-		.then(session => {
-			res.json(session)
-		})
-		.catch(err => {
-			console.log(err);
-		})
+		)
+			.then(() => {
+				return Session.find({ 'ArtsVisionFork.EventID': req.params.id }).limit(1);
+			})
+			.then(session => {
+				res.json(session);
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	} else if (req.body.workflow) {
 		Session.findOneAndUpdate(
-			{'ArtsVisionFork.EventID': req.params.id},
-			{ $set: {
-				'AspenChecklistFork.QuickClip': req.body.workflow.quickclip,
-				'AspenChecklistFork.QuickClipRendered': req.body.workflow.quickclipRendered,
-				'AspenChecklistFork.Recorded': req.body.workflow.recorded,
-				'AspenChecklistFork.Rendered': req.body.workflow.rendered,
-				'AspenChecklistFork.AlbumURL': req.body.workflow.albumURL,
-				'AspenChecklistFork.YouTubeURL': req.body.workflow.youtubeURL,
-				'AspenChecklistFork.SessionURL': req.body.workflow.sessionURL,
-				'AspenChecklistFork.TranscriptURL': req.body.workflow.transcriptURL,
-				'AspenChecklistFork.AudioURL': req.body.workflow.audioURL,
-				'AspenChecklistFork.Status': req.body.workflow.status,
-				'AspenChecklistFork.Complete': req.body.workflow.complete,
+			{ 'ArtsVisionFork.EventID': req.params.id },
+			{
+				$set: {
+					'AspenChecklistFork.QuickClip': req.body.workflow.quickclip,
+					'AspenChecklistFork.QuickClipRendered': req.body.workflow.quickclipRendered,
+					'AspenChecklistFork.Recorded': req.body.workflow.recorded,
+					'AspenChecklistFork.Rendered': req.body.workflow.rendered,
+					'AspenChecklistFork.AlbumURL': req.body.workflow.albumURL,
+					'AspenChecklistFork.YouTubeURL': req.body.workflow.youtubeURL,
+					'AspenChecklistFork.SessionURL': req.body.workflow.sessionURL,
+					'AspenChecklistFork.TranscriptURL': req.body.workflow.transcriptURL,
+					'AspenChecklistFork.AudioURL': req.body.workflow.audioURL,
+					'AspenChecklistFork.Status': req.body.workflow.status,
+					'AspenChecklistFork.Complete': req.body.workflow.complete
+				}
 			}
-		})
-		.then( () => {
-			return Session.find({ 'ArtsVisionFork.EventID': req.params.id }).limit(1);
-		})
-		.then(session => {
-			res.json(session)
-		})
-		.catch(err => {
-			console.log(err);
-		})
+		)
+			.then(() => {
+				return Session.find({ 'ArtsVisionFork.EventID': req.params.id }).limit(1);
+			})
+			.then(session => {
+				res.json(session);
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	}
 });
 module.exports = router;
