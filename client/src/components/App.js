@@ -6,6 +6,7 @@ import { dateClassHelper } from '../helpers.js'
 
 class App extends React.Component {
 	state = {
+		userName: this.props.userName,
 		filterMeta: {
 			dateFilter: false,
 			locationFilter: false
@@ -14,7 +15,12 @@ class App extends React.Component {
 	};
 
 	callApi = async url => {
-		let response = await fetch(url);
+		let response = await fetch(url, {
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + sessionStorage.getItem('jwt_token')
+			}
+		});
 		let status = await response.status;
 		if (status >= 200 && status < 300) {
 			return await response.json();
@@ -26,7 +32,7 @@ class App extends React.Component {
 	componentDidMount() {
 		const type = this.props.match.params.type;
 		const param = this.props.match.params.param;
-		var url = '';
+		let url = '';
 		if (!param) {
 			url = '/api/v1/' + type;
 		} else {

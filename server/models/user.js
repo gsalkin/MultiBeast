@@ -1,13 +1,33 @@
 const Mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const Schema = Mongoose.Schema;
-const saltRounds = 12;
+const saltRounds = 10;
 
 var userSchema = new Schema({
-	username: String,
-	passwordHash: String,
+	username: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	passwordHash: {
+		type: String,
+		required: true
+	},
 	isAdmin: Boolean
 })
+
+// userSchema.pre('save', async function(next) {
+// 	const User = this;
+// 	const hash = await bcrypt.hash(this.password, 12);
+// 	this.password = hash;
+// 	next()
+// })
+
+// userSchema.methods.validPassword = async (password) => {
+// 	const user = this;
+// 	const compare = await bcrypt.compare(password, user.password);
+// 	return compare;
+// }
 
 userSchema.methods.generateHash = function(password) {
 	return bcrypt.hashSync(password, saltRounds);

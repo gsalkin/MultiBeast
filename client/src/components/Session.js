@@ -21,7 +21,8 @@ class Session extends React.Component {
 	}
 
 	setSessionState = ID => {
-		this.callApi('/api/view/session/' + ID).then(json => {
+		this.callApi('/api/v1/session/' + ID)
+		.then(json => {
 			this.setState({
 				ArtsVisionFork: json[0].ArtsVisionFork,
 				AspenChecklistFork: json[0].AspenChecklistFork,
@@ -31,7 +32,12 @@ class Session extends React.Component {
 	};
 
 	callApi = async url => {
-		let response = await fetch(url);
+		let response = await fetch(url, {
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': 'Bearer ' +  sessionStorage.getItem('jwt_token')
+				}
+		});
 		let status = await response.status;
 		if (status >= 200 && status < 300) {
 			return await response.json();
@@ -41,10 +47,11 @@ class Session extends React.Component {
 	};
 
 	updateSession = (data) => {
-		fetch('/api/update/session/' + this.state.ArtsVisionFork.EventID, {
+		fetch('/api/v1/update/session/' + this.state.ArtsVisionFork.EventID, {
 			method: 'post',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'Authorization': 'Bearer ' + sessionStorage.getItem('jwt_token')
 			},
 			body: JSON.stringify(data)
 		})
