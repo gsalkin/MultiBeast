@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import SessionListItem from './SessionListItem';
 import Header from './Header';
 import SideNav from './SideNav';
-import { dateClassHelper } from '../helpers.js'
+import { dateClassHelper } from '../helpers.js';
 
 class App extends React.Component {
 	state = {
@@ -47,13 +47,15 @@ class App extends React.Component {
 
 	filterAll = (location, date) => {
 		const param = this.props.match.params.param;
+		const type = this.props.match.params.type;
 		let url = '/api/v1/';
+		if (type === 'video') {
+			url = url + 'video/'
+		}
 		if (!param) {
 			url = url + 'location/' + encodeURIComponent(location) + '/date/' + date;
-			console.log(url);
 		} else if (param) {
-			url = url + 'type/' + param + 'location/' + encodeURIComponent(location) + '/date/' + date;
-			console.log(url);
+			url = url + 'type/' + param + '/location/' + encodeURIComponent(location) + '/date/' + date;
 		}
 		this.callApi(url).then(body => {
 			this.setState({
@@ -81,6 +83,19 @@ class App extends React.Component {
 				});
 			});
 		}
+
+		if (type === 'video') {
+			let url = '/api/v1/video/date/' + date;
+			this.callApi(url).then(body => {
+				this.setState({
+					filterMeta: {
+						dateFilter: 'date: ' + date
+					},
+					sessions: body
+				});
+			});
+		}
+
 		// Filter Location by Date/Date by Location uses the same API route
 		else if (type === 'location') {
 			let url = '/api/v1/location/' + encodeURIComponent(param) + '/date/' + date;
@@ -121,6 +136,19 @@ class App extends React.Component {
 				});
 			});
 		}
+
+		if (type === 'video') {
+			let url = '/api/v1/video/location/' + encodeURIComponent(location);
+			this.callApi(url).then(body => {
+				this.setState({
+					filterMeta: {
+						dateFilter: 'location: ' + location
+					},
+					sessions: body
+				});
+			});
+		}
+
 		// Filter Location by Date/Date by Location uses the same API route
 		else if (type === 'date') {
 			let url = '/api/v1/location/' + encodeURIComponent(location) + '/date/' + param;
@@ -133,7 +161,7 @@ class App extends React.Component {
 				});
 			});
 		} else {
-			let url = '/api/v1/' + type + '/' + param + '/location/' + encodeURIComponent(location);
+			let url = '/api/v1/type/' + type + '/' + param + '/location/' + encodeURIComponent(location);
 			this.callApi(url).then(body => {
 				this.setState({
 					filterMeta: {
@@ -175,11 +203,12 @@ class App extends React.Component {
 								<span className="badge badge-info">{this.state.filterMeta.locationFilter}</span>
 							)}
 						</p>
-						<div className="list-group">
-							{Object.keys(this.state.sessions).map(key => (
-								<SessionListItem key={key} data={this.state.sessions[key]} />
-							))}
-						</div>
+						{Object.keys(this.state.sessions).map(key => (
+							<Fragment key={key}>
+								<SessionListItem data={this.state.sessions[key]} />
+								<br />
+							</Fragment>
+						))}
 					</div>
 				</div>
 			</div>
