@@ -6,11 +6,14 @@ import Session from './Session';
 import NotFound from './NotFound';
 import Login from './Login';
 import Admin from './Admin';
+import SplashPage from './SplashPage'
 
 const Router = () => (
 	<BrowserRouter>
 		<Switch>
+		<Route exact path="/" component={SplashPage} />
 			<Route exact path="/" component={Login} />
+			<Route exact path="/Login" component={Login} />
 			<Route exact path="/admin" component={Admin} />
 			<Route exact path="/view/:type" component={App} />
 			<Route path="/session/:sessionID" component={Session} />
