@@ -6,19 +6,34 @@ const passport = require('passport');
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const path = require('path');
+const port = process.env.PORT || 5000;
 // const MongoDBStore = require('connect-mongodb-session')(session);
-require('./config/auth');
+require('./server/config/auth');
 
 /* Custom libraries */
-const apiEngine = require('./apiEngine');
-const router = require('./routes');
+const apiEngine = require('./server/apiEngine');
+const router = require('./server/routes');
 
-/* Middleware configuration */
-//const db = mongoose.connect(process.env.MONGO_URI, {collection: 'usersessions'});
+// app setup
 const app = express();
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(passport.initialize());
+
+
+//production mode
+console.log(process.env.NODE_ENV);
+if (process.env.NODE_ENV === 'production') {
+	app.use(express.static(path.join(__dirname, '/client/build')));
+	app.get('/*', (req, res) => {
+		console.log('Hi!');
+		res.sendFile(path.join(__dirname + '/client/build/index.html'));
+	});
+}
+app.use(router);
+// app.use(passport.session());
 // app.use(
 // 	session({
 // 		secret: process.env.PASSPORT_SECRET,
@@ -33,11 +48,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // 		})
 // 	})
 // );
-app.use(passport.initialize());
-// app.use(passport.session());
-app.use(express.static('public'));
-app.use(router);
-
 mongoose.set('useFindAndModify', false);
 mongoose.set('debug', true);
 mongoose
@@ -48,6 +58,6 @@ mongoose
 // setInterval( apiEngine.populateDB(), 60000 );
 
 /* Port */
-app.listen(process.env.PORT || 5000, () => {
-	console.log('Let\'s get this show on the road!');
+app.listen(port, () => {
+	console.log('Let\'s get this show on the road! Listening in on port ' + port);
 });

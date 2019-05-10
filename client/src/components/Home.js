@@ -18,6 +18,7 @@ class App extends React.Component {
 		let response = await fetch(url, {
 			headers: {
 				'Content-Type': 'application/json',
+				'Accept': 'application/json',
 				'Authorization': 'Bearer ' + sessionStorage.getItem('jwt_token')
 			}
 		});
@@ -34,9 +35,9 @@ class App extends React.Component {
 		const param = this.props.match.params.param;
 		let url = '';
 		if (!param) {
-			url = '/api/v1/' + type;
+			url = 'http://localhost:5000/api/v1/' + type;
 		} else {
-			url = '/api/v1/' + type + '/' + param;
+			url = 'http://localhost:5000/api/v1/' + type + '/' + param;
 		}
 		this.callApi(url).then(body => {
 			this.setState({
@@ -71,7 +72,7 @@ class App extends React.Component {
 	filterDate = date => {
 		const type = this.props.match.params.type;
 		const param = this.props.match.params.param;
-
+		
 		if (type === 'all') {
 			let url = '/api/v1/date/' + date;
 			this.callApi(url).then(body => {
@@ -83,7 +84,6 @@ class App extends React.Component {
 				});
 			});
 		}
-
 		if (type === 'video') {
 			let url = '/api/v1/video/date/' + date;
 			this.callApi(url).then(body => {
@@ -95,7 +95,6 @@ class App extends React.Component {
 				});
 			});
 		}
-
 		// Filter Location by Date/Date by Location uses the same API route
 		else if (type === 'location') {
 			let url = '/api/v1/location/' + encodeURIComponent(param) + '/date/' + date;

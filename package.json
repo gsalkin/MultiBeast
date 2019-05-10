@@ -1,7 +1,8 @@
 {
-	"name": "MultiBeast",
+	"name": "multibeast",
 	"version": "1.0.0",
 	"description": "A React-based web application for planning and processing Comms Team coverage during the Aspen Ideas Festival. Written in React + Express + MongoDB and much ❤️.",
+	"main": "app.js",
 	"dependencies": {
 		"axios": "^0.18.0",
 		"bcrypt": "^3.0.3",
@@ -21,9 +22,10 @@
 		"nodemon": "^1.18.10"
 	},
 	"scripts": {
-		"start": "concurrently \"cd server && nodemon server.js\" \"cd client && npm start\""
+		"development": "concurrently \"nodemon app.js\" \"cd client && npm start\"",
+		"production": "concurrently \"node app.js\" \"cd client && npm run build\""
 	},
 	"keywords": [],
-	"author": "",
+	"author": "Gabe Salkin",
 	"license": "ISC"
 }
