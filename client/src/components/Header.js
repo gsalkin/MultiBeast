@@ -22,13 +22,8 @@ class Header extends React.Component {
 				</div>
 				<ul className="nav justify-content-end">
 					<li className="nav-item">
-						<a className="nav-link active" href="/search">
+						<a className="nav-link disabled" href="/search">
 							Search
-						</a>
-					</li>
-					<li className="nav-item">
-						<a className="nav-link" href="/logout">
-							Log Out
 						</a>
 					</li>
 					<li className="nav-item">

@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const Session = require('./models/session');
 const User = require('./models/user');
 const passport = require('passport');
@@ -336,4 +337,5 @@ router.post('/api/v1/update/session/:id', userAuthenticated, async (req, res) =>
 			});
 	}
 });
+
 module.exports = router;
