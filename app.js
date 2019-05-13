@@ -21,18 +21,17 @@ app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
-
+app.use(router);
 
 //production mode
-console.log(process.env.NODE_ENV);
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(__dirname, '/client/build')));
-	app.get('/*', (req, res) => {
+	app.get('^/$', (req, res) => {
 		console.log('Hi!');
 		res.sendFile(path.join(__dirname + '/client/build/index.html'));
 	});
 }
-app.use(router);
+
 // app.use(passport.session());
 // app.use(
 // 	session({
@@ -59,5 +58,5 @@ mongoose
 
 /* Port */
 app.listen(port, () => {
-	console.log('Let\'s get this show on the road! Listening in on port ' + port);
+	console.log('Let\'s get this show on the road! Listening in on port ' + port + ' and running in ' + process.env.NODE_ENV);
 });

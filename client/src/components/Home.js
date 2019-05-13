@@ -18,8 +18,8 @@ class App extends React.Component {
 		let response = await fetch(url, {
 			headers: {
 				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'Authorization': 'Bearer ' + sessionStorage.getItem('jwt_token')
+				Accept: 'application/json',
+				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			}
 		});
 		let status = await response.status;
@@ -35,9 +35,9 @@ class App extends React.Component {
 		const param = this.props.match.params.param;
 		let url = '';
 		if (!param) {
-			url = 'http://localhost:5000/api/v1/' + type;
+			url = '/api/v1/' + type;
 		} else {
-			url = 'http://localhost:5000/api/v1/' + type + '/' + param;
+			url = '/api/v1/' + type + '/' + param;
 		}
 		this.callApi(url).then(body => {
 			this.setState({
@@ -51,7 +51,7 @@ class App extends React.Component {
 		const type = this.props.match.params.type;
 		let url = '/api/v1/';
 		if (type === 'video') {
-			url = url + 'video/'
+			url = url + 'video/';
 		}
 		if (!param) {
 			url = url + 'location/' + encodeURIComponent(location) + '/date/' + date;
@@ -72,9 +72,11 @@ class App extends React.Component {
 	filterDate = date => {
 		const type = this.props.match.params.type;
 		const param = this.props.match.params.param;
-		
-		if (type === 'all') {
+		console.log(param);
+
+		if (!param && type === 'all') {
 			let url = '/api/v1/date/' + date;
+			//console.log(url);
 			this.callApi(url).then(body => {
 				this.setState({
 					filterMeta: {
@@ -84,8 +86,10 @@ class App extends React.Component {
 				});
 			});
 		}
-		if (type === 'video') {
+
+		if (!param && type === 'video') {
 			let url = '/api/v1/video/date/' + date;
+			//console.log(url);
 			this.callApi(url).then(body => {
 				this.setState({
 					filterMeta: {
@@ -98,7 +102,7 @@ class App extends React.Component {
 		// Filter Location by Date/Date by Location uses the same API route
 		else if (type === 'location') {
 			let url = '/api/v1/location/' + encodeURIComponent(param) + '/date/' + date;
-			console.log(url);
+			//console.log(url);
 			this.callApi(url).then(body => {
 				this.setState({
 					filterMeta: {
@@ -109,7 +113,7 @@ class App extends React.Component {
 			});
 		} else {
 			let url = '/api/v1/type/' + param + '/date/' + date;
-			console.log(url);
+			//console.log(url);
 			this.callApi(url).then(body => {
 				this.setState({
 					filterMeta: {
@@ -172,6 +176,25 @@ class App extends React.Component {
 		}
 	};
 
+	renderResults() {
+		if (this.state.sessions.length == 0) {
+			return (
+				<div className="card">
+					<div className="card-body">
+						<h1>No Sessions Found</h1>
+					</div>
+				</div>
+			);
+		} else {
+			return Object.keys(this.state.sessions).map(key => (
+				<Fragment key={key}>
+					<SessionListItem data={this.state.sessions[key]} />
+					<br />
+				</Fragment>
+			));
+		}
+	}
+
 	render() {
 		return (
 			<div className="container-fluid">
@@ -202,12 +225,13 @@ class App extends React.Component {
 								<span className="badge badge-info">{this.state.filterMeta.locationFilter}</span>
 							)}
 						</p>
-						{Object.keys(this.state.sessions).map(key => (
+						{this.renderResults()}
+						{/* {Object.keys(this.state.sessions).map(key => (
 							<Fragment key={key}>
 								<SessionListItem data={this.state.sessions[key]} />
 								<br />
 							</Fragment>
-						))}
+						))} */}
 					</div>
 				</div>
 			</div>
