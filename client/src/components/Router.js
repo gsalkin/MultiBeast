@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react'; //If you're using JSX, you need to import React.
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Home from './Home';
+import Home from './App';
 import Session from './Session';
 import NotFound from './NotFound';
 import Login from './Login';
@@ -9,20 +9,6 @@ import Admin from './Admin';
 import SplashPage from './SplashPage';
 
 class Router extends React.Component {
-	// constructor(props) {
-	// 	super(props);
-	// 	this.state = {};
-	// 	this.connecToServer = this.connecToServer.bind(this);
-	// }
-
-	// connecToServer() {
-	// 	fetch('/');
-	// }
-
-	// componentDidMount() {
-	// 	this.connecToServer();
-	// }
-
 	render() {
 		return (
 			// THE ORDER OF THE ROUTES ARE IMPORTANT

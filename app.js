@@ -26,9 +26,9 @@ app.use(router);
 //production mode
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(__dirname, '/client/build')));
-	app.get('^/$', (req, res) => {
+	app.get('/*', (req, res) => {
 		console.log('Hi!');
-		res.sendFile(path.join(__dirname + '/client/build/index.html'));
+		res.sendFile(path.join(__dirname + '/client/build', 'index.html'));
 	});
 }
 
