@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
 import configData from '../configData.json';
 
@@ -94,21 +95,21 @@ class SideNav extends React.Component {
 				</form>
 				<hr />
 				<h4>Quick Links</h4>
-				<a href={'/view/all'} className="btn btn-outline-primary btn-block">
+				<Link to='/view/all' className="btn btn-outline-primary btn-block">
 					All
-				</a>
-				<a href={'/view/date/' + today} className="btn btn-outline-primary btn-block">
+				</Link>
+				<Link to={'/view/date/' + today} className="btn btn-outline-primary btn-block">
 					Today
-				</a>
-				<a href="/view/type/LiveStream" className="btn btn-outline-primary btn-block">
+				</Link>
+				<Link to="/view/type/LiveStream" className="btn btn-outline-primary btn-block">
 					Live Streams
-				</a>
-				<a href="/view/video" className="btn btn-outline-primary btn-block">
+				</Link>
+				<Link to="/view/video" className="btn btn-outline-primary btn-block">
 					All Video
-				</a>
-				<a href="" className="btn btn-outline-primary btn-block">
+				</Link>
+				<Link to="" className="btn btn-outline-primary btn-block">
 					Completed
-				</a>
+				</Link>
 			</nav>
 		);
 	}

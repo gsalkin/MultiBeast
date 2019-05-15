@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 class SplashPage extends React.Component {
     state = {
         link: ''
@@ -26,9 +27,9 @@ class SplashPage extends React.Component {
 					<h1 class="display-1 text-center">MultiBeast</h1>
                     <div className="row">
                         <div className="text-center col-4 offset-4">
-                            <a href={this.state.link}>
+                            <Link to={this.state.link}>
                                 <img src="../../images/MultiBeast_skull.png" alt="MultiBeast Logo" className='img-fluid'/>
-                            </a>
+                            </Link>
                         </div>
                     </div>
 				</div>

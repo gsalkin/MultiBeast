@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import * as Helpers from '../helpers';
 
 class SessionListItem extends React.Component {
@@ -28,88 +29,86 @@ class SessionListItem extends React.Component {
 		return (
 			<div className="card" id={'event-' + EventID} data-session-label={SessionName}>
 				<div className="card-header">
-					<a href={'/view/season/' + encodeURIComponent(SessionFest)} className={'badge ' + seasonClass()}>
+					<Link to={'/view/season/' + encodeURIComponent(SessionFest)} className={'badge ' + seasonClass()}>
 						{Helpers.seasonMarker(SessionFest)}
-					</a>
+					</Link>
 					&nbsp;
-					<a className={Helpers.dateClassHelper(SessionDate)} href={'/view/date/' + SessionDate}>
+					<Link onClick={this.props.filter} className={Helpers.dateClassHelper(SessionDate)} to={'/view/date/' + SessionDate}>
 						{SessionDate}
-					</a>
+					</Link>
 					&nbsp;
 					<span className="badge border border-primary rounded-lg">
 						{Helpers.convertTimes(StartTime)} to {Helpers.convertTimes(EndTime)}
 					</span>
 				</div>
 				<div className="card-body">
-					<div className="row">
-						<div className="col-10">
-							<h4>
-								<a href={'/session/' + EventID} className="text-dark">
-									{SessionName}
-								</a>
-							</h4>
+					<Link to={'/session/' + EventID} className="text-dark">
+						<div className="row">
+							<div className="col-10">
+								<h4>{SessionName}</h4>
+							</div>
+							<div className="col-2">
+								<h5 className="text-right">
+									<strong className="align-middle">#{EventID}</strong>
+									&nbsp;
+									<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
+								</h5>
+							</div>
 						</div>
-						<div className="col-2">
-							<h5 className="text-right">
-								<strong className="align-middle">#{EventID}</strong>
-								&nbsp;
-								<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
-							</h5>
-						</div>
-					</div>
-					<a href={'/view/location/' + encodeURIComponent(SessionLocation)} className="mb-1">
+					</Link>
+					<Link onClick={this.props.filter} to={'/view/location/' + encodeURIComponent(SessionLocation)} className="mb-1">
 						{SessionLocation}
-					</a>
+					</Link>
 					<br />
 					<small>{Helpers.stringifySpeakers(SessionSpeakers)}</small>
 				</div>
 				<div className="card-footer">
 					{VideoVenue && (
-						<a href={'/view/type/VideoVenue'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.appViewChange} to={'/view/type/VideoVenue'} className="badge badge-pill badge-dark">
 							Recording ✓
-						</a>
+						</Link>
 					)}
 					&nbsp;
 					{VideoRover && (
-						<a href={'/view/type/VideoRover'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.appViewChange} to={'/view/type/VideoRover'} className="badge badge-pill badge-dark">
 							Send Rover ✓
-						</a>
+						</Link>
 					)}
 					&nbsp;
 					{LiveStream && (
-						<a href={'/view/type/LiveStream'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.appViewChange} to={'/view/type/LiveStream'} className="badge badge-pill badge-dark">
 							Livestream ✓
-						</a>
+						</Link>
 					)}
 					&nbsp;
 					{QuickClip && (
-						<a href={'/view/type/QuickClip'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.appViewChange} to={'/view/type/QuickClip'} className="badge badge-pill badge-dark">
 							QuickClips ✓
-						</a>
+						</Link>
 					)}
 					&nbsp;
 					{Photo && (
-						<a href={'/view/type/Photo'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.appViewChange} to={'/view/type/Photo'} className="badge badge-pill badge-dark">
 							Photo Priority ✓
-						</a>
+						</Link>
 					)}
 					&nbsp;
 					{Audio && (
-						<a href={'/view/type/Audio'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.appViewChange} to={'/view/type/Audio'} className="badge badge-pill badge-dark">
 							Audio Priority ✓
-						</a>
+						</Link>
 					)}
 					&nbsp;
 					{Transcript && (
-						<a href={'/view/all/Transcript'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.appViewChange} to={'/view/type/Transcript'} className="badge badge-pill badge-dark">
 							Transcript Priority ✓
-						</a>
+						</Link>
 					)}
 					&nbsp;
 					{Restriction && (
-						<a href={'/view/all/Restriction'} className="badge badge-pill badge-danger">
+						<Link onClick={this.props.appViewChange} to={'/view/type/Restriction'} className="badge badge-pill badge-danger">
 							Restriction X
-						</a>
+						</Link>
 					)}
 				</div>
 			</div>

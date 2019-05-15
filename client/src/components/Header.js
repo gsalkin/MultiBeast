@@ -1,35 +1,36 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 
 class Header extends React.Component {
 	render() {
 		return (
 			<nav className="navbar navbar-light">
-				<a className="navbar-brand" href="/view/all">
+				<Link className="navbar-brand" to="/view/all">
 					<img src="/images/favicon/apple-icon.png" width="50" height="50" alt="" />
 					&nbsp;
 					MultiBeast
-				</a>
+				</Link>
 				<div className="form-inline">
 					<h3>
-						<a href="/view/season/SH%202018" className={'btn purple__aspen ' + this.props.status}>
+						<Link to="/view/season/SH%202018" className={'btn purple__aspen ' + this.props.status}>
 							Aspen Ideas Health
-						</a>
+						</Link>
 						&nbsp;
-						<a href="/view/season/AIF%202018" className={'btn brightblue__aspen ' + this.props.status}>
+						<Link to="/view/season/AIF%202018" className={'btn brightblue__aspen ' + this.props.status}>
 							Aspen Ideas Festival
-						</a>
+						</Link>
 					</h3>
 				</div>
 				<ul className="nav justify-content-end">
-					<li className="nav-item">
-						<a className="nav-link disabled" href="/search">
+					{/* <li className="nav-item">
+						<Link className="nav-link disabled" to="/search">
 							Search
-						</a>
-					</li>
+						</Link>
+					</li> */}
 					<li className="nav-item">
-						<a className={'nav-link ' + this.props.status} href="/admin" tabIndex="-1" aria-disabled="true">
+						<Link className={'nav-link ' + this.props.status} to="/admin" tabIndex="-1" aria-disabled="true">
 							Admin
-						</a>
+						</Link>
 					</li>
 				</ul>
 			</nav>
