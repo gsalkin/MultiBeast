@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const port = process.env.PORT || 5000;
 // const MongoDBStore = require('connect-mongodb-session')(session);
-require('./server/config/auth');
+require('./server/auth');
 
 /* Custom libraries */
 const apiEngine = require('./server/apiEngine');

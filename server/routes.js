@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 const Session = require('./models/session');
 const User = require('./models/user');
 const passport = require('passport');

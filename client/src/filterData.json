@@ -28,5 +28,15 @@
         "Marble Garden Tent",
         "Maroon Bells Amphitheatre",
         "Paepcke Auditorium"
+    ],
+    "Types": [
+        "VideoVenue",
+        "VideoRover",
+        "LiveStream",
+        "QuickClip",
+        "Photo",
+        "Audio",
+        "Transcript",
+        "Restriction"
     ]
 }
