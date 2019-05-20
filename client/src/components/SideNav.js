@@ -1,14 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { format } from 'date-fns';
-import configData from '../configData.json';
+import { camelCaseBreaker } from '../helpers'
+import filterData from '../filterData.json';
 
 class SideNav extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			dateFilterValue: false,
-			locationFilterValue: false,
+			filterType: false,
+			filterValue: false
 		};
 	}
 
@@ -24,14 +25,16 @@ class SideNav extends React.Component {
 
 	dateSelectChange = e => {
 		this.setState({
-			dateFilterValue: e.target.value
+			filterType: 'date',
+			filterValue: e.target.value
 		}, () => {
-			const location = this.state.locationFilterValue;
-			const date = this.state.dateFilterValue;
-			if (location) {
-				this.props.filterAll(location, date)
+			let type = this.state.filterType;
+			let value = this.state.filterValue
+			
+			if (value === 'all') {
+				return
 			} else {
-				this.props.filterDate(date);
+				this.props.setFilterQueue(type, value)
 			}
 		});
 		
@@ -39,14 +42,32 @@ class SideNav extends React.Component {
 
 	locationSelectChange = e => {
 		this.setState({
-			locationFilterValue: e.target.value
+			filterType: 'location',
+			filterValue: e.target.value
 		}, () => {
-			const date = this.state.dateFilterValue;
-			const location = this.state.locationFilterValue;
-			if (date) {
-				this.props.filterAll(location, date)
+			let type = this.state.filterType;
+			let value = this.state.filterValue
+			
+			if (value === 'all') {
+				return
 			} else {
-				this.props.filterLocation(location);
+				this.props.setFilterQueue(type, value)
+			}
+		})
+	}
+
+	metaSelectChange = e => {
+		this.setState({
+			filterType: 'meta',
+			filterValue: e.target.value
+		}, () => {
+			let type = this.state.filterType;
+			let value = this.state.filterValue
+			
+			if (value === 'all') {
+				return
+			} else {
+				this.props.setFilterQueue(type, value)
 			}
 		})
 	}
@@ -54,8 +75,9 @@ class SideNav extends React.Component {
 
 	render() {
 		const today = format(new Date(), 'YYYY-MM-DD');
-		const dates = configData.Dates;
-		const locations = configData.Locations;
+		const dates = filterData.Dates;
+		const locations = filterData.Locations;
+		const types = filterData.Types;
 		return (
 			<nav className="nav sticky-top flex-column">
 				<h3>Filters</h3>
@@ -67,9 +89,9 @@ class SideNav extends React.Component {
 							</label>
 						</div>
 						<select onChange={this.dateSelectChange} className="custom-select" id="inputDateSelect">
-							<option defaultValue="all">Choose...</option>
+							<option defaultValue="all">All</option>
 							{dates.map((item, index) => (
-								<option key={index} value={item} >
+								<option key={index} value={item} type='date'>
 									{item}
 								</option>
 							))}
@@ -84,10 +106,27 @@ class SideNav extends React.Component {
 							</label>
 						</div>
 						<select onChange={this.locationSelectChange} className="custom-select" id="inputLocationSelect">
-							<option defaultValue="all">Choose...</option>
+							<option defaultValue="all">All</option>
 							{locations.map((item, index) => (
-								<option key={index} value={item}>
+								<option key={index} value={item} type='location'>
 									{item}
+								</option>
+							))}
+						</select>
+					</div>
+				</form>
+				<form action="">
+					<div className="input-group mb-3">
+						<div className="input-group-prepend">
+							<label className="input-group-text" htmlFor="inputMeta">
+								Type
+							</label>
+						</div>
+						<select onChange={this.metaSelectChange} className="custom-select" id="inputMetaSelect">
+							<option defaultValue="all">All</option>
+							{types.map((item, index) => (
+								<option key={index} value={item} type='meta'>
+									{camelCaseBreaker(item)}
 								</option>
 							))}
 						</select>
@@ -95,19 +134,19 @@ class SideNav extends React.Component {
 				</form>
 				<hr />
 				<h4>Quick Links</h4>
-				<Link to='/view/all' className="btn btn-outline-primary btn-block">
+				<Link to='/view/all' className="btn btn-outline-primary btn-block" onClick={this.props.linkResets}>
 					All
 				</Link>
-				<Link to={'/view/date/' + today} className="btn btn-outline-primary btn-block">
+				<Link to={'/view/date/' + today} className="btn btn-outline-primary btn-block" onClick={this.props.linkResets}>
 					Today
 				</Link>
-				<Link to="/view/type/LiveStream" className="btn btn-outline-primary btn-block">
+				<Link to="/view/type/LiveStream" className="btn btn-outline-primary btn-block" onClick={this.props.linkResets}>
 					Live Streams
 				</Link>
-				<Link to="/view/video" className="btn btn-outline-primary btn-block">
+				<Link to="/view/video" className="btn btn-outline-primary btn-block" onClick={this.props.linkResets}>
 					All Video
 				</Link>
-				<Link to="" className="btn btn-outline-primary btn-block">
+				<Link to="" className="btn btn-outline-primary btn-block" onClick={this.props.linkResets}>
 					Completed
 				</Link>
 			</nav>

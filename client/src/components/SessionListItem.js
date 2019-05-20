@@ -56,7 +56,7 @@ class SessionListItem extends React.Component {
 							</div>
 						</div>
 					</Link>
-					<Link onClick={this.props.filter} to={'/view/location/' + encodeURIComponent(SessionLocation)} className="mb-1">
+					<Link onClick={this.props.filter}  to={'/view/location/' + encodeURIComponent(SessionLocation)} className="mb-1">
 						{SessionLocation}
 					</Link>
 					<br />
@@ -64,50 +64,50 @@ class SessionListItem extends React.Component {
 				</div>
 				<div className="card-footer">
 					{VideoVenue && (
-						<Link onClick={this.props.appViewChange} to={'/view/type/VideoVenue'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.filter} to={'/view/type/VideoVenue'} className="badge badge-pill badge-dark">
 							Recording ✓
 						</Link>
 					)}
 					&nbsp;
 					{VideoRover && (
-						<Link onClick={this.props.appViewChange} to={'/view/type/VideoRover'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.filter} to={'/view/type/VideoRover'} className="badge badge-pill badge-dark">
 							Send Rover ✓
 						</Link>
 					)}
 					&nbsp;
 					{LiveStream && (
-						<Link onClick={this.props.appViewChange} to={'/view/type/LiveStream'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.filter} to={'/view/type/LiveStream'} className="badge badge-pill badge-dark">
 							Livestream ✓
 						</Link>
 					)}
 					&nbsp;
 					{QuickClip && (
-						<Link onClick={this.props.appViewChange} to={'/view/type/QuickClip'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.filter} to={'/view/type/QuickClip'} className="badge badge-pill badge-dark">
 							QuickClips ✓
 						</Link>
 					)}
 					&nbsp;
 					{Photo && (
-						<Link onClick={this.props.appViewChange} to={'/view/type/Photo'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.filter} to={'/view/type/Photo'} className="badge badge-pill badge-dark">
 							Photo Priority ✓
 						</Link>
 					)}
 					&nbsp;
 					{Audio && (
-						<Link onClick={this.props.appViewChange} to={'/view/type/Audio'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.filter} to={'/view/type/Audio'} className="badge badge-pill badge-dark">
 							Audio Priority ✓
 						</Link>
 					)}
 					&nbsp;
 					{Transcript && (
-						<Link onClick={this.props.appViewChange} to={'/view/type/Transcript'} className="badge badge-pill badge-dark">
+						<Link onClick={this.props.filter} to={'/view/type/Transcript'} className="badge badge-pill badge-dark">
 							Transcript Priority ✓
 						</Link>
 					)}
 					&nbsp;
 					{Restriction && (
-						<Link onClick={this.props.appViewChange} to={'/view/type/Restriction'} className="badge badge-pill badge-danger">
-							Restriction X
+						<Link onClick={this.props.filter} to={'/view/type/Restriction'} className="badge badge-pill badge-danger">
+							Restriction ✕
 						</Link>
 					)}
 				</div>

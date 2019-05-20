@@ -2,14 +2,14 @@ import React, { Fragment } from 'react';
 import SessionListItem from './SessionListItem';
 import Header from './Header';
 import SideNav from './SideNav';
-import { dateClassHelper } from '../helpers.js';
 
 class App extends React.Component {
 	state = {
 		userName: this.props.userName,
-		filterMeta: {
-			dateFilter: false,
-			locationFilter: false
+		filterData: {
+			dateFilter: null,
+			locationFilter: null,
+			metaFilter: null
 		},
 		sessions: {}
 	};
@@ -21,16 +21,24 @@ class App extends React.Component {
 				Accept: 'application/json',
 				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			}
-		});
-		let status = await response.status;
-		if (status >= 200 && status < 300) {
-			return await response.json();
-		} else {
-			throw Error(await response.statusText);
-		}
-	};
+		})
+		.then(response => {
+			let status = response.status;
+			if (status >= 200 && status < 300) {
+				return response.json();
+			}
+		})
+		.catch( error => {
+			console.log(error)
+		})
+		return response
+	}
 
 	componentDidMount() {
+		this.populateApp();
+	}
+
+	populateApp = () => {
 		const type = this.props.match.params.type;
 		const param = this.props.match.params.param;
 		let url = '';
@@ -41,143 +49,158 @@ class App extends React.Component {
 		}
 		this.callApi(url).then(body => {
 			this.setState({
-				sessions: body
-			});
-		});
-	}
-
-	filterAll = (location, date) => {
-		const param = this.props.match.params.param;
-		const type = this.props.match.params.type;
-		let url = '/api/v1/';
-		if (type === 'video') {
-			url = url + 'video/';
-		}
-		if (!param) {
-			url = url + 'location/' + encodeURIComponent(location) + '/date/' + date;
-		} else if (param) {
-			url = url + 'type/' + param + '/location/' + encodeURIComponent(location) + '/date/' + date;
-		}
-		this.callApi(url).then(body => {
-			this.setState({
-				filterMeta: {
-					dateFilter: 'date: ' + date,
-					locationFilter: 'location: ' + location
+				filterData: {
+					dateFilter: type === 'date' ? param : null,
+					locationFilter: type === 'location' ? param : null,
+					metaFilter: type === 'type' ? param : null
 				},
 				sessions: body
 			});
 		});
 	};
 
+	resetOnHardLink = () => {
+		// window.reload(true);
+		this.setState(
+			{
+				filterData: {
+					dateFilter: null,
+					locationFilter: null,
+					metaFilter: null
+				}
+			},
+			() => {
+				this.populateApp();
+			}
+		);
+	};
+
 	filterDate = date => {
-		const type = this.props.match.params.type;
-		const param = this.props.match.params.param;
-		console.log(param);
-
-		if (!param && type === 'all') {
-			let url = '/api/v1/date/' + date;
-			//console.log(url);
-			this.callApi(url).then(body => {
-				this.setState({
-					filterMeta: {
-						dateFilter: 'date: ' + date
-					},
-					sessions: body
-				});
+		let url = '/api/v1/date/' + date;
+		this.callApi(url).then(body => {
+			this.setState({
+				sessions: body
 			});
-		}
-
-		if (!param && type === 'video') {
-			let url = '/api/v1/video/date/' + date;
-			//console.log(url);
-			this.callApi(url).then(body => {
-				this.setState({
-					filterMeta: {
-						dateFilter: 'date: ' + date
-					},
-					sessions: body
-				});
-			});
-		}
-		// Filter Location by Date/Date by Location uses the same API route
-		else if (type === 'location') {
-			let url = '/api/v1/location/' + encodeURIComponent(param) + '/date/' + date;
-			//console.log(url);
-			this.callApi(url).then(body => {
-				this.setState({
-					filterMeta: {
-						dateFilter: 'date: ' + date
-					},
-					sessions: body
-				});
-			});
-		} else {
-			let url = '/api/v1/type/' + param + '/date/' + date;
-			//console.log(url);
-			this.callApi(url).then(body => {
-				this.setState({
-					filterMeta: {
-						dateFilter: 'date: ' + date
-					},
-					sessions: body
-				});
-			});
-		}
+		});
 	};
 
 	filterLocation = location => {
-		let type = this.props.match.params.type;
-		let param = this.props.match.params.param;
-		if (type === 'all') {
-			let url = '/api/v1/location/' + encodeURIComponent(location);
-			this.callApi(url).then(body => {
-				this.setState({
-					filterMeta: {
-						locationFilter: 'location: ' + location
-					},
-					sessions: body
-				});
+		let url = '/api/v1/location/' + location;
+		this.callApi(url).then(body => {
+			this.setState({
+				filterData: {
+					locationFilter: location
+				},
+				sessions: body
 			});
-		}
+		});
+	};
 
-		if (type === 'video') {
-			let url = '/api/v1/video/location/' + encodeURIComponent(location);
-			this.callApi(url).then(body => {
-				this.setState({
-					filterMeta: {
-						dateFilter: 'location: ' + location
-					},
-					sessions: body
-				});
+	filterMeta = meta => {
+		let url = '/api/v1/type/' + meta;
+		this.callApi(url).then(body => {
+			this.setState({
+				filterData: {
+					metaFilter: meta
+				},
+				sessions: body
 			});
-		}
+		});
+	};
 
-		// Filter Location by Date/Date by Location uses the same API route
-		else if (type === 'date') {
-			let url = '/api/v1/location/' + encodeURIComponent(location) + '/date/' + param;
+	filterData = (date, location, meta) => {
+		if (!date && !location && !meta) {
+			this.props.history.push('/view/all');
+			this.populateApp();
+			return;
+		}
+		if (date && !location && !meta) {
+			this.filterDate(date);
+			return;
+		}
+		if (date && location && !meta) {
+			let url = '/api/v1/location/' + encodeURIComponent(location) + '/date/' + date;
 			this.callApi(url).then(body => {
 				this.setState({
-					filterMeta: {
-						locationFilter: 'location: ' + location
-					},
 					sessions: body
 				});
 			});
-		} else {
-			let url = '/api/v1/type/' + type + '/' + param + '/location/' + encodeURIComponent(location);
+			return;
+		}
+		if (date && !location && meta) {
+			let url = '/api/v1/type/' + meta + '/date/' + date;
 			this.callApi(url).then(body => {
 				this.setState({
-					filterMeta: {
-						locationFilter: 'location: ' + location
-					},
 					sessions: body
 				});
 			});
+			return;
+		}
+		if (!date && location && !meta) {
+			this.filterLocation(location);
+			return;
+		}
+		if (!date && location && meta) {
+			let url = '/api/v1/type/' + meta + '/location/' + encodeURIComponent(location);
+			this.callApi(url).then(body => {
+				this.setState({
+					sessions: body
+				});
+			});
+			return;
+		}
+		if (!date && !location && meta) {
+			this.filterMeta(meta);
+			return;
+		}
+		if (date && location && meta) {
+			let url = '/api/v1/type' + meta + '/location/' + encodeURIComponent(location) + '/date/' + date;
+			this.callApi(url).then(body => {
+				this.setState({
+					sessions: body
+				});
+			});
+			return;
 		}
 	};
 
+	setFilterQueue = (type, data) => {
+		const { locationFilter, dateFilter, metaFilter } = this.state.filterData;
+		this.setState(
+			{
+				filterData: {
+					dateFilter: type === 'date' ? data : dateFilter,
+					locationFilter: type === 'location' ? data : locationFilter,
+					metaFilter: type === 'meta' ? data : metaFilter
+				}
+			},
+			() => {
+				let { locationFilter, dateFilter, metaFilter } = this.state.filterData;
+				this.filterData(dateFilter, locationFilter, metaFilter);
+			}
+		);
+	};
+
+	unsetFilterQueue = e => {
+		const filterType = e.target.value;
+		const { locationFilter, dateFilter, metaFilter } = this.state.filterData;
+		this.setState(
+			{
+				filterData: {
+					dateFilter: filterType === 'date' ? null : dateFilter,
+					locationFilter: filterType === 'location' ? null : locationFilter,
+					metaFilter: filterType === 'meta' ? null : metaFilter
+				}
+			},
+			() => {
+				let { locationFilter, dateFilter, metaFilter } = this.state.filterData;
+				this.filterData(dateFilter, locationFilter, metaFilter);
+			}
+		);
+	};
+
 	renderResults() {
-		if (this.state.sessions.length == 0) {
+		if (!this.state.sessions) {
 			return (
 				<div className="card">
 					<div className="card-body">
@@ -188,7 +211,7 @@ class App extends React.Component {
 		} else {
 			return Object.keys(this.state.sessions).map(key => (
 				<Fragment key={key}>
-					<SessionListItem data={this.state.sessions[key]} />
+					<SessionListItem data={this.state.sessions[key]} filter={this.resetOnHardLink} />
 					<br />
 				</Fragment>
 			));
@@ -198,40 +221,70 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="container-fluid">
-				<Header status="active" />
+				<Header status="active" filter={this.resetOnHardLink}/>
 				<div className="row">
 					<div className="col-2">
 						<SideNav
-							filterDate={this.filterDate}
-							filterLocation={this.filterLocation}
-							filterType={this.filterType}
-							filterAll={this.filterAll}
+							setFilterQueue={this.setFilterQueue}
 							slug={this.props.match.params.type}
+							linkResets={this.resetOnHardLink}
 						/>
 					</div>
 					<div className="col-10">
-						<p className="h3">
-							{this.props.match.params.param && (
-								<span className={dateClassHelper(this.props.match.params.param)}>
-									{this.props.match.params.type + ': ' + this.props.match.params.param}
+						<p className="h4">
+							{this.state.filterData.dateFilter && (
+								<span>
+									<span className="badge badge-info">
+										{this.state.filterData.dateFilter}
+										&nbsp;
+										<button
+											type="button"
+											className="close"
+											aria-label="Close"
+											value="date"
+											onClick={this.unsetFilterQueue}
+										>
+											✖️
+										</button>
+									</span>{' '}
 								</span>
 							)}
-							&nbsp;
-							{this.state.filterMeta.dateFilter && (
-								<span className="badge badge-info">{this.state.filterMeta.dateFilter}</span>
+							{this.state.filterData.locationFilter && (
+								<span>
+									<span className="badge badge-info">
+										{this.state.filterData.locationFilter}
+										&nbsp;
+										<button
+											type="button"
+											className="close"
+											aria-label="Close"
+											value="location"
+											onClick={this.unsetFilterQueue}
+										>
+											✖️
+										</button>
+									</span>{' '}
+								</span>
 							)}
-							&nbsp;
-							{this.state.filterMeta.locationFilter && (
-								<span className="badge badge-info">{this.state.filterMeta.locationFilter}</span>
+							{this.state.filterData.metaFilter && (
+								<span>
+									<span className="badge badge-secondary">
+										{this.state.filterData.metaFilter}
+										&nbsp;
+										<button
+											type="button"
+											className="close"
+											aria-label="Close"
+											value="meta"
+											onClick={this.unsetFilterQueue}
+										>
+											✖️
+										</button>
+									</span>{' '}
+								</span>
 							)}
 						</p>
 						{this.renderResults()}
-						{/* {Object.keys(this.state.sessions).map(key => (
-							<Fragment key={key}>
-								<SessionListItem data={this.state.sessions[key]} />
-								<br />
-							</Fragment>
-						))} */}
 					</div>
 				</div>
 			</div>

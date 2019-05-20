@@ -17,9 +17,9 @@ class Router extends React.Component {
 					<Route exact path="/" component={SplashPage} />
 					<Route exact path="/login" component={Login} />
 					<Route exact path="/admin" component={Admin} />
-					<Route path="/view/:type/:param" component={Home} />
-					<Route path="/view/:type" component={Home} />
-					<Route path="/session/:sessionID" component={Session} />
+					<Route exact path="/view/:type/:param" component={Home} />
+					<Route exact path="/view/:type" component={Home} />
+					<Route exact path="/session/:sessionID" component={Session} />
 					<Route component={NotFound} /> {/* Catch all for 404s. No path */}
 				</Switch>
 			</BrowserRouter>
