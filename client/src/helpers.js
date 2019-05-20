@@ -103,3 +103,7 @@ export function seasonMarker(season) {
 		}
 	}
 }
+
+export function camelCaseBreaker(s) {
+	return s.split(/(?=[A-Z])/).join(' ');
+}
