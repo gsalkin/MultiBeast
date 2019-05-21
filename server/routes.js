@@ -29,7 +29,8 @@ router.post('/login', async (req, res, next) => {
 				});
 				res.json({
 					success: true,
-					token: token
+					token: token,
+					user: user.username
 				});
 			});
 		} catch (error) {

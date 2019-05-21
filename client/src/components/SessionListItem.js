@@ -29,11 +29,18 @@ class SessionListItem extends React.Component {
 		return (
 			<div className="card" id={'event-' + EventID} data-session-label={SessionName}>
 				<div className="card-header">
-					<Link to={'/view/season/' + encodeURIComponent(SessionFest)} className={'badge ' + seasonClass()}>
+					<Link
+						to={'/view/season/' + encodeURIComponent(SessionFest)}
+						className={'badge ' + seasonClass()}
+					>
 						{Helpers.seasonMarker(SessionFest)}
 					</Link>
 					&nbsp;
-					<Link onClick={this.props.filter} className={Helpers.dateClassHelper(SessionDate)} to={'/view/date/' + SessionDate}>
+					<Link
+						onClick={this.props.filter}
+						className={Helpers.dateClassHelper(SessionDate)}
+						to={'/view/date/' + SessionDate}
+					>
 						{SessionDate}
 					</Link>
 					&nbsp;
@@ -42,7 +49,12 @@ class SessionListItem extends React.Component {
 					</span>
 				</div>
 				<div className="card-body">
-					<Link to={'/session/' + EventID} className="text-dark">
+					<Link to={{ 
+						pathname: '/session/' + EventID, 
+						state: { user: this.props.userName }
+						}}
+						className="text-dark"
+					>
 						<div className="row">
 							<div className="col-10">
 								<h4>{SessionName}</h4>
@@ -56,7 +68,11 @@ class SessionListItem extends React.Component {
 							</div>
 						</div>
 					</Link>
-					<Link onClick={this.props.filter}  to={'/view/location/' + encodeURIComponent(SessionLocation)} className="mb-1">
+					<Link
+						onClick={this.props.filter}
+						to={'/view/location/' + encodeURIComponent(SessionLocation)}
+						className="mb-1"
+					>
 						{SessionLocation}
 					</Link>
 					<br />
@@ -64,49 +80,81 @@ class SessionListItem extends React.Component {
 				</div>
 				<div className="card-footer">
 					{VideoVenue && (
-						<Link onClick={this.props.filter} to={'/view/type/VideoVenue'} className="badge badge-pill badge-dark">
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/VideoVenue'}
+							className="badge badge-pill badge-dark"
+						>
 							Recording ✓
 						</Link>
 					)}
 					&nbsp;
 					{VideoRover && (
-						<Link onClick={this.props.filter} to={'/view/type/VideoRover'} className="badge badge-pill badge-dark">
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/VideoRover'}
+							className="badge badge-pill badge-dark"
+						>
 							Send Rover ✓
 						</Link>
 					)}
 					&nbsp;
 					{LiveStream && (
-						<Link onClick={this.props.filter} to={'/view/type/LiveStream'} className="badge badge-pill badge-dark">
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/LiveStream'}
+							className="badge badge-pill badge-dark"
+						>
 							Livestream ✓
 						</Link>
 					)}
 					&nbsp;
 					{QuickClip && (
-						<Link onClick={this.props.filter} to={'/view/type/QuickClip'} className="badge badge-pill badge-dark">
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/QuickClip'}
+							className="badge badge-pill badge-dark"
+						>
 							QuickClips ✓
 						</Link>
 					)}
 					&nbsp;
 					{Photo && (
-						<Link onClick={this.props.filter} to={'/view/type/Photo'} className="badge badge-pill badge-dark">
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/Photo'}
+							className="badge badge-pill badge-dark"
+						>
 							Photo Priority ✓
 						</Link>
 					)}
 					&nbsp;
 					{Audio && (
-						<Link onClick={this.props.filter} to={'/view/type/Audio'} className="badge badge-pill badge-dark">
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/Audio'}
+							className="badge badge-pill badge-dark"
+						>
 							Audio Priority ✓
 						</Link>
 					)}
 					&nbsp;
 					{Transcript && (
-						<Link onClick={this.props.filter} to={'/view/type/Transcript'} className="badge badge-pill badge-dark">
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/Transcript'}
+							className="badge badge-pill badge-dark"
+						>
 							Transcript Priority ✓
 						</Link>
 					)}
 					&nbsp;
 					{Restriction && (
-						<Link onClick={this.props.filter} to={'/view/type/Restriction'} className="badge badge-pill badge-danger">
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/Restriction'}
+							className="badge badge-pill badge-danger"
+						>
 							Restriction ✕
 						</Link>
 					)}

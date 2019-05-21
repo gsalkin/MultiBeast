@@ -2,17 +2,16 @@ import React from 'react';
 import Header from './Header';
 
 class Login extends React.Component {
-	constructor(props){
-		super(props)
+	constructor(props) {
+		super(props);
 		this.state = {
 			loggedIn: false,
-			redirectTo: '/view/all'
-		}
+			redirectTo: '/view/all',
+			userName: ''
+		};
 	}
 
-	componentDidMount() {
-		
-	}
+	componentDidMount() {}
 
 	usernameRef = React.createRef();
 	passwordRef = React.createRef();
@@ -21,14 +20,14 @@ class Login extends React.Component {
 		e.preventDefault();
 		let username = this.usernameRef.current.value;
 		let password = this.passwordRef.current.value;
-		this.loginUser(username,password);
-	}
+		this.loginUser(username, password);
+	};
 
 	loginUser = (username, password) => {
 		fetch('/login', {
 			method: 'POST',
 			headers: {
-				'Accept': 'application/json',
+				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
@@ -36,24 +35,30 @@ class Login extends React.Component {
 				password: password
 			})
 		})
-		.then(res => {
-			if (res.status === 200) {
-				return res.json()
-			} else {
-				alert('Login Error. Either incorrect Username or Password');
-			}
-		})
-		.then(json => {
-			sessionStorage.setItem('jwt_token', json.token);
-			this.setState({
-				loggedIn: true
+			.then(res => {
+				if (res.status === 200) {
+					return res.json();
+				} else {
+					alert('Login Error. Either incorrect Username or Password');
+				}
 			})
-			this.props.history.push(this.state.redirectTo)
-		})
-		.catch(error => {
-			console.log('login error: ' + error);
-		})
-	}
+			.then(json => {
+				sessionStorage.setItem('jwt_token', json.token);
+				this.setState({
+					loggedIn: true,
+					userName: json.user
+				});
+				this.props.history.push({
+					pathname: this.state.redirectTo,
+					state: {
+						userName: this.state.userName
+					}
+				});
+			})
+			.catch(error => {
+				console.log('login error: ' + error);
+			});
+	};
 
 	render() {
 		return (
@@ -65,7 +70,8 @@ class Login extends React.Component {
 							<div className="jumbotron">
 								<h1 className="display-4">MultiBeast</h1>
 								<p className="lead">
-									MultiBeast organizes and filters Aspen Ideas Festival sessions based on the Aspen Institute's coverage strategy.
+									MultiBeast organizes and filters Aspen Ideas Festival sessions based on the Aspen
+									Institute's coverage strategy.
 								</p>
 								<hr className="my-4" />
 								<form onSubmit={this.appLogin}>

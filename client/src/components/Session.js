@@ -9,6 +9,7 @@ class Session extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			user: this.props.history.location.state.user,
 			ArtsVisionFork: {},
 			AspenChecklistFork: {},
 			AspenCoverageFork: {}
@@ -108,11 +109,13 @@ class Session extends React.Component {
 							<SessionCoverage
 								details={this.state.AspenCoverageFork}
 								updateSession={this.updateSession}
+								user={this.state.user}
 							/>
 							<hr />
 							<SessionWorkflow
 								details={this.state.AspenChecklistFork}
 								updateSession={this.updateSession}
+								user={this.state.user}
 							/>
 						</div>
 					</div>

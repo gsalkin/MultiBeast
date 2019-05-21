@@ -27,7 +27,7 @@ class SessionCoverage extends React.Component {
 				notes: this.coverageNotesRef.current.value.length > 1 ? 
 					this.props.details.AspenNotes +
 					'\n\n' +
-					format(Date.now(), 'YYYY-MM-DD@h:mmA') +
+					this.props.user + ' on ' + format(Date.now(), 'YYYY-MM-DD@h:mmA') +
 					': ' +
 					this.coverageNotesRef.current.value : this.props.details.AspenNotes
 			}
@@ -179,7 +179,7 @@ class SessionCoverage extends React.Component {
 				<div className="form-row">
 					<div className="form-group col-8 offset-2">
 						<label htmlFor="inputCoverageNotes" className="col-form-label col-form-label-lg">
-							Notes <small>(Please copy and paste the above if appending new information)</small>:
+							Notes <small>(Please note if changing the above information)</small>:
 						</label>
 						<textarea
 							className="form-control"

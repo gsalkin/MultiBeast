@@ -5,7 +5,6 @@ import SideNav from './SideNav';
 
 class App extends React.Component {
 	state = {
-		userName: this.props.userName,
 		filterData: {
 			dateFilter: null,
 			locationFilter: null,
@@ -211,7 +210,7 @@ class App extends React.Component {
 		} else {
 			return Object.keys(this.state.sessions).map(key => (
 				<Fragment key={key}>
-					<SessionListItem data={this.state.sessions[key]} filter={this.resetOnHardLink} />
+					<SessionListItem data={this.state.sessions[key]} filter={this.resetOnHardLink} userName={this.props.location.state.userName}/>
 					<br />
 				</Fragment>
 			));
