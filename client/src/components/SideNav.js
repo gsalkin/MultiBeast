@@ -98,7 +98,7 @@ class SideNav extends React.Component {
 						</select>
 					</div>
 				</form>
-				<form action="">
+				<form action="" id="locationForm">
 					<div className="input-group mb-3">
 						<div className="input-group-prepend">
 							<label className="input-group-text" htmlFor="inputLocation">
@@ -115,7 +115,7 @@ class SideNav extends React.Component {
 						</select>
 					</div>
 				</form>
-				<form action="">
+				<form action="" id="metaForm">
 					<div className="input-group mb-3">
 						<div className="input-group-prepend">
 							<label className="input-group-text" htmlFor="inputMeta">
