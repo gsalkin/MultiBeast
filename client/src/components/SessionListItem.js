@@ -18,7 +18,7 @@ class SessionListItem extends React.Component {
 			AspenChecklistFork: { Status },
 			AspenCoverageFork: { VideoVenue, VideoRover, LiveStream, QuickClip, Audio, Photo, Transcript, Restriction }
 		} = this.props.data;
-
+		const userName = this.props.userName ? this.props.userName : ''
 		const seasonClass = function() {
 			if (Helpers.seasonMarker(SessionFest) === 'Aspen Ideas Health') {
 				return 'purple__aspen';
@@ -51,7 +51,7 @@ class SessionListItem extends React.Component {
 				<div className="card-body">
 					<Link to={{ 
 						pathname: '/session/' + EventID, 
-						state: { user: this.props.userName }
+						state: { user: userName }
 						}}
 						className="text-dark"
 					>

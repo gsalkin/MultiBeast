@@ -44,6 +44,7 @@ class Login extends React.Component {
 			})
 			.then(json => {
 				sessionStorage.setItem('jwt_token', json.token);
+				sessionStorage.setItem('user_name', json.user);
 				this.setState({
 					loggedIn: true,
 					userName: json.user

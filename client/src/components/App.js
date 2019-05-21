@@ -199,6 +199,7 @@ class App extends React.Component {
 	};
 
 	renderResults() {
+		const userName = sessionStorage.getItem('user_name');
 		if (!this.state.sessions) {
 			return (
 				<div className="card">
@@ -210,7 +211,7 @@ class App extends React.Component {
 		} else {
 			return Object.keys(this.state.sessions).map(key => (
 				<Fragment key={key}>
-					<SessionListItem data={this.state.sessions[key]} filter={this.resetOnHardLink} userName={this.props.location.state.userName}/>
+					<SessionListItem data={this.state.sessions[key]} filter={this.resetOnHardLink} userName={userName}/>
 					<br />
 				</Fragment>
 			));
