@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - "10"
+install:
+  - npm install
+  - cd client && npm install
+  - cd ..
+script: 
+  - npm run production
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: $ACCESSKEYID
+  secret_access_key:
+    secure: $SECRETACCESSKEY
+  region: us-east-1
+  app: MultiBeast
+  env: production
+  on:
+    repo: aspen-institute/MultiBeast

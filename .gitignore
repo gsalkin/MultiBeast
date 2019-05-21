@@ -39,3 +39,8 @@ yarn-debug.log*
 yarn-error.log*
 
 server/config/postBody\.json
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
