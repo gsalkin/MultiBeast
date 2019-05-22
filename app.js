@@ -54,7 +54,9 @@ mongoose
 	.then(() => console.log('MongoDB Connected!'))
 	.then(() => apiEngine.populateDB())
 	.catch(err => console.log(err));
-// setInterval( apiEngine.populateDB(), 60000 );
+
+// Runs API scrape and compare to DB every 10 minutes	
+setInterval( apiEngine.populateDB(), 600000 );
 
 /* Port */
 app.listen(port, () => {
