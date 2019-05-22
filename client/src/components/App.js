@@ -182,6 +182,8 @@ class App extends React.Component {
 
 	unsetFilterQueue = e => {
 		const filterType = e.target.value;
+		const form = document.getElementById(filterType + 'Form');
+		form.reset();
 		const { locationFilter, dateFilter, metaFilter } = this.state.filterData;
 		this.setState(
 			{
