@@ -15,7 +15,7 @@ deploy:
     secure: $SECRETACCESSKEY
   region: us-east-1
   app: MultiBeast
-  env: production
+  env: multibeast
   bucket_name: elasticbeanstalk-us-east-1-583653169187
   on:
     repo: aspen-institute/MultiBeast
