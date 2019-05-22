@@ -4,6 +4,10 @@ node_js:
 cache: npm
 after_install: 
   - cd client && npm install
+  - echo "react dependencies installed"
+  - npm run build
+  - echo "react build complete"
+  - cd ..
 # deploy:
 #   provider: elasticbeanstalk
 #   access_key_id: $ACCESSKEYID
