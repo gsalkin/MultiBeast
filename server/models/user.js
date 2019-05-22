@@ -1,5 +1,5 @@
 const Mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const Schema = Mongoose.Schema;
 const saltRounds = 10;
 

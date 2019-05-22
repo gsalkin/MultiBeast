@@ -5,7 +5,7 @@
 	"main": "app.js",
 	"dependencies": {
 		"axios": "^0.18.0",
-		"bcrypt": "^3.0.3",
+		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.18.3",
 		"compression": "^1.7.3",
 		"concurrently": "^4.1.0",
