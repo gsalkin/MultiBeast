@@ -8,14 +8,14 @@ after_install:
   - npm run build
   - echo "react build complete"
   - cd ..
-# deploy:
-#   provider: elasticbeanstalk
-#   access_key_id: $ACCESSKEYID
-#   secret_access_key:
-#     secure: $SECRETACCESSKEY
-#   region: us-east-1
-#   app: MultiBeast
-#   env: production
-#   bucket_name: elasticbeanstalk-us-east-1-583653169187
-#   on:
-#     repo: aspen-institute/MultiBeast
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: $ACCESSKEYID
+  secret_access_key:
+    secure: $SECRETACCESSKEY
+  region: us-east-1
+  app: MultiBeast
+  env: production
+  bucket_name: elasticbeanstalk-us-east-1-583653169187
+  on:
+    repo: aspen-institute/MultiBeast
