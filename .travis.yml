@@ -2,12 +2,7 @@ language: node_js
 node_js:
   - "10"
 cache: npm
-after_install: 
-  - cd client && npm install
-  - echo "react dependencies installed"
-  - npm run build
-  - echo "react build complete"
-  - cd ..
+script: cd client && npm install && cd ..
 deploy:
   provider: elasticbeanstalk
   access_key_id: $ACCESSKEYID
@@ -20,5 +15,5 @@ deploy:
   bucket_name: elasticbeanstalk-us-east-1-583653169187
   on:
     repo: aspen-institute/MultiBeast
-# after-deploy:
-#   - cd client && npm run build
+after-deploy:
+  - cd client && npm run build
