@@ -13,9 +13,12 @@ deploy:
   access_key_id: $ACCESSKEYID
   secret_access_key:
     secure: $SECRETACCESSKEY
+  skip-cleanup: true
   region: us-east-1
   app: MultiBeast
   env: multibeast
   bucket_name: elasticbeanstalk-us-east-1-583653169187
   on:
     repo: aspen-institute/MultiBeast
+# after-deploy:
+#   - cd client && npm run build
