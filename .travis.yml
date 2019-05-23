@@ -2,30 +2,30 @@ language: node_js
 node_js:
   - "10"
 cache: npm
-script: cd client && npm install && cd ..
+script: cd client && npm install && npm run build
 deploy:
-  provider: elasticbeanstalk
-  access_key_id: $ACCESSKEYID
-  secret_access_key:
-    secure: $SECRETACCESSKEY
-  skip-cleanup: true
-  region: us-east-1
-  app: MultiBeast
-  env: multibeast
-  bucket_name: elasticbeanstalk-us-east-1-583653169187
-  on:
-    branch:
-      - master
-      - production
-    repo: aspen-institute/MultiBeast
-after-deploy:
-  - cd client && npm run build
-deploy:
-  provider: heroku
-  api_key:
-    secure: $HEROKU_API_KEY
-  app: multibeast
-  on:
-    branch: 
-      - heroku
-      - staging
+  - edge: true
+    provider: elasticbeanstalk
+    access_key_id: $ACCESSKEYID
+    secret_access_key:
+      secure: $SECRETACCESSKEY
+    skip-cleanup: true
+    region: us-east-1
+    app: MultiBeast
+    env: multibeast
+    bucket_name: elasticbeanstalk-us-east-1-583653169187
+    on:
+      branch:
+        - master
+        - production
+      repo: aspen-institute/MultiBeast
+  - edge: 
+    provider: heroku
+    api_key:
+      secure: $HEROKU_API_KEY
+    app: multibeast
+    skip-cleanup: true
+    on:
+      branch: 
+        - heroku
+        - staging
