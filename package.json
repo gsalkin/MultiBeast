@@ -22,7 +22,8 @@
 		"nodemon": "^1.18.10"
 	},
 	"scripts": {
-		"start": "concurrently \"node app.js\" \"cd client && npm run build\"",
+		"start": "concurrently \"node app.js\" \"cd client && npm install && npm run build\"",
+		"heroku-postbuild": "cd client && npm install && npm run build",
 		"development": "concurrently \"nodemon app.js\" \"cd client && npm start\"",
 		"production": "concurrently \"node app.js\" \"cd client && npm run build\""
 	},
