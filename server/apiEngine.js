@@ -1,6 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
-const postBody = JSON.parse(process.env.POST_BODY);
+const postBody = require('../postBody.json')
 const Session = require('./models/session.js');
 const Utils = require('./utils.js');
 

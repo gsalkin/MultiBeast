@@ -1,14 +1,12 @@
 /* NPM Packages */
 require('dotenv').config();
 const express = require('express');
-// const session = require('express-session');
 const passport = require('passport');
 const compression = require('compression');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-const port = process.env.PORT || 5000;
-// const MongoDBStore = require('connect-mongodb-session')(session);
+const port = process.env.PORT || 8081;
 require('./server/auth');
 
 /* Custom libraries */
@@ -32,21 +30,6 @@ if (process.env.NODE_ENV === 'production') {
 	});
 }
 
-// app.use(passport.session());
-// app.use(
-// 	session({
-// 		secret: process.env.PASSPORT_SECRET,
-// 		resave: false,
-// 		saveUninitialized: false,
-// 		store: new MongoDBStore({
-// 			uri: process.env.MONGO_URI,
-// 			databaseName: 'test',
-// 			collection: 'usersessions'
-// 		}, error => {
-// 			console.log(error);
-// 		})
-// 	})
-// );
 mongoose.set('useFindAndModify', false);
 mongoose.set('debug', true);
 mongoose
@@ -55,10 +38,14 @@ mongoose
 	.then(() => apiEngine.populateDB())
 	.catch(err => console.log(err));
 
-// Runs API scrape and compare to DB every 10 minutes	
-setInterval( apiEngine.populateDB(), 600000 );
+// Runs API scrape and compare to DB every 10 minutes
+setInterval(() => {
+	apiEngine.populateDB();
+}, 600000);
 
 /* Port */
 app.listen(port, () => {
-	console.log('Let\'s get this show on the road! Listening in on port ' + port + ' and running in ' + process.env.NODE_ENV);
+	console.log(
+		'Let\'s get this show on the road! Listening in on port ' + port + ' and running in ' + process.env.NODE_ENV
+	);
 });

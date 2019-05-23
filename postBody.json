@@ -1,0 +1,58 @@
+{
+    "xml": false,
+    "flatten": false,
+    "rowsCount": 500,
+    "entities": [
+        {
+            "entity": "AspenInstEvent",
+            "filters": [
+                {
+                    "field": "Date",
+                    "operator": "GreaterOrEqual",
+                    "value": "2018-06-21"
+                },
+                {
+                    "field": "Date",
+                    "operator": "LessOrEqual",
+                    "value": "2018-06-30"
+                },
+                {
+                    "field": "Event Id",
+                    "operator": "NotEqual",
+                    "value": null
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Sunrise Session"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Workshift"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Wine & Sign"
+                },
+                {
+                    "field": "StatusName",
+                    "operator": "Contains",
+                    "value": "Published"
+                }
+            ],
+            "orderby": [
+                {
+                    "field": "Event Id",
+                    "descending": "false"
+                }
+            ],
+            "include": [
+                {
+                    "entity": "AspenInstEvent.Participant"
+                }
+            ]
+        }
+    ]
+}
