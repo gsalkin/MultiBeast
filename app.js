@@ -25,13 +25,11 @@ app.use(router);
 if (process.env.NODE_ENV === 'production') {
 	app.use(express.static(path.join(__dirname, '/client/build')));
 	app.get('/*', (req, res) => {
-		console.log('Hi!');
 		res.sendFile(path.join(__dirname + '/client/build', 'index.html'));
 	});
 }
 
 mongoose.set('useFindAndModify', false);
-mongoose.set('debug', true);
 mongoose
 	.connect(process.env.MONGO_URI, { useNewUrlParser: true })
 	.then(() => console.log('MongoDB Connected!'))
