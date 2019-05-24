@@ -23,7 +23,9 @@
 	},
 	"scripts": {
 		"start": "node app.js",
-		"development": "concurrently \"nodemon app.js\" \"cd client && npm start\""
+		"heroku-postbuild": "cd client && npm install && npm run build",
+		"development": "concurrently \"nodemon app.js\" \"cd client && npm start\"",
+		"poststart": "cd client && npm install && npm run build"
 	},
 	"keywords": [],
 	"author": "Gabe Salkin",
