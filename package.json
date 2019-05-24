@@ -23,7 +23,6 @@
 	},
 	"scripts": {
 		"start": "node app.js",
-		"heroku-postbuild": "cd client && npm install && npm run build",
 		"development": "concurrently \"nodemon app.js\" \"cd client && npm start\"",
 		"poststart": "cd client && npm install && npm run build"
 	},
