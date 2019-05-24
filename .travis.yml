@@ -9,7 +9,7 @@ deploy:
     access_key_id: $ACCESSKEYID
     secret_access_key:
       secure: $SECRETACCESSKEY
-    skip-cleanup: true
+    skip_cleanup: true
     region: us-east-1
     app: MultiBeast
     env: multibeast
@@ -24,7 +24,7 @@ deploy:
     api_key:
       secure: $HEROKU_API_KEY
     app: multibeast
-    skip-cleanup: true
+    skip_cleanup: true
     on:
       branch: 
         - heroku
