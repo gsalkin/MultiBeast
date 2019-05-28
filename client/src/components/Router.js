@@ -2,7 +2,7 @@
 import React from 'react'; //If you're using JSX, you need to import React.
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './App';
-import Session from './Session';
+//import Session from './Session';
 import NotFound from './NotFound';
 import Login from './Login';
 import Admin from './Admin';
@@ -19,7 +19,7 @@ class Router extends React.Component {
 					<Route exact path="/admin" component={Admin} />
 					<Route exact path="/view/:type/:param" component={Home} />
 					<Route exact path="/view/:type" component={Home} />
-					<Route exact path="/session/:sessionID" component={Session} />
+					{/* <Route exact path="/session/:sessionID" component={Session} /> */}
 					<Route component={NotFound} /> {/* Catch all for 404s. No path */}
 				</Switch>
 			</BrowserRouter>

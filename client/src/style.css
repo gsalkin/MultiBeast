@@ -1,4 +1,12 @@
 /* Assistive Styles */
+body {
+    padding-top: 75px;
+}
+
+
+.half-page-fixed {
+    left: 50%;
+}
 
 /* Ideas Fest Color Palette */
 

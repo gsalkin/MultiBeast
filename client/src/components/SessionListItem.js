@@ -18,7 +18,7 @@ class SessionListItem extends React.Component {
 			AspenChecklistFork: { Status },
 			AspenCoverageFork: { VideoVenue, VideoRover, LiveStream, QuickClip, Audio, Photo, Transcript, Restriction }
 		} = this.props.data;
-		const userName = this.props.userName ? this.props.userName : ''
+		// const userName = this.props.userName ? this.props.userName : ''
 		const seasonClass = function() {
 			if (Helpers.seasonMarker(SessionFest) === 'Aspen Ideas Health') {
 				return 'purple__aspen';
@@ -49,25 +49,18 @@ class SessionListItem extends React.Component {
 					</span>
 				</div>
 				<div className="card-body">
-					<Link to={{ 
-						pathname: '/session/' + EventID, 
-						state: { user: userName }
-						}}
-						className="text-dark"
-					>
-						<div className="row">
-							<div className="col-10">
-								<h4>{SessionName}</h4>
-							</div>
-							<div className="col-2">
-								<h5 className="text-right">
-									<strong className="align-middle">#{EventID}</strong>
-									&nbsp;
-									<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
-								</h5>
-							</div>
+					<div className="row">
+						<div className="col-10">
+							<a onClick={() => this.props.setSessionID(EventID)} className="text-dark stretched-link" href={'#' + EventID}><h4>{SessionName}</h4></a>
 						</div>
-					</Link>
+						<div className="col-2">
+							<h5 className="text-right">
+								<strong className="align-middle">#{EventID}</strong>
+								&nbsp;
+								<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
+							</h5>
+						</div>
+					</div>
 					<Link
 						onClick={this.props.filter}
 						to={'/view/location/' + encodeURIComponent(SessionLocation)}

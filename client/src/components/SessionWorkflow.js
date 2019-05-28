@@ -8,11 +8,10 @@ class SessionWorkflow extends React.Component {
 			status: '',
 			qc: []
 		};
-		
 	}
-	componentWillReceiveProps(props) { // Technically we shouldn't use componentWillRecieveProps because it will be deprecated in React 17, but 🤷🏻‍♂️
+	componentDidMount() {
 		this.setState({
-		qc: props.details.QuickClip.length !== 0 ? props.details.QuickClip : []
+		qc: !this.props.details.QuickClip ? [] : this.props.details.QuickClip
 		})
 		
 	}
@@ -270,9 +269,9 @@ class SessionWorkflow extends React.Component {
 					Save Coverage
 				</button>{' '}
 				&nbsp;
-				<button type="submit" form="workflowForm" className="btn btn-dark">
+				{/* <button type="submit" form="workflowForm" className="btn btn-dark">
 					Save and Exit
-				</button>
+				</button> */}
 			</div>
 		);
 	}

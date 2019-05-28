@@ -3,6 +3,7 @@ import { HashLink as Link } from 'react-router-hash-link';
 import Header from './Header';
 import SessionCoverage from './SessionCoverage';
 import SessionWorkflow from './SessionWorkflow';
+import Session from './SessionSPA';
 import { convertTimes, stringifySpeakers, dateClassHelper } from '../helpers';
 
 class Session extends React.Component {

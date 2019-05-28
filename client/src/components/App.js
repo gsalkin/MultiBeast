@@ -2,9 +2,11 @@ import React, { Fragment } from 'react';
 import SessionListItem from './SessionListItem';
 import Header from './Header';
 import SideNav from './SideNav';
+import SessionSPA from './SessionSPA';
 
 class App extends React.Component {
 	state = {
+		selectedEventID: null,
 		filterData: {
 			dateFilter: null,
 			locationFilter: null,
@@ -21,17 +23,17 @@ class App extends React.Component {
 				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			}
 		})
-		.then(response => {
-			let status = response.status;
-			if (status >= 200 && status < 300) {
-				return response.json();
-			}
-		})
-		.catch( error => {
-			console.log(error)
-		})
-		return response
-	}
+			.then(response => {
+				let status = response.status;
+				if (status >= 200 && status < 300) {
+					return response.json();
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
+		return response;
+	};
 
 	componentDidMount() {
 		this.populateApp();
@@ -58,8 +60,13 @@ class App extends React.Component {
 		});
 	};
 
+	setSessionID = id => {
+		this.setState({
+			selectedEventID: id
+		});
+	};
+
 	resetOnHardLink = () => {
-		// window.reload(true);
 		this.setState(
 			{
 				filterData: {
@@ -213,83 +220,95 @@ class App extends React.Component {
 		} else {
 			return Object.keys(this.state.sessions).map(key => (
 				<Fragment key={key}>
-					<SessionListItem data={this.state.sessions[key]} filter={this.resetOnHardLink} userName={userName}/>
+					<SessionListItem
+						data={this.state.sessions[key]}
+						filter={this.resetOnHardLink}
+						userName={userName}
+						setSessionID={this.setSessionID}
+					/>
 					<br />
 				</Fragment>
 			));
 		}
 	}
 
+	renderSession = id => {
+		let data = this.state.sessions.filter(session => session.ArtsVisionFork.EventID === id);
+		return <SessionSPA id={this.state.selectedEventID} data={data[0]} />;
+	};
+
 	render() {
 		return (
-			<div className="container-fluid">
-				<Header status="active" filter={this.resetOnHardLink}/>
-				<div className="row">
-					<div className="col-2">
-						<SideNav
-							setFilterQueue={this.setFilterQueue}
-							slug={this.props.match.params.type}
-							linkResets={this.resetOnHardLink}
-						/>
-					</div>
-					<div className="col-10">
-						<p className="h4">
-							{this.state.filterData.dateFilter && (
-								<span>
-									<span className="badge badge-info">
-										{this.state.filterData.dateFilter}
-										&nbsp;
-										<button
-											type="button"
-											className="close"
-											aria-label="Close"
-											value="date"
-											onClick={this.unsetFilterQueue}
-										>
-											✖️
-										</button>
-									</span>{' '}
-								</span>
-							)}
-							{this.state.filterData.locationFilter && (
-								<span>
-									<span className="badge badge-info">
-										{this.state.filterData.locationFilter}
-										&nbsp;
-										<button
-											type="button"
-											className="close"
-											aria-label="Close"
-											value="location"
-											onClick={this.unsetFilterQueue}
-										>
-											✖️
-										</button>
-									</span>{' '}
-								</span>
-							)}
-							{this.state.filterData.metaFilter && (
-								<span>
-									<span className="badge badge-secondary">
-										{this.state.filterData.metaFilter}
-										&nbsp;
-										<button
-											type="button"
-											className="close"
-											aria-label="Close"
-											value="meta"
-											onClick={this.unsetFilterQueue}
-										>
-											✖️
-										</button>
-									</span>{' '}
-								</span>
-							)}
-						</p>
-						{this.renderResults()}
+			<>
+				<Header
+					status="active"
+					filter={this.resetOnHardLink}
+					setFilterQueue={this.setFilterQueue}
+					slug={this.props.match.params.type}
+					linkResets={this.resetOnHardLink}
+				/>
+				<div className="container-fluid">
+					<div className="row">
+						<div className="col-6">
+							<p className="h4">
+								{this.state.filterData.dateFilter && (
+									<span>
+										<span className="badge badge-info">
+											{this.state.filterData.dateFilter}
+											&nbsp;
+											<button
+												type="button"
+												className="close"
+												aria-label="Close"
+												value="date"
+												onClick={this.unsetFilterQueue}
+											>
+												✖️
+											</button>
+										</span>{' '}
+									</span>
+								)}
+								{this.state.filterData.locationFilter && (
+									<span>
+										<span className="badge badge-info">
+											{this.state.filterData.locationFilter}
+											&nbsp;
+											<button
+												type="button"
+												className="close"
+												aria-label="Close"
+												value="location"
+												onClick={this.unsetFilterQueue}
+											>
+												✖️
+											</button>
+										</span>{' '}
+									</span>
+								)}
+								{this.state.filterData.metaFilter && (
+									<span>
+										<span className="badge badge-secondary">
+											{this.state.filterData.metaFilter}
+											&nbsp;
+											<button
+												type="button"
+												className="close"
+												aria-label="Close"
+												value="meta"
+												onClick={this.unsetFilterQueue}
+											>
+												✖️
+											</button>
+										</span>{' '}
+									</span>
+								)}
+							</p>
+							{this.renderResults()}
+						</div>
+						{this.state.selectedEventID && this.renderSession(this.state.selectedEventID)}
 					</div>
 				</div>
-			</div>
+			</>
 		);
 	}
 }
