@@ -22,8 +22,7 @@ class Session extends React.Component {
 	}
 
 	setSessionState = ID => {
-		this.callApi('/api/v1/session/' + ID)
-		.then(json => {
+		this.callApi('/api/v1/session/' + ID).then(json => {
 			this.setState({
 				ArtsVisionFork: json[0].ArtsVisionFork,
 				AspenChecklistFork: json[0].AspenChecklistFork,
@@ -34,10 +33,10 @@ class Session extends React.Component {
 
 	callApi = async url => {
 		let response = await fetch(url, {
-				headers: {
-					'Content-Type': 'application/json',
-					'Authorization': 'Bearer ' +  sessionStorage.getItem('jwt_token')
-				}
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
+			}
 		});
 		let status = await response.status;
 		if (status >= 200 && status < 300) {
@@ -47,25 +46,25 @@ class Session extends React.Component {
 		}
 	};
 
-	updateSession = (data) => {
+	updateSession = data => {
 		fetch('/api/v1/update/session/' + this.state.ArtsVisionFork.EventID, {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
-				'Authorization': 'Bearer ' + sessionStorage.getItem('jwt_token')
+				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			},
 			body: JSON.stringify(data)
 		})
-		.then(response => {
-			return response.json();
-		})
-		.then( json => {
-			this.setState({
-				ArtsVisionFork: json[0].ArtsVisionFork,
-				AspenChecklistFork: json[0].AspenChecklistFork,
-				AspenCoverageFork: json[0].AspenCoverageFork
+			.then(response => {
+				return response.json();
 			})
-		})
+			.then(json => {
+				this.setState({
+					ArtsVisionFork: json[0].ArtsVisionFork,
+					AspenChecklistFork: json[0].AspenChecklistFork,
+					AspenCoverageFork: json[0].AspenCoverageFork
+				});
+			});
 	};
 
 	render() {
@@ -83,41 +82,58 @@ class Session extends React.Component {
 			<div className="container-fluid">
 				<Header />
 				<div className="row">
-					<div className="col-3 offset-1">
-					<Link className="btn btn-outline-dark" to={'/view/all/#event-' + EventID}>← Back</Link>
+					<div className="col-3 offset-0">
+						<Link className="btn btn-outline-dark" to={'/view/all/#event-' + EventID}>
+							← Back
+						</Link>
 					</div>
 				</div>
 				<div className="container">
-					<div className="row">
-						<div className="col-12">
-							<h2>
-							<span className="badge badge-success">{EventID}</span> {SessionName}
-							</h2>
-							<h4>
-							<span className={dateClassHelper(SessionDate)}>{SessionDate}</span> <span className="badge badge-info">{convertTimes(StartTime)} - {convertTimes(EndTime)}</span> <span className="badge badge-warning">{SessionLocation}</span>
-							</h4>
-							{SessionSpeakers && (
-								<Fragment>
-									<p className="lead">Speakers: {stringifySpeakers(SessionSpeakers)}</p>
-								</Fragment>
-							)}
-							<div className="bg-light">
-								<p className="p-3 border">{ArtsVisionNotes}</p>
-							</div>
-							<hr />
-							<h4>Coverage</h4>
-							<SessionCoverage
-								details={this.state.AspenCoverageFork}
-								updateSession={this.updateSession}
-								user={this.state.user}
-							/>
-							<hr />
-							<SessionWorkflow
-								details={this.state.AspenChecklistFork}
-								updateSession={this.updateSession}
-								user={this.state.user}
-							/>
-						</div>
+					<h2>
+						<span className="badge badge-success">{EventID}</span> {SessionName}
+					</h2>
+					<h4>
+						<span className={dateClassHelper(SessionDate)}>{SessionDate}</span>{' '}
+						<span className="badge badge-info">
+							{convertTimes(StartTime)} - {convertTimes(EndTime)}
+						</span>{' '}
+						<span className="badge badge-warning">{SessionLocation}</span>
+					</h4>
+					{SessionSpeakers && (
+						<Fragment>
+							<p className="lead">Speakers: {stringifySpeakers(SessionSpeakers)}</p>
+						</Fragment>
+					)}
+					<div className="bg-light">
+						<p className="p-3 border">{ArtsVisionNotes}</p>
+					</div>
+					<hr />
+					<div className="card">
+						<h5 className="card-header text-primary">
+							<a data-toggle="collapse" href="#coveragePlanForm" aria-expanded="true" className="d-block">
+								Coverage &nbsp;
+								<i className="fa fa-chevron-down pull-right" />
+							</a>
+						</h5>
+						<SessionCoverage
+							details={this.state.AspenCoverageFork}
+							updateSession={this.updateSession}
+							user={this.state.user}
+						/>
+					</div>
+					<hr />
+					<div className="card">
+						<h5 className="card-header text-primary">
+							<a data-toggle="collapse" href="#workflowContainer" aria-expanded="true" className="d-block">
+								Workflow &nbsp;
+								<i className="fa fa-chevron-down pull-right" />
+							</a>
+						</h5>
+						<SessionWorkflow
+							details={this.state.AspenChecklistFork}
+							updateSession={this.updateSession}
+							user={this.state.user}
+						/>
 					</div>
 				</div>
 			</div>
