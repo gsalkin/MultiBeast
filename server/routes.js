@@ -139,7 +139,7 @@ router.get('/api/v1/type/:meta', userAuthenticated, async (req, res) => {
 // Video is a special route that includes all video & rover sessions
 router.get('/api/v1/video', userAuthenticated, async (req, res) => {
 	await Session.find(
-		{ $or: [{ 'AspenCoverageFork.VideoVenue': true }, { 'AspenCoverageFork.VideoRover': true }] },
+		{ $or: [{ 'AspenCoverageFork.Video': true }, { 'AspenCoverageFork.Rover': true }] },
 		(err, result) => {
 			res.json(result);
 		}
@@ -154,7 +154,7 @@ router.get('/api/v1/video/location/:location', userAuthenticated, async (req, re
 	await Session.find(
 		{
 			$and: [
-				{ $or: [{ 'AspenCoverageFork.VideoVenue': true }, { 'AspenCoverageFork.VideoRover': true }] },
+				{ $or: [{ 'AspenCoverageFork.Video': true }, { 'AspenCoverageFork.Rover': true }] },
 				{ 'ArtsVisionFork.SessionLocation': location }
 			]
 		},
@@ -172,7 +172,7 @@ router.get('/api/v1/video/date/:date', userAuthenticated, async (req, res) => {
 	await Session.find(
 		{
 			$and: [
-				{ $or: [{ 'AspenCoverageFork.VideoVenue': true }, { 'AspenCoverageFork.VideoRover': true }] },
+				{ $or: [{ 'AspenCoverageFork.Video': true }, { 'AspenCoverageFork.Rover': true }] },
 				{ 'ArtsVisionFork.SessionDate': date }
 			]
 		},
@@ -190,7 +190,7 @@ router.get('/api/v1/video/location/:location/date/:date', userAuthenticated, asy
 	await Session.find(
 		{
 			$and: [
-				{ $or: [{ 'AspenCoverageFork.VideoVenue': true }, { 'AspenCoverageFork.VideoRover': true }] },
+				{ $or: [{ 'AspenCoverageFork.Video': true }, { 'AspenCoverageFork.Rover': true }] },
 				{ 'ArtsVisionFork.SessionDate': date, 'ArtsVisionFork.SessionLocation': location }
 			]
 		},
@@ -286,8 +286,8 @@ router.post('/api/v1/update/session/:id', userAuthenticated, async (req, res) =>
 			{ 'ArtsVisionFork.EventID': req.params.id },
 			{
 				$set: {
-					'AspenCoverageFork.VideoVenue': req.body.coverage.video,
-					'AspenCoverageFork.VideoRover': req.body.coverage.rover,
+					'AspenCoverageFork.Video': req.body.coverage.video,
+					'AspenCoverageFork.Rover': req.body.coverage.rover,
 					'AspenCoverageFork.LiveStream': req.body.coverage.livestream,
 					'AspenCoverageFork.QuickClip': req.body.coverage.quickclip,
 					'AspenCoverageFork.Photo': req.body.coverage.photo,

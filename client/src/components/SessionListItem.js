@@ -17,8 +17,8 @@ class SessionListItem extends React.Component {
 			},
 			AspenChecklistFork: { Status },
 			AspenCoverageFork: {
-				VideoVenue,
-				VideoRover,
+				Video,
+				Rover,
 				LiveStream,
 				QuickClip,
 				Audio,
@@ -94,20 +94,20 @@ class SessionListItem extends React.Component {
 					<small>{Helpers.stringifySpeakers(SessionSpeakers)}</small>
 				</div>
 				<div className="card-footer">
-					{VideoVenue && (
+					{Video && (
 						<Link
 							onClick={this.props.filter}
-							to={'/view/type/VideoVenue'}
+							to={'/view/type/Video'}
 							className="badge badge-pill badge-dark"
 						>
 							Recording ✓
 						</Link>
 					)}
 					&nbsp;
-					{VideoRover && (
+					{Rover && (
 						<Link
 							onClick={this.props.filter}
-							to={'/view/type/VideoRover'}
+							to={'/view/type/Rover'}
 							className="badge badge-pill badge-dark"
 						>
 							Send Rover ✓

@@ -30,8 +30,8 @@
         "Wheeler Opera House"
     ],
     "Types": [
-        "VideoVenue",
-        "VideoRover",
+        "Video",
+        "Rover",
         "LiveStream",
         "QuickClip",
         "Photo",
