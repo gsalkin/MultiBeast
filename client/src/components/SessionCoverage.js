@@ -12,7 +12,7 @@ class SessionCoverage extends React.Component {
 	audioRef = React.createRef();
 	restrictionRef = React.createRef();
 	coverageNotesRef = React.createRef();
-	quoteRef = React.createRef();
+	quotesRef = React.createRef();
 	rundownRef = React.createRef();
 
 	createCoverage = event => {
@@ -26,7 +26,7 @@ class SessionCoverage extends React.Component {
 				photo: this.photoRef.current.checked,
 				transcript: this.transcriptRef.current.checked,
 				audio: this.audioRef.current.checked,
-				quote: this.quoteRef.current.checked,
+				quotes: this.quotesRef.current.checked,
 				rundown: this.rundownRef.current.checked,
 				restriction: this.restrictionRef.current.checked,
 				notes: this.coverageNotesRef.current.value.length > 1
@@ -144,10 +144,10 @@ class SessionCoverage extends React.Component {
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="inputQuote"
-							ref={this.quoteRef}
-							name="quote"
-							defaultChecked={this.props.details.Quote}
+							id="inputQuotes"
+							ref={this.quotesRef}
+							name="quotes"
+							defaultChecked={this.props.details.Quotes}
 						/>
 						<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-md">
 							Collect Quotes
