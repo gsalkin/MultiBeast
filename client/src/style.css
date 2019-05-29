@@ -8,32 +8,53 @@ body {
     left: 50%;
 }
 
+input[type=checkbox] {
+    width: 30px;
+    height: 30px;
+}
+
+.card-header .fa {
+    transition: .3s transform ease-in-out;
+    /* Modified from https://disjfa.github.io/bootstrap-tricks/card-collapse-tricks/ */
+}
+
+.card-header .collapsed .fa {
+    transform: rotate(180deg);
+    /* Modified from https://disjfa.github.io/bootstrap-tricks/card-collapse-tricks/ */
+}
+
 /* Ideas Fest Color Palette */
 
 .purple__aspen {
     color: white;
     background-color: #A82890;
 }
+
 .green__aspen {
     color: white;
     background-color: #00A807;
 }
+
 .brightblue__aspen {
     color: white;
     background-color: #00ADEB;
 }
+
 .magenta__aspen {
     color: white;
     background-color: #CA0088;
 }
+
 .darkblue__aspen {
     color: white;
     background-color: #262261;
 }
+
 .yellow__aspen {
     color: white;
     background-color: #FAAC3E;
 }
+
 .orange__aspen {
     color: white;
     background-color: #F15C33;
@@ -43,26 +64,32 @@ body {
     color: white;
     background-color: #862074;
 }
+
 .green__aspen:hover {
     color: white;
     background-color: #008604;
 }
+
 .brightblue__aspen:hover {
     color: white;
     background-color: #009AD3;
 }
+
 .magenta__aspen:hover {
     color: white;
     background-color: #A1006C;
 }
+
 .darkblue__aspen:hover {
     color: white;
     background-color: #1E1B4D;
 }
+
 .yellow__aspen:hover {
     color: white;
     background-color: #E19A37;
 }
+
 .orange__aspen:hover {
     color: white;
     background-color: #C04928;
