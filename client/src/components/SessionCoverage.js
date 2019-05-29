@@ -55,7 +55,7 @@ class SessionCoverage extends React.Component {
 							name="video"
 							ref={this.videoRef}
 							id="inputVideo"
-							defaultChecked={this.props.details.VideoVenue}
+							defaultChecked={this.props.details.Video}
 						/>
 						<label htmlFor="inputVideo" className="form-check-label col-form-label col-form-label-md">
 							Record Video
@@ -69,7 +69,7 @@ class SessionCoverage extends React.Component {
 							name="rover"
 							ref={this.roverRef}
 							id="inputRover"
-							defaultChecked={this.props.details.VideoRover}
+							defaultChecked={this.props.details.Rover}
 						/>
 						<label htmlFor="inputRover" className="form-check-label col-form-label col-form-label-md">
 							Send Rover

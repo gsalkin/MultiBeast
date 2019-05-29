@@ -23,11 +23,11 @@ var sessionSchema = new Schema({
 		}
 	},
 	AspenCoverageFork: {
-		VideoVenue: {
+		Video: {
 			type: Boolean,
 			default: false
 		},
-		VideoRover: {
+		Rover: {
 			type: Boolean,
 			default: false
 		},
