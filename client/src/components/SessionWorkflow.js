@@ -17,6 +17,7 @@ class SessionWorkflow extends React.Component {
 	}
 
 	// Quickclip Refs
+	qcTitleRef = React.createRef();
 	timecodeInRef = React.createRef();
 	timecodeOutRef = React.createRef();
 	introRef = React.createRef();
@@ -33,6 +34,7 @@ class SessionWorkflow extends React.Component {
 	transcriptURLRef = React.createRef();
 	audioURLRef = React.createRef();
 	completeRef = React.createRef();
+	sentToSpeakerRef = React.createRef();
 
 	updateWorkflow = event => {
 		event.preventDefault();
@@ -48,6 +50,7 @@ class SessionWorkflow extends React.Component {
 				transcriptURL: this.transcriptURLRef.current.value,
 				audioURL: this.audioURLRef.current.value,
 				status: this.state.status ? this.state.status : 'In Progress',
+				sent: this.sentToSpeakerRef.current.checked,
 				complete: this.completeRef.current.checked
 			}
 		};
@@ -57,8 +60,8 @@ class SessionWorkflow extends React.Component {
 
 	saveQuickClip = event => {
 		event.preventDefault();
-
 		const qcInstance = {
+			qcTitle: this.qcTitleRef.current.value,
 			timecodeIn: this.timecodeInRef.current.value,
 			timecodeOut: this.timecodeOutRef.current.value,
 			intro: this.introRef.current.value,
@@ -71,7 +74,6 @@ class SessionWorkflow extends React.Component {
 
 	deleteQuickClip = event => {
 		event.preventDefault();
-		console.log('3: ' + this.state.qc);
 		let index = event.target.parentNode.id;
 		let array = this.state.qc;
 		array.splice(index, 1);
@@ -123,7 +125,20 @@ class SessionWorkflow extends React.Component {
 								defaultChecked={this.props.details.QuickClipRendered}
 							/>
 							<label htmlFor="inputQuickClipRendered" className="form-check-label col-form-label col-form-label-md">
-								QuickClips Rendered
+								Key Moments Rendered
+							</label>
+						</div>
+						<div className="form-check">
+							<input
+								className="form-check-input"
+								type="checkbox"
+								name="sent"
+								id="inputSent"
+								ref={this.sentToSpeakerRef}
+								defaultChecked={this.props.details.Sent}
+							/>
+							<label htmlFor="inputSent" className="form-check-label col-form-label col-form-label-md">
+								Sent to Speaker(s)
 							</label>
 						</div>
 						<div className="form-check">
@@ -188,13 +203,83 @@ class SessionWorkflow extends React.Component {
 					</div>
 				</form>
 				<br />
-				<button type="submit" form="workflowForm" className="btn btn-primary">
-					Save Coverage
-				</button>{' '}
-				&nbsp;
-				<button type="submit" form="workflowForm" className="btn btn-dark">
-					Save and Exit
-				</button>
+				<form action="" id="quickclipEntry" onSubmit={this.saveQuickClip}>
+					<h5>QuickClips Entry Form</h5>
+					<div className="p-3 mb-2 bg-warning text-dark">
+						<small>Please save QuickClips before refreshing page.</small>
+					</div>
+					<div className="input-group mb-3">
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Timecode IN"
+							ref={this.timecodeInRef}
+							required
+						/>
+					</div>
+					<div className="input-group mb-3">
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Timecode OUT"
+							ref={this.timecodeOutRef}
+							required
+						/>
+					</div>
+					<div className="input-group mb-3">
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Intro Quote"
+							ref={this.introRef}
+							required
+						/>
+					</div>
+					<div className="input-group mb-3">
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Outro Quote"
+							ref={this.outroRef}
+							required
+						/>
+					</div>
+					<div className="form-group mb-3">
+						<label htmlFor="captionSuggestion">Caption Suggestion</label>
+						<textarea className="form-control" id="captionSuggestion" rows="3" ref={this.captionRef} />
+					</div>
+					<button type="submit" form="quickclipEntry" className="btn btn-primary">
+						Add QuickClip Entry <br />
+					</button>
+				</form>
+				<>
+					{this.state.qc.length >= 1 && (
+						<div className="table-responsive">
+							<table className="table">
+								<thead>
+									<tr>
+										<th scope="col">TC In</th>
+										<th scope="col">TC Out</th>
+										<th scope="col">Intro</th>
+										<th scope="col">Outro</th>
+										<th scope="col">Caption</th>
+										<th scope="col" />
+									</tr>
+								</thead>
+								<tbody>
+									{this.state.qc.map((object, index) => (
+										<QuickClip
+											index={index}
+											key={index}
+											data={this.state.qc[index]}
+											deleteQuickClip={this.deleteQuickClip}
+										/>
+									))}
+								</tbody>
+							</table>
+						</div>
+					)}
+				</>
 			</div>
 		);
 	}

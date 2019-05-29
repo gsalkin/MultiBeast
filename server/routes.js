@@ -293,6 +293,8 @@ router.post('/api/v1/update/session/:id', userAuthenticated, async (req, res) =>
 					'AspenCoverageFork.Photo': req.body.coverage.photo,
 					'AspenCoverageFork.Transcript': req.body.coverage.transcript,
 					'AspenCoverageFork.Audio': req.body.coverage.audio,
+					'AspenCoverageFork.Quotes': req.body.coverage.quotes,
+					'AspenCoverageFork.Rundown': req.body.coverage.rundown,
 					'AspenCoverageFork.Restriction': req.body.coverage.restriction,
 					'AspenCoverageFork.AspenNotes': req.body.coverage.notes
 				}
@@ -322,6 +324,7 @@ router.post('/api/v1/update/session/:id', userAuthenticated, async (req, res) =>
 					'AspenChecklistFork.TranscriptURL': req.body.workflow.transcriptURL,
 					'AspenChecklistFork.AudioURL': req.body.workflow.audioURL,
 					'AspenChecklistFork.Status': req.body.workflow.status,
+					'AspenChecklistFork.Sent': req.body.workflow.sent,
 					'AspenChecklistFork.Complete': req.body.workflow.complete
 				}
 			}

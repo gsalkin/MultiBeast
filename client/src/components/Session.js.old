@@ -83,7 +83,7 @@ class Session extends React.Component {
 			<div className="container-fluid">
 				<Header />
 				<div className="row">
-					<div className="col-3 offset-0">
+					<div className="col-3 offset-0 px-1">
 						<Link className="btn btn-outline-dark" to={'/view/all/#event-' + EventID}>
 							← Back
 						</Link>
