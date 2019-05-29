@@ -51,6 +51,14 @@ var sessionSchema = new Schema({
 			type: Boolean,
 			default: false
 		},
+		Quotes: {
+			type: Boolean,
+			default: false
+		},
+		Rundown: {
+			type: Boolean,
+			default: false
+		},
 		Restriction: {
 			type: Boolean,
 			default: false
@@ -96,6 +104,10 @@ var sessionSchema = new Schema({
 		SessionURL: {
 			type: String,
 			default: ''
+		},
+		Sent: {
+			type: Boolean,
+			default: false
 		},
 		Status: {
 			type: String,

@@ -16,10 +16,21 @@ class SessionListItem extends React.Component {
 				SessionFest
 			},
 			AspenChecklistFork: { Status },
-			AspenCoverageFork: { VideoVenue, VideoRover, LiveStream, QuickClip, Audio, Photo, Transcript, Restriction }
+			AspenCoverageFork: {
+				VideoVenue,
+				VideoRover,
+				LiveStream,
+				QuickClip,
+				Audio,
+				Photo,
+				Transcript,
+				Quotes,
+				Rundown,
+				Restriction
+			}
 		} = this.props.data;
-		const userName = this.props.userName ? this.props.userName : ''
-		const seasonClass = function() {
+		const userName = this.props.userName ? this.props.userName : '';
+		const seasonClass = () => {
 			if (Helpers.seasonMarker(SessionFest) === 'Aspen Ideas Health') {
 				return 'purple__aspen';
 			} else {
@@ -29,10 +40,7 @@ class SessionListItem extends React.Component {
 		return (
 			<div className="card" id={'event-' + EventID} data-session-label={SessionName}>
 				<div className="card-header">
-					<Link
-						to={'/view/season/' + encodeURIComponent(SessionFest)}
-						className={'badge ' + seasonClass()}
-					>
+					<Link to={'/view/season/' + encodeURIComponent(SessionFest)} className={'badge ' + seasonClass()}>
 						{Helpers.seasonMarker(SessionFest)}
 					</Link>
 					&nbsp;
@@ -49,9 +57,10 @@ class SessionListItem extends React.Component {
 					</span>
 				</div>
 				<div className="card-body">
-					<Link to={{ 
-						pathname: '/session/' + EventID, 
-						state: { user: userName }
+					<Link
+						to={{
+							pathname: '/session/' + EventID,
+							state: { user: userName }
 						}}
 						className="text-dark"
 					>
@@ -115,7 +124,7 @@ class SessionListItem extends React.Component {
 							to={'/view/type/QuickClip'}
 							className="badge badge-pill badge-dark"
 						>
-							QuickClips ✓
+							Key Moments ✓
 						</Link>
 					)}
 					&nbsp;
@@ -135,7 +144,7 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Audio'}
 							className="badge badge-pill badge-dark"
 						>
-							Audio Priority ✓
+							Audio/Podcast ✓
 						</Link>
 					)}
 					&nbsp;
@@ -146,6 +155,24 @@ class SessionListItem extends React.Component {
 							className="badge badge-pill badge-dark"
 						>
 							Transcript Priority ✓
+						</Link>
+					)}
+					{Quotes && (
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/Quotes'}
+							className="badge badge-pill badge-dark"
+						>
+							Quotes Priority ✓
+						</Link>
+					)}
+					{Rundown && (
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/Rundown'}
+							className="badge badge-pill badge-dark"
+						>
+							Session Rundown ✓
 						</Link>
 					)}
 					&nbsp;

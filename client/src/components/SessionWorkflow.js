@@ -10,13 +10,14 @@ class SessionWorkflow extends React.Component {
 		};
 	}
 	componentWillReceiveProps(props) {
-		// Technically we shouldn't use componentWillRecieveProps because it will be deprecated in React 17, but 🤷🏻‍♂️
+		// componentWillRecieveProps will be deprecated in React 17
 		this.setState({
 			qc: props.details.QuickClip.length !== 0 ? props.details.QuickClip : []
 		});
 	}
 
 	// Quickclip Refs
+	qcTitleRef = React.createRef();
 	timecodeInRef = React.createRef();
 	timecodeOutRef = React.createRef();
 	introRef = React.createRef();
@@ -33,6 +34,7 @@ class SessionWorkflow extends React.Component {
 	transcriptURLRef = React.createRef();
 	audioURLRef = React.createRef();
 	completeRef = React.createRef();
+	sentToSpeakerRef = React.createRef();
 
 	updateWorkflow = event => {
 		event.preventDefault();
@@ -48,6 +50,7 @@ class SessionWorkflow extends React.Component {
 				transcriptURL: this.transcriptURLRef.current.value,
 				audioURL: this.audioURLRef.current.value,
 				status: this.state.status ? this.state.status : 'In Progress',
+				sent: this.sentToSpeakerRef.current.checked,
 				complete: this.completeRef.current.checked
 			}
 		};
@@ -57,8 +60,8 @@ class SessionWorkflow extends React.Component {
 
 	saveQuickClip = event => {
 		event.preventDefault();
-
 		const qcInstance = {
+			qcTitle: this.qcTitleRef.current.value,
 			timecodeIn: this.timecodeInRef.current.value,
 			timecodeOut: this.timecodeOutRef.current.value,
 			intro: this.introRef.current.value,
@@ -71,7 +74,6 @@ class SessionWorkflow extends React.Component {
 
 	deleteQuickClip = event => {
 		event.preventDefault();
-		console.log('3: ' + this.state.qc);
 		let index = event.target.parentNode.id;
 		let array = this.state.qc;
 		array.splice(index, 1);
@@ -123,7 +125,20 @@ class SessionWorkflow extends React.Component {
 								defaultChecked={this.props.details.QuickClipRendered}
 							/>
 							<label htmlFor="inputQuickClipRendered" className="form-check-label col-form-label col-form-label-md">
-								QuickClips Rendered
+								Key Moments Rendered
+							</label>
+						</div>
+						<div className="form-check">
+							<input
+								className="form-check-input"
+								type="checkbox"
+								name="sent"
+								id="inputSent"
+								ref={this.sentToSpeakerRef}
+								defaultChecked={this.props.details.Sent}
+							/>
+							<label htmlFor="inputSent" className="form-check-label col-form-label col-form-label-md">
+								Sent to Speaker(s)
 							</label>
 						</div>
 						<div className="form-check">
@@ -189,9 +204,18 @@ class SessionWorkflow extends React.Component {
 				</form>
 				<br />
 				<form action="" id="quickclipEntry" onSubmit={this.saveQuickClip}>
-					<h5>QuickClips Entry Form</h5>
+					<h5>Key Moments Entry</h5>
 					<div className="p-3 mb-2 bg-warning text-dark">
-						<small>Please save QuickClips before refreshing page.</small>
+						<small>Remember to save Key Moments</small>
+					</div>
+					<div className="input-group mb-3">
+						<input
+							type="text"
+							className="form-control"
+							placeholder="Title Suggestion"
+							ref={this.qcTitleRef}
+							required
+						/>
 					</div>
 					<div className="input-group mb-3">
 						<input
@@ -234,15 +258,16 @@ class SessionWorkflow extends React.Component {
 						<textarea className="form-control" id="captionSuggestion" rows="3" ref={this.captionRef} />
 					</div>
 					<button type="submit" form="quickclipEntry" className="btn btn-primary">
-						Add QuickClip Entry <br />
+						Add Key Moment <br />
 					</button>
 				</form>
-				<>
+				<Fragment>
 					{this.state.qc.length >= 1 && (
 						<div className="table-responsive">
 							<table className="table">
 								<thead>
 									<tr>
+										<th scope="col">Title</th>
 										<th scope="col">TC In</th>
 										<th scope="col">TC Out</th>
 										<th scope="col">Intro</th>
@@ -264,7 +289,7 @@ class SessionWorkflow extends React.Component {
 							</table>
 						</div>
 					)}
-				</>
+				</Fragment>
 			</div>
 		);
 	}

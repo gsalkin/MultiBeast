@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import format from 'date-fns/format';
 
@@ -11,6 +12,8 @@ class SessionCoverage extends React.Component {
 	audioRef = React.createRef();
 	restrictionRef = React.createRef();
 	coverageNotesRef = React.createRef();
+	quoteRef = React.createRef();
+	rundownRef = React.createRef();
 
 	createCoverage = event => {
 		event.preventDefault();
@@ -23,9 +26,10 @@ class SessionCoverage extends React.Component {
 				photo: this.photoRef.current.checked,
 				transcript: this.transcriptRef.current.checked,
 				audio: this.audioRef.current.checked,
+				quote: this.quoteRef.current.checked,
+				rundown: this.rundownRef.current.checked,
 				restriction: this.restrictionRef.current.checked,
-				notes:
-					this.coverageNotesRef.current.value.length > 1
+				notes: this.coverageNotesRef.current.value.length > 1
 						? this.props.details.AspenNotes +
 						  '\n\n' +
 						  this.props.user +
@@ -43,7 +47,7 @@ class SessionCoverage extends React.Component {
 	render() {
 		return (
 			<form id="coveragePlanForm" onSubmit={this.createCoverage} className="row collapse">
-				<div className="form-group col-3 px-5">
+				<div className="form-group col-3 px-4">
 					<div className="form-check">
 						<input
 							className="form-check-input"
@@ -94,7 +98,7 @@ class SessionCoverage extends React.Component {
 							defaultChecked={this.props.details.QuickClip}
 						/>
 						<label htmlFor="inputQuickclip" className="form-check-label col-form-label col-form-label-md">
-							Quick Clip
+							Key Moments
 						</label>
 					</div>
 					<div className="form-check">
@@ -133,7 +137,33 @@ class SessionCoverage extends React.Component {
 							defaultChecked={this.props.details.Audio}
 						/>
 						<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-md">
-							Audio Priority
+							Audio/Podcast Priority
+						</label>
+					</div>
+					<div className="form-check">
+						<input
+							type="checkbox"
+							className="form-check-input"
+							id="inputQuote"
+							ref={this.quoteRef}
+							name="quote"
+							defaultChecked={this.props.details.Quote}
+						/>
+						<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-md">
+							Collect Quotes
+						</label>
+					</div>
+					<div className="form-check">
+						<input
+							type="checkbox"
+							className="form-check-input"
+							id="inputRundown"
+							ref={this.rundownRef}
+							name="quote"
+							defaultChecked={this.props.details.Rundown}
+						/>
+						<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-md">
+							Create Session Rundown
 						</label>
 					</div>
 					<div className="form-check">
@@ -149,8 +179,6 @@ class SessionCoverage extends React.Component {
 							Restriction
 						</label>
 					</div>
-					<br/>
-					<br/>
 					<br/>
 					<br/>
 					<button type="submit" form="coveragePlanForm" className="btn btn-primary">

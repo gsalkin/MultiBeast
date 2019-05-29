@@ -5,6 +5,9 @@ class QuickClip extends React.Component {
 		return (
 			<tr>
 				<td>
+					<small>{this.props.data.qcTitle !== null ? this.props.data.qcTitle : ''}</small>
+				</td>
+				<td>
 					<small>{this.props.data.timecodeIn !== null ? this.props.data.timecodeIn : ''}</small>
 				</td>
 				<td>
@@ -24,7 +27,7 @@ class QuickClip extends React.Component {
 						id={this.props.index}
 						type="button"
 						className="close"
-						aria-label="Close"
+						aria-label="Delete"
 						onClick={this.props.deleteQuickClip}
 					>
 						<span aria-hidden="true">&times;</span>

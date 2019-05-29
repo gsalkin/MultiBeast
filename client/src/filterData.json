@@ -23,11 +23,11 @@
         "Koch Building, Booz Allen Hamilton Room",
         "Koch Building, Lauder Room",
         "Koch Tent",
-        "Kresge Building, Hines Room",
         "Limelight Hotel",
         "Marble Garden Tent",
         "Maroon Bells Amphitheatre",
-        "Paepcke Auditorium"
+        "Paepcke Auditorium",
+        "Wheeler Opera House"
     ],
     "Types": [
         "VideoVenue",
@@ -36,6 +36,8 @@
         "QuickClip",
         "Photo",
         "Audio",
+        "Quotes",
+        "Rundown",
         "Transcript",
         "Restriction"
     ]
