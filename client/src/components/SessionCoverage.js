@@ -31,7 +31,7 @@ class SessionCoverage extends React.Component {
 				restriction: this.restrictionRef.current.checked,
 				notes: this.coverageNotesRef.current.value.length > 1
 						? this.props.details.AspenNotes +
-						  '\n\n' +
+						  '\n' +
 						  this.props.user +
 						  ' on ' +
 						  format(Date.now(), 'YYYY-MM-DD@h:mmA') +
@@ -200,7 +200,6 @@ class SessionCoverage extends React.Component {
 						id="inputCoverageNotes"
 						ref={this.coverageNotesRef}
 						rows="5"
-						defaultValue={this.props.details.AspenNotes}
 					/>
 				</div>
 			</form>

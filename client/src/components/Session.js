@@ -68,6 +68,7 @@ class Session extends React.Component {
 	};
 
 	render() {
+		const {ArtsVisionFork, AspenCoverageFork, AspenChecklistFork} = this.state
 		const {
 			SessionName,
 			SessionDate,
@@ -77,7 +78,7 @@ class Session extends React.Component {
 			EndTime,
 			ArtsVisionNotes,
 			EventID
-		} = this.state.ArtsVisionFork;
+		} = ArtsVisionFork;
 		return (
 			<div className="container-fluid">
 				<Header />
@@ -104,8 +105,8 @@ class Session extends React.Component {
 							<p className="lead">Speakers: {stringifySpeakers(SessionSpeakers)}</p>
 						</Fragment>
 					)}
-					<div className="bg-light">
-						<p className="p-3 border">{ArtsVisionNotes}</p>
+					<div className="bg-light px-2">
+						<small>{ArtsVisionNotes}</small>
 					</div>
 					<hr />
 					<div className="card">
@@ -116,7 +117,7 @@ class Session extends React.Component {
 							</a>
 						</h5>
 						<SessionCoverage
-							details={this.state.AspenCoverageFork}
+							details={AspenCoverageFork}
 							updateSession={this.updateSession}
 							user={this.state.user}
 						/>
@@ -130,12 +131,16 @@ class Session extends React.Component {
 							</a>
 						</h5>
 						<SessionWorkflow
-							details={this.state.AspenChecklistFork}
+							details={AspenChecklistFork}
 							updateSession={this.updateSession}
 							user={this.state.user}
 						/>
 					</div>
 				</div>
+				<br/>
+				<br/>
+				<br/>
+				<br/>
 			</div>
 		);
 	}

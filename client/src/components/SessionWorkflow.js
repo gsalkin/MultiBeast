@@ -260,6 +260,7 @@ class SessionWorkflow extends React.Component {
 					<button type="submit" form="quickclipEntry" className="btn btn-primary">
 						Add Key Moment <br />
 					</button>
+					&nbsp;
 				</form>
 				<Fragment>
 					{this.state.qc.length >= 1 && (
@@ -290,6 +291,7 @@ class SessionWorkflow extends React.Component {
 						</div>
 					)}
 				</Fragment>
+				&nbsp;
 			</div>
 		);
 	}

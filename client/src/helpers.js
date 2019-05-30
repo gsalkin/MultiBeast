@@ -89,8 +89,6 @@ export function dateClassHelper(date) {
 	return className;
 }
 
-export function copyToClipboard(target) {}
-
 export function seasonMarker(season) {
 	if (season === null) {
 		return;

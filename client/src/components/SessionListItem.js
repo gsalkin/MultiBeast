@@ -134,7 +134,7 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Photo'}
 							className="badge badge-pill badge-dark"
 						>
-							Photo Priority ✓
+							Photo ✓
 						</Link>
 					)}
 					&nbsp;
@@ -154,7 +154,7 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Transcript'}
 							className="badge badge-pill badge-dark"
 						>
-							Transcript Priority ✓
+							Transcript ✓
 						</Link>
 					)}
 					{Quotes && (
@@ -163,9 +163,10 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Quotes'}
 							className="badge badge-pill badge-dark"
 						>
-							Quotes Priority ✓
+							Quotes ✓
 						</Link>
 					)}
+					&nbsp;
 					{Rundown && (
 						<Link
 							onClick={this.props.filter}
