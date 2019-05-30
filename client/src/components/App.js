@@ -1,3 +1,4 @@
+import $ from 'jquery';
 import React, { Fragment } from 'react';
 import SessionListItem from './SessionListItem';
 import Header from './Header';
@@ -5,15 +6,18 @@ import SideNav from './SideNav';
 import SessionSPA from './SessionSPA';
 
 class App extends React.Component {
-	state = {
-		selectedEventID: null,
-		filterData: {
-			dateFilter: null,
-			locationFilter: null,
-			metaFilter: null
-		},
-		sessions: {}
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			selectedEventID: null,
+			filterData: {
+				dateFilter: null,
+				locationFilter: null,
+				metaFilter: null
+			},
+			sessions: {}
+		};
+	}
 
 	callApi = async url => {
 		let response = await fetch(url, {
@@ -60,9 +64,20 @@ class App extends React.Component {
 		});
 	};
 
+	reRenderApp = () => {
+		const { locationFilter, dateFilter, metaFilter } = this.state.filterData;
+		this.filterData(dateFilter, locationFilter, metaFilter);
+	};
+
 	setSessionID = id => {
 		this.setState({
 			selectedEventID: id
+		});
+	};
+
+	unsetSessionID = () => {
+		this.setState({
+			selectedEventID: null
 		});
 	};
 
@@ -233,8 +248,15 @@ class App extends React.Component {
 	}
 
 	renderSession = id => {
-		let data = this.state.sessions.filter(session => session.ArtsVisionFork.EventID === id);
-		return <SessionSPA id={this.state.selectedEventID} data={data[0]} />;
+		if (id) {
+			return <SessionSPA key={id} id={id} unsetSessionID={this.unsetSessionID} reRenderApp={this.reRenderApp} />;
+		} else {
+			return (
+				<div className="col-6">
+					<h1>Select A Session</h1>
+				</div>
+			);
+		}
 	};
 
 	render() {
@@ -247,9 +269,9 @@ class App extends React.Component {
 					slug={this.props.match.params.type}
 					linkResets={this.resetOnHardLink}
 				/>
-				<div className="container-fluid">
+				<div className="container-fluid header-override">
 					<div className="row">
-						<div className="col-6">
+						<div className="col-12 col-md-6" id="sessionlistcontainer">
 							<p className="h4">
 								{this.state.filterData.dateFilter && (
 									<span>
@@ -305,7 +327,7 @@ class App extends React.Component {
 							</p>
 							{this.renderResults()}
 						</div>
-						{this.state.selectedEventID && this.renderSession(this.state.selectedEventID)}
+						{this.renderSession(this.state.selectedEventID)}
 					</div>
 				</div>
 			</>

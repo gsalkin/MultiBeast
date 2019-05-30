@@ -64,7 +64,6 @@ class Login extends React.Component {
 	render() {
 		return (
 			<div className="container-fluid">
-				<Header status="disabled" />
 				<div className="container">
 					<div className="row">
 						<div className="col-8 offset-2">

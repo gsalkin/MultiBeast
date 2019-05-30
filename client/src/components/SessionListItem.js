@@ -57,30 +57,22 @@ class SessionListItem extends React.Component {
 					</span>
 				</div>
 				<div className="card-body">
-					<Link to={{ 
-						pathname: '/session/' + EventID, 
-						state: { user: userName }
-						}}
-						className="text-dark"
-					>
-						<div className="row">
-							<div className="col-10">
-								<h4>{SessionName}</h4>
-							</div>
-							<div className="col-2">
-								<h5 className="text-right">
-									<strong className="align-middle">#{EventID}</strong>
-									&nbsp;
-									<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
-								</h5>
-							</div>
+					<div className="row">
+						<div className="col-10">
+							<a
+								onClick={() => this.props.setSessionID(EventID)}
+								className="text-dark stretched-link"
+								href={'#' + EventID}
+							>
+								<h5>{SessionName}</h5>
+							</a>
 						</div>
 						<div className="col-2">
-							<h5 className="text-right">
+							<h6 className="text-right">
 								<strong className="align-middle">#{EventID}</strong>
 								&nbsp;
 								<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
-							</h5>
+							</h6>
 						</div>
 					</div>
 					<Link
@@ -100,7 +92,7 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Video'}
 							className="badge badge-pill badge-dark"
 						>
-							Recording ✓
+							Record ✓
 						</Link>
 					)}
 					&nbsp;
@@ -110,7 +102,7 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Rover'}
 							className="badge badge-pill badge-dark"
 						>
-							Send Rover ✓
+							Rover ✓
 						</Link>
 					)}
 					&nbsp;
@@ -140,7 +132,7 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Photo'}
 							className="badge badge-pill badge-dark"
 						>
-							Photo Priority ✓
+							Photo ✓
 						</Link>
 					)}
 					&nbsp;
@@ -160,25 +152,27 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Transcript'}
 							className="badge badge-pill badge-dark"
 						>
-							Transcript Priority ✓
+							Transcript ✓
 						</Link>
 					)}
+					&nbsp;
 					{Quotes && (
 						<Link
 							onClick={this.props.filter}
 							to={'/view/type/Quotes'}
 							className="badge badge-pill badge-dark"
 						>
-							Quotes Priority ✓
+							Quotes ✓
 						</Link>
 					)}
+					&nbsp;
 					{Rundown && (
 						<Link
 							onClick={this.props.filter}
 							to={'/view/type/Rundown'}
 							className="badge badge-pill badge-dark"
 						>
-							Session Rundown ✓
+							Rundown ✓
 						</Link>
 					)}
 					&nbsp;

@@ -8,27 +8,27 @@ class SessionSPA extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: sessionStorage.getItem('user_name')
-			// ArtsVisionFork: {},
-			// AspenChecklistFork: {},
-			// AspenCoverageFork: {}
+			user: sessionStorage.getItem('user_name'),
+			ArtsVisionFork: {},
+			AspenChecklistFork: {},
+			AspenCoverageFork: {}
 		};
 	}
 
-	// componentDidMount() {
-	// 	let sessionID = this.props.id;
-	// 	this.setSessionState(sessionID);
-	// }
+	componentDidMount() {
+		let sessionID = this.props.id;
+		this.setSessionState(sessionID);
+	}
 
-	// setSessionState = ID => {
-	// 	this.callApi('/api/v1/session/' + ID).then(json => {
-	// 		this.setState({
-	// 			ArtsVisionFork: json[0].ArtsVisionFork,
-	// 			AspenChecklistFork: json[0].AspenChecklistFork,
-	// 			AspenCoverageFork: json[0].AspenCoverageFork
-	// 		});
-	// 	});
-	// };
+	setSessionState = ID => {
+		this.callApi('/api/v1/session/' + ID).then(json => {
+			this.setState({
+				ArtsVisionFork: json[0].ArtsVisionFork,
+				AspenChecklistFork: json[0].AspenChecklistFork,
+				AspenCoverageFork: json[0].AspenCoverageFork
+			});
+		});
+	};
 
 	callApi = async url => {
 		let response = await fetch(url, {
@@ -53,21 +53,25 @@ class SessionSPA extends React.Component {
 				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			},
 			body: JSON.stringify(data)
-		}).then(response => {
-            console.log(response,json());
-			return response.json();
 		})
-		.then(json => {
-			this.setState({
-				ArtsVisionFork: json[0].ArtsVisionFork,
-				AspenChecklistFork: json[0].AspenChecklistFork,
-				AspenCoverageFork: json[0].AspenCoverageFork
+			.then(response => {
+				if (response.status === 200) {
+					document.getElementById('inputCoverageNotes').value = '';
+					this.props.reRenderApp();
+				}
+				return response.json();
+			})
+			.then(json => {
+				this.setState({
+					ArtsVisionFork: json[0].ArtsVisionFork,
+					AspenChecklistFork: json[0].AspenChecklistFork,
+					AspenCoverageFork: json[0].AspenCoverageFork
+				});
 			});
-		});
 	};
 
 	render() {
-        const { AspenCoverageFork, ArtsVisionFork, AspenChecklistFork } = this.props.data;
+		const { AspenCoverageFork, ArtsVisionFork, AspenChecklistFork } = this.state;
 		const {
 			SessionName,
 			SessionDate,
@@ -78,36 +82,64 @@ class SessionSPA extends React.Component {
 			ArtsVisionNotes,
 			EventID
 		} = ArtsVisionFork;
-		
+
 		return (
-			<div className="col-6 position-fixed half-page-fixed">
-				<h2>
-					<span className="badge badge-success">{EventID}</span> {SessionName}
-				</h2>
-				<h4>
+			<div className="col-12 col-md-6 position-fixed half-page-fixed" id="sessiondetailcontainer">
+				<h3>
+					<a className="btn btn-outline-dark" onClick={() => this.props.unsetSessionID}>
+						← Back
+					</a>
+					&nbsp;
+					{SessionName}
+					&nbsp;
+				</h3>
+				<h5>
 					<span className={dateClassHelper(SessionDate)}>{SessionDate}</span>{' '}
 					<span className="badge badge-info">
 						{convertTimes(StartTime)} - {convertTimes(EndTime)}
 					</span>{' '}
-					<span className="badge badge-warning">{SessionLocation}</span>
-				</h4>
+					<span className="badge badge-warning">{SessionLocation}</span>{' '}
+					<span className="badge badge-success">#{EventID}</span>
+				</h5>
 				{SessionSpeakers && <p className="lead">Speakers: {stringifySpeakers(SessionSpeakers)}</p>}
-				<div className="bg-light">
-					<p className="p-3 border">{ArtsVisionNotes}</p>
+				<div className="bg-light px-2">
+					<small>{ArtsVisionNotes}</small>
 				</div>
 				<hr />
-				<h4>Coverage</h4>
-				<SessionCoverage
-					details={AspenCoverageFork}
-					updateSession={this.updateSession}
-					user={this.state.user}
-				/>
+				<div className="card">
+					<h5 className="card-header text-primary">
+						<a data-toggle="collapse" href="#coveragePlanForm" aria-expanded="true" className="d-block">
+							Coverage &nbsp;
+							<i className="fa fa-chevron-down pull-right" />
+						</a>
+					</h5>
+					<SessionCoverage
+						details={AspenCoverageFork}
+						updateSession={this.updateSession}
+						user={this.state.user}
+					/>
+				</div>
 				<hr />
-				<SessionWorkflow
-					details={AspenChecklistFork}
-					updateSession={this.updateSession}
-					user={this.state.user}
-				/>
+				<div className="card">
+					<h5 className="card-header text-primary">
+						<a data-toggle="collapse" href="#workflowContainer" aria-expanded="true" className="d-block">
+							Workflow &nbsp;
+							<i className="fa fa-chevron-down pull-right" />
+						</a>
+					</h5>
+					<SessionWorkflow
+						details={AspenChecklistFork}
+						updateSession={this.updateSession}
+						user={this.state.user}
+					/>
+				</div>
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
 			</div>
 		);
 	}

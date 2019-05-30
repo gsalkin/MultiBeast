@@ -150,9 +150,9 @@ class Header extends React.Component {
 						</form>
 					</div>
 					<ul className="nav justify-content-end">
-					<li class="nav-item dropdown">
+					<li className="nav-item dropdown">
 							<a
-								class="nav-link dropdown-toggle"
+								className="nav-link dropdown-toggle"
 								href="#"
 								id="navbarDropdownMenuLink"
 								role="button"
@@ -162,7 +162,7 @@ class Header extends React.Component {
 							>
 								Quick Links
 							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 								<li>
 									<NavLink to="/view/all" className="dropdown-item" onClick={this.props.linkResets}>
 										All
@@ -215,7 +215,7 @@ class Header extends React.Component {
 										Completed
 									</NavLink>
 								</li>
-							</div>
+							</ul>
 						</li>
 						<li className="nav-item">
 							<NavLink

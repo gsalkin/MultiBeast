@@ -1,4 +1,7 @@
 import format from 'date-fns/format';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 export function stringifySpeakers(array) {
 	let count = array.length;
@@ -106,4 +109,20 @@ export function seasonMarker(season) {
 
 export function camelCaseBreaker(s) {
 	return s.split(/(?=[A-Z])/).join(' ');
+}
+
+export function mediaQuery() {
+	if ($(window).width() >= 1024) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+export function headerClassSwitch(mediaQuery) {
+	if (mediaQuery()) {
+		return 'fixed-top'
+	} else {
+		return
+	}
 }

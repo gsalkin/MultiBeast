@@ -1,17 +1,19 @@
 /* Assistive Styles */
-body {
-    padding-top: 75px;
+.header-override {
+    padding-top: 80px;
 }
-
 
 .half-page-fixed {
     left: 50%;
+    height: 100%;
+    overflow:scroll;
+    padding-bottom:80px;
 }
 
-input[type=checkbox] {
-    width: 30px;
-    height: 30px;
-}
+/* input[type=checkbox] {
+    width: 20px;
+    height: 20px;
+} */
 
 .card-header .fa {
     transition: .3s transform ease-in-out;

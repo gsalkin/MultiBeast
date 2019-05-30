@@ -31,7 +31,7 @@ class SessionCoverage extends React.Component {
 				restriction: this.restrictionRef.current.checked,
 				notes: this.coverageNotesRef.current.value.length > 1
 						? this.props.details.AspenNotes +
-						  '\n\n' +
+						  '\n' +
 						  this.props.user +
 						  ' on ' +
 						  format(Date.now(), 'YYYY-MM-DD@h:mmA') +
@@ -57,7 +57,7 @@ class SessionCoverage extends React.Component {
 							id="inputVideo"
 							defaultChecked={this.props.details.Video}
 						/>
-						<label htmlFor="inputVideo" className="form-check-label col-form-label col-form-label-md">
+						<label htmlFor="inputVideo" className="form-check-label">
 							Record Video
 						</label>
 					</div>
@@ -71,7 +71,7 @@ class SessionCoverage extends React.Component {
 							id="inputRover"
 							defaultChecked={this.props.details.Rover}
 						/>
-						<label htmlFor="inputRover" className="form-check-label col-form-label col-form-label-md">
+						<label htmlFor="inputRover" className="form-check-label">
 							Send Rover
 						</label>
 					</div>
@@ -84,7 +84,7 @@ class SessionCoverage extends React.Component {
 							name="livestream"
 							defaultChecked={this.props.details.LiveStream}
 						/>
-						<label htmlFor="inputLivestream" className="form-check-label col-form-label col-form-label-md">
+						<label htmlFor="inputLivestream" className="form-check-label">
 							Livestream
 						</label>
 					</div>
@@ -97,7 +97,7 @@ class SessionCoverage extends React.Component {
 							name="quickclip"
 							defaultChecked={this.props.details.QuickClip}
 						/>
-						<label htmlFor="inputQuickclip" className="form-check-label col-form-label col-form-label-md">
+						<label htmlFor="inputQuickclip" className="form-check-label">
 							Key Moments
 						</label>
 					</div>
@@ -110,7 +110,7 @@ class SessionCoverage extends React.Component {
 							name="photo"
 							defaultChecked={this.props.details.Photo}
 						/>
-						<label htmlFor="inputPhoto" className="form-check-label col-form-label col-form-label-md">
+						<label htmlFor="inputPhoto" className="form-check-label">
 							Photo Priority
 						</label>
 					</div>
@@ -123,7 +123,7 @@ class SessionCoverage extends React.Component {
 							name="transcript"
 							defaultChecked={this.props.details.Transcript}
 						/>
-						<label htmlFor="inputTranscript" className="form-check-label col-form-label col-form-label-md">
+						<label htmlFor="inputTranscript" className="form-check-label">
 							Rush Transcript
 						</label>
 					</div>
@@ -136,7 +136,7 @@ class SessionCoverage extends React.Component {
 							name="audio"
 							defaultChecked={this.props.details.Audio}
 						/>
-						<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-md">
+						<label htmlFor="inputPodcast" className="form-check-label">
 							Audio/Podcast Priority
 						</label>
 					</div>
@@ -149,7 +149,7 @@ class SessionCoverage extends React.Component {
 							name="quotes"
 							defaultChecked={this.props.details.Quotes}
 						/>
-						<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-md">
+						<label htmlFor="inputPodcast" className="form-check-label">
 							Collect Quotes
 						</label>
 					</div>
@@ -162,8 +162,8 @@ class SessionCoverage extends React.Component {
 							name="quote"
 							defaultChecked={this.props.details.Rundown}
 						/>
-						<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-md">
-							Create Session Rundown
+						<label htmlFor="inputPodcast" className="form-check-label">
+							Session Rundown
 						</label>
 					</div>
 					<div className="form-check">
@@ -175,7 +175,7 @@ class SessionCoverage extends React.Component {
 							name="restriction"
 							defaultChecked={this.props.details.Restriction}
 						/>
-						<label htmlFor="inputPodcast" className="form-check-label col-form-label col-form-label-md">
+						<label htmlFor="inputPodcast" className="form-check-label">
 							Restriction
 						</label>
 					</div>
@@ -199,8 +199,7 @@ class SessionCoverage extends React.Component {
 						name="coveragenotes"
 						id="inputCoverageNotes"
 						ref={this.coverageNotesRef}
-						rows="5"
-						defaultValue={this.props.details.AspenNotes}
+						rows="4"
 					/>
 				</div>
 			</form>

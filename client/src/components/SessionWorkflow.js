@@ -9,11 +9,13 @@ class SessionWorkflow extends React.Component {
 			qc: []
 		};
 	}
-	componentDidMount() {
+
+	componentWillReceiveProps(props) { 
+		console.log(props.details.QuickClip);
+		// Technically we shouldn't use componentWillRecieveProps because it will be deprecated in React 17, but 🤷🏻‍♂️
 		this.setState({
-		qc: !this.props.details.QuickClip ? [] : this.props.details.QuickClip
+		qc: !props.details.QuickClip ? [] : props.details.QuickClip
 		})
-		
 	}
 
 	// Quickclip Refs
@@ -82,6 +84,12 @@ class SessionWorkflow extends React.Component {
 		});
 	};
 
+	markComplete = () => {
+		this.setState({
+			status: 'Complete'
+		})
+	}
+
 	render() {
 		return (
 			<div className="container-fluid collapse" id="workflowContainer">
@@ -97,7 +105,7 @@ class SessionWorkflow extends React.Component {
 								defaultChecked={this.props.details.Recorded}
 								value="Recorded"
 							/>
-							<label htmlFor="inputRecorded" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputRecorded" className="form-check-label">
 								Recorded
 							</label>
 						</div>
@@ -111,7 +119,7 @@ class SessionWorkflow extends React.Component {
 								defaultChecked={this.props.details.Rendered}
 								value="Rendered"
 							/>
-							<label htmlFor="inputRendered" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputRendered" className="form-check-label">
 								Rendered
 							</label>
 						</div>
@@ -124,7 +132,7 @@ class SessionWorkflow extends React.Component {
 								ref={this.quickclipRenderedRef}
 								defaultChecked={this.props.details.QuickClipRendered}
 							/>
-							<label htmlFor="inputQuickClipRendered" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputQuickClipRendered" className="form-check-label">
 								Key Moments Rendered
 							</label>
 						</div>
@@ -137,7 +145,7 @@ class SessionWorkflow extends React.Component {
 								ref={this.sentToSpeakerRef}
 								defaultChecked={this.props.details.Sent}
 							/>
-							<label htmlFor="inputSent" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputSent" className="form-check-label">
 								Sent to Speaker(s)
 							</label>
 						</div>
@@ -149,8 +157,9 @@ class SessionWorkflow extends React.Component {
 								id="inputComplete"
 								ref={this.completeRef}
 								defaultChecked={this.props.details.Complete}
+								onClick={this.markComplete}
 							/>
-							<label htmlFor="inputComplete" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputComplete" className="form-check-label">
 								Complete
 							</label>
 						</div>
@@ -212,6 +221,15 @@ class SessionWorkflow extends React.Component {
 						<input
 							type="text"
 							className="form-control"
+							placeholder="Title Suggestion"
+							ref={this.qcTitleRef}
+							required
+						/>
+					</div>
+					<div className="input-group mb-3">
+						<input
+							type="text"
+							className="form-control"
 							placeholder="Timecode IN"
 							ref={this.timecodeInRef}
 							required
@@ -258,6 +276,7 @@ class SessionWorkflow extends React.Component {
 							<table className="table">
 								<thead>
 									<tr>
+										<th scope="col">Title</th>
 										<th scope="col">TC In</th>
 										<th scope="col">TC Out</th>
 										<th scope="col">Intro</th>
@@ -280,6 +299,7 @@ class SessionWorkflow extends React.Component {
 						</div>
 					)}
 				</>
+				&nbsp;
 			</div>
 		);
 	}
