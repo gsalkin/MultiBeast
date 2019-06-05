@@ -93,9 +93,7 @@ class Header extends React.Component {
 
 	render() {
 		const today = format(new Date(), 'YYYY-MM-DD');
-		const dates = filterData.Dates;
-		const locations = filterData.Locations;
-		const types = filterData.Types;
+		const { Dates, Locations, Types } = filterData
 		return (
 			<Fragment>
 				<nav className={'navbar navbar-light ' + this.headerDisplayController() + ' bg-light'}>
@@ -113,7 +111,7 @@ class Header extends React.Component {
 								</div>
 								<select onChange={this.dateSelectChange} className="custom-select" id="inputDateSelect">
 									<option defaultValue="all">All</option>
-									{dates.map((item, index) => (
+									{Dates.map((item, index) => (
 										<option key={index} value={item} type="date">
 											{item}
 										</option>
@@ -134,9 +132,9 @@ class Header extends React.Component {
 									id="inputLocationSelect"
 								>
 									<option defaultValue="all">All</option>
-									{locations.map((item, index) => (
-										<option key={index} value={item} type="location">
-											{item}
+									{Object.entries(Locations).map(([key, value]) =>(
+										<option value={key} type="location">
+											{value}
 										</option>
 									))}
 								</select>
@@ -151,7 +149,7 @@ class Header extends React.Component {
 								</div>
 								<select onChange={this.metaSelectChange} className="custom-select" id="inputMetaSelect">
 									<option defaultValue="all">All</option>
-									{types.map((item, index) => (
+									{Types.map((item, index) => (
 										<option key={index} value={item} type="meta">
 											{camelCaseBreaker(item)}
 										</option>
