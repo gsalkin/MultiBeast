@@ -1,6 +1,5 @@
 import format from 'date-fns/format';
 import $ from 'jquery';
-import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 export function stringifySpeakers(array) {
@@ -95,7 +94,7 @@ export function dateClassHelper(date) {
 export function copyToClipboard(target) {}
 
 export function seasonMarker(season) {
-	if (season === null) {
+	if (!season) {
 		return;
 	} else {
 		let fest = season.split(' ');

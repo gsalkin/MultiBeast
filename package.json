@@ -4,7 +4,7 @@
 	"description": "A React-based web application for planning and processing Comms Team coverage during the Aspen Ideas Festival. Written in React + Express + MongoDB and much ❤️.",
 	"main": "app.js",
 	"dependencies": {
-		"axios": "^0.18.0",
+		"axios": "^0.18.1",
 		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.18.3",
 		"compression": "^1.7.3",
@@ -25,6 +25,7 @@
 		"start": "node app.js",
 		"heroku-postbuild": "cd client && npm install && npm run build",
 		"development": "concurrently \"nodemon app.js\" \"cd client && npm start\"",
+		"staging": "concurrently \"node app.js\" \"cd client && npm run build\"",
 		"poststart": "cd client && npm install && npm run build"
 	},
 	"keywords": [],
