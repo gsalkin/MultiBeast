@@ -47,12 +47,10 @@ var apiEngine = {
 					EndTime: api[i].Data.EndTime,
 					SessionLocation: api[i].Data.Location,
 					ArtsVisionNotes: api[i].Data.Notes,
-					Meta: {
-						Status: api[i].Data.StatusName,
-						LastEdit: api[i].Data.UpdateDate,
-						LastUser: api[i].Data.UpdateUser
-					}
-				}
+					Status: api[i].Data.StatusName,
+					LastEdit: api[i].Data.UpdateDate,
+					LastUser: api[i].Data.UpdateUser
+			}
 			});
 			newSession.save();
 		}
@@ -84,7 +82,7 @@ var apiEngine = {
 	compareData: function(db, api, count) {
 		console.log('Comparing data for changes to existing sessions');
 		for (let i = 0; i < count; i++) {
-			if (db[i].ArtsVisionFork.Meta.LastEdit !== api[i].Data.UpdateDate) {
+			if (db[i].ArtsVisionFork.LastEdit !== api[i].Data.UpdateDate) {
 				Session.findOneAndUpdate(
 					{ 'ArtsVisionFork.EventID': db[i].ArtsVisionFork.EventID },
 					{
@@ -100,9 +98,9 @@ var apiEngine = {
 						'ArtsVisionFork.StartTime': api[i].Data.StartTime,
 						'ArtsVisionFork.EndTime': api[i].Data.EndTime,
 						'ArtsVisionFork.ArtsVisionNotes': api[i].Data.Notes,
-						'ArtsVisionFork.Meta.Status': api[i].Data.StatusName,
-						'ArtsVisionFork.Meta.LastEdit': api[i].Data.UpdateDate,
-						'ArtsVisionFork.Meta.LastUser': api[i].Data.UpdateUser
+						'ArtsVisionFork.Status': api[i].Data.StatusName,
+						'ArtsVisionFork.LastEdit': api[i].Data.UpdateDate,
+						'ArtsVisionFork.LastUser': api[i].Data.UpdateUser
 					},
 					{ new: true },
 					function(err, doc) {

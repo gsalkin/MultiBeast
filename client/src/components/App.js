@@ -1,17 +1,21 @@
 import React, { Fragment } from 'react';
 import SessionListItem from './SessionListItem';
 import Header from './Header';
-import SideNav from './SideNav';
+import Session from './Session';
 
 class App extends React.Component {
-	state = {
-		filterData: {
-			dateFilter: null,
-			locationFilter: null,
-			metaFilter: null
-		},
-		sessions: {}
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			selectedEventID: null,
+			filterData: {
+				dateFilter: null,
+				locationFilter: null,
+				metaFilter: null
+			},
+			sessions: {}
+		};
+	}
 
 	callApi = async url => {
 		let response = await fetch(url, {
@@ -21,17 +25,17 @@ class App extends React.Component {
 				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			}
 		})
-		.then(response => {
-			let status = response.status;
-			if (status >= 200 && status < 300) {
-				return response.json();
-			}
-		})
-		.catch( error => {
-			console.log(error)
-		})
-		return response
-	}
+			.then(response => {
+				let status = response.status;
+				if (status >= 200 && status < 300) {
+					return response.json();
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
+		return response;
+	};
 
 	componentDidMount() {
 		this.populateApp();
@@ -58,8 +62,24 @@ class App extends React.Component {
 		});
 	};
 
+	reRenderApp = () => {
+		const { locationFilter, dateFilter, metaFilter } = this.state.filterData;
+		this.filterData(dateFilter, locationFilter, metaFilter);
+	};
+
+	setSessionID = id => {
+		this.setState({
+			selectedEventID: id
+		});
+	};
+
+	unsetSessionID = () => {
+		this.setState({
+			selectedEventID: null
+		});
+	};
+
 	resetOnHardLink = () => {
-		// window.reload(true);
 		this.setState(
 			{
 				filterData: {
@@ -213,83 +233,101 @@ class App extends React.Component {
 		} else {
 			return Object.keys(this.state.sessions).map(key => (
 				<Fragment key={key}>
-					<SessionListItem data={this.state.sessions[key]} filter={this.resetOnHardLink} userName={userName}/>
+					<SessionListItem
+						data={this.state.sessions[key]}
+						filter={this.resetOnHardLink}
+						userName={userName}
+						setSessionID={this.setSessionID}
+					/>
 					<br />
 				</Fragment>
 			));
 		}
 	}
 
+	renderSession = id => {
+		if (id) {
+			return <Session key={id} id={id} unsetSessionID={this.unsetSessionID} reRenderApp={this.reRenderApp} />;
+		} else {
+			return (
+				<div className="col-6">
+					<h1>Select A Session</h1>
+				</div>
+			);
+		}
+	};
+
 	render() {
 		return (
-			<div className="container-fluid">
-				<Header status="active" filter={this.resetOnHardLink}/>
-				<div className="row">
-					<div className="col-2">
-						<SideNav
-							setFilterQueue={this.setFilterQueue}
-							slug={this.props.match.params.type}
-							linkResets={this.resetOnHardLink}
-						/>
-					</div>
-					<div className="col-10">
-						<p className="h4">
-							{this.state.filterData.dateFilter && (
-								<span>
-									<span className="badge badge-info">
-										{this.state.filterData.dateFilter}
-										&nbsp;
-										<button
-											type="button"
-											className="close"
-											aria-label="Close"
-											value="date"
-											onClick={this.unsetFilterQueue}
-										>
-											✖️
-										</button>
-									</span>{' '}
-								</span>
-							)}
-							{this.state.filterData.locationFilter && (
-								<span>
-									<span className="badge badge-info">
-										{this.state.filterData.locationFilter}
-										&nbsp;
-										<button
-											type="button"
-											className="close"
-											aria-label="Close"
-											value="location"
-											onClick={this.unsetFilterQueue}
-										>
-											✖️
-										</button>
-									</span>{' '}
-								</span>
-							)}
-							{this.state.filterData.metaFilter && (
-								<span>
-									<span className="badge badge-secondary">
-										{this.state.filterData.metaFilter}
-										&nbsp;
-										<button
-											type="button"
-											className="close"
-											aria-label="Close"
-											value="meta"
-											onClick={this.unsetFilterQueue}
-										>
-											✖️
-										</button>
-									</span>{' '}
-								</span>
-							)}
-						</p>
-						{this.renderResults()}
+			<>
+				<Header
+					status="active"
+					setFilterQueue={this.setFilterQueue}
+					slug={this.props.match.params.type}
+					linkResets={this.resetOnHardLink}
+				/>
+				<div className="container-fluid header-override">
+					<div className="row">
+						<div className="col-12 col-xl-6" id="sessionlistcontainer">
+							<p className="h4">
+								{this.state.filterData.dateFilter && (
+									<span>
+										<span className="badge badge-info">
+											{this.state.filterData.dateFilter}
+											&nbsp;
+											<button
+												type="button"
+												className="close"
+												aria-label="Close"
+												value="date"
+												onClick={this.unsetFilterQueue}
+											>
+												✖️
+											</button>
+										</span>{' '}
+									</span>
+								)}
+								{this.state.filterData.locationFilter && (
+									<span>
+										<span className="badge badge-info">
+											{this.state.filterData.locationFilter}
+											&nbsp;
+											<button
+												type="button"
+												className="close"
+												aria-label="Close"
+												value="location"
+												onClick={this.unsetFilterQueue}
+											>
+												✖️
+											</button>
+										</span>{' '}
+									</span>
+								)}
+								{this.state.filterData.metaFilter && (
+									<span>
+										<span className="badge badge-secondary">
+											{this.state.filterData.metaFilter}
+											&nbsp;
+											<button
+												type="button"
+												className="close"
+												aria-label="Close"
+												value="meta"
+												onClick={this.unsetFilterQueue}
+											>
+												✖️
+											</button>
+										</span>{' '}
+									</span>
+								)}
+							</p>
+							{this.renderResults()}
+						</div>
+						{this.state.selectedEventID && this.renderSession(this.state.selectedEventID)}
 					</div>
 				</div>
-			</div>
+			</>
 		);
 	}
 }

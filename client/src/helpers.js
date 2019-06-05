@@ -1,4 +1,6 @@
 import format from 'date-fns/format';
+import $ from 'jquery';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 export function stringifySpeakers(array) {
 	let count = array.length;
@@ -90,7 +92,7 @@ export function dateClassHelper(date) {
 }
 
 export function seasonMarker(season) {
-	if (season === null) {
+	if (!season) {
 		return;
 	} else {
 		let fest = season.split(' ');
@@ -104,4 +106,20 @@ export function seasonMarker(season) {
 
 export function camelCaseBreaker(s) {
 	return s.split(/(?=[A-Z])/).join(' ');
+}
+
+export function mediaQuery() {
+	if ($(window).width() >= 1024) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+export function headerClassSwitch(mediaQuery) {
+	if (mediaQuery()) {
+		return 'fixed-top'
+	} else {
+		return
+	}
 }

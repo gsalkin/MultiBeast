@@ -9,10 +9,11 @@ class SessionWorkflow extends React.Component {
 			qc: []
 		};
 	}
+
 	componentWillReceiveProps(props) {
-		// componentWillRecieveProps will be deprecated in React 17
+		// Technically we shouldn't use componentWillRecieveProps because it will be deprecated in React 17, but 🤷🏻‍♂️
 		this.setState({
-			qc: props.details.QuickClip.length !== 0 ? props.details.QuickClip : []
+			qc: !props.details.QuickClip ? [] : props.details.QuickClip
 		});
 	}
 
@@ -82,6 +83,12 @@ class SessionWorkflow extends React.Component {
 		});
 	};
 
+	markComplete = () => {
+		this.setState({
+			status: 'Complete'
+		});
+	};
+
 	render() {
 		return (
 			<div className="container-fluid collapse" id="workflowContainer">
@@ -97,7 +104,7 @@ class SessionWorkflow extends React.Component {
 								defaultChecked={this.props.details.Recorded}
 								value="Recorded"
 							/>
-							<label htmlFor="inputRecorded" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputRecorded" className="form-check-label">
 								Recorded
 							</label>
 						</div>
@@ -111,7 +118,7 @@ class SessionWorkflow extends React.Component {
 								defaultChecked={this.props.details.Rendered}
 								value="Rendered"
 							/>
-							<label htmlFor="inputRendered" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputRendered" className="form-check-label">
 								Rendered
 							</label>
 						</div>
@@ -124,7 +131,7 @@ class SessionWorkflow extends React.Component {
 								ref={this.quickclipRenderedRef}
 								defaultChecked={this.props.details.QuickClipRendered}
 							/>
-							<label htmlFor="inputQuickClipRendered" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputQuickClipRendered" className="form-check-label">
 								Key Moments Rendered
 							</label>
 						</div>
@@ -137,7 +144,7 @@ class SessionWorkflow extends React.Component {
 								ref={this.sentToSpeakerRef}
 								defaultChecked={this.props.details.Sent}
 							/>
-							<label htmlFor="inputSent" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputSent" className="form-check-label">
 								Sent to Speaker(s)
 							</label>
 						</div>
@@ -149,8 +156,9 @@ class SessionWorkflow extends React.Component {
 								id="inputComplete"
 								ref={this.completeRef}
 								defaultChecked={this.props.details.Complete}
+								onClick={this.markComplete}
 							/>
-							<label htmlFor="inputComplete" className="form-check-label col-form-label col-form-label-md">
+							<label htmlFor="inputComplete" className="form-check-label">
 								Complete
 							</label>
 						</div>
@@ -168,6 +176,12 @@ class SessionWorkflow extends React.Component {
 							ref={this.youtubeURLRef}
 							id="youtubeURLInput"
 						/>
+						{this.props.details.YouTubeURL && (
+							<a href={this.props.details.YouTubeURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.YouTubeURL} <figure className="align-text-top fas fa-external-link-alt" />
+							</a>
+						)}
+						<br/>
 						<label htmlFor="sessionURLInput">Session URL</label>
 						<input
 							type="text"
@@ -176,6 +190,12 @@ class SessionWorkflow extends React.Component {
 							ref={this.sessionURLRef}
 							id="sessionURLInput"
 						/>
+						{this.props.details.SessionURL && (
+							<a href={this.props.details.SessionURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.SessionURL} <figure className="align-text-top fas fa-external-link-alt" />
+							</a>
+						)}
+						<br/>
 						<label htmlFor="albumURLInput">Album URL</label>
 						<input
 							type="text"
@@ -184,6 +204,12 @@ class SessionWorkflow extends React.Component {
 							ref={this.albumURLRef}
 							id="albumURLInput"
 						/>
+						{this.props.details.AlbumURL && (
+							<a href={this.props.details.AlbumURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.AlbumURL} <figure className="align-text-top fas fa-external-link-alt" />
+							</a>
+						)}
+						<br/>
 						<label htmlFor="audioURLInput">Audio URL</label>
 						<input
 							type="text"
@@ -192,6 +218,12 @@ class SessionWorkflow extends React.Component {
 							ref={this.audioURLRef}
 							id="audioURLInput"
 						/>
+						{this.props.details.AudioURL && (
+							<a href={this.props.details.AudioURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.AudioURL} <figure className="align-text-top fas fa-external-link-alt" />
+							</a>
+						)}
+						<br/>
 						<label htmlFor="transcriptURLInput">Transcript URL</label>
 						<input
 							type="text"
@@ -200,13 +232,18 @@ class SessionWorkflow extends React.Component {
 							ref={this.transcriptURLRef}
 							id="transcriptURLInput"
 						/>
+						{this.props.details.TranscriptURL && (
+							<a href={this.props.details.TranscriptURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.TranscriptURL}
+							</a>
+						)}
 					</div>
 				</form>
 				<br />
 				<form action="" id="quickclipEntry" onSubmit={this.saveQuickClip}>
-					<h5>Key Moments Entry</h5>
+					<h5>QuickClips Entry Form</h5>
 					<div className="p-3 mb-2 bg-warning text-dark">
-						<small>Remember to save Key Moments</small>
+						<small>Please save QuickClips before refreshing page.</small>
 					</div>
 					<div className="input-group mb-3">
 						<input
@@ -258,11 +295,10 @@ class SessionWorkflow extends React.Component {
 						<textarea className="form-control" id="captionSuggestion" rows="3" ref={this.captionRef} />
 					</div>
 					<button type="submit" form="quickclipEntry" className="btn btn-primary">
-						Add Key Moment <br />
+						Add QuickClip Entry <br />
 					</button>
-					&nbsp;
 				</form>
-				<Fragment>
+				<>
 					{this.state.qc.length >= 1 && (
 						<div className="table-responsive">
 							<table className="table">
@@ -290,7 +326,7 @@ class SessionWorkflow extends React.Component {
 							</table>
 						</div>
 					)}
-				</Fragment>
+				</>
 				&nbsp;
 			</div>
 		);

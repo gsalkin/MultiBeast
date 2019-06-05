@@ -1,15 +1,13 @@
-import React, { Fragment } from 'react';
-import { HashLink as Link } from 'react-router-hash-link';
-import Header from './Header';
+import React from 'react';
 import SessionCoverage from './SessionCoverage';
 import SessionWorkflow from './SessionWorkflow';
 import { convertTimes, stringifySpeakers, dateClassHelper } from '../helpers';
 
-class Session extends React.Component {
+class SessionSPA extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: this.props.history.location.state.user,
+			user: sessionStorage.getItem('user_name'),
 			ArtsVisionFork: {},
 			AspenChecklistFork: {},
 			AspenCoverageFork: {}
@@ -17,7 +15,7 @@ class Session extends React.Component {
 	}
 
 	componentDidMount() {
-		let sessionID = this.props.match.params.sessionID;
+		let sessionID = this.props.id;
 		this.setSessionState(sessionID);
 	}
 
@@ -47,7 +45,7 @@ class Session extends React.Component {
 	};
 
 	updateSession = data => {
-		fetch('/api/v1/update/session/' + this.state.ArtsVisionFork.EventID, {
+		fetch('/api/v1/update/session/' + this.props.id, {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
@@ -56,6 +54,10 @@ class Session extends React.Component {
 			body: JSON.stringify(data)
 		})
 			.then(response => {
+				if (response.status === 200) {
+					document.getElementById('inputCoverageNotes').value = '';
+					this.props.reRenderApp();
+				}
 				return response.json();
 			})
 			.then(json => {
@@ -68,7 +70,7 @@ class Session extends React.Component {
 	};
 
 	render() {
-		const {ArtsVisionFork, AspenCoverageFork, AspenChecklistFork} = this.state
+		const { AspenCoverageFork, ArtsVisionFork, AspenChecklistFork } = this.state;
 		const {
 			SessionName,
 			SessionDate,
@@ -79,71 +81,67 @@ class Session extends React.Component {
 			ArtsVisionNotes,
 			EventID
 		} = ArtsVisionFork;
+
 		return (
-			<div className="container-fluid">
-				<Header />
-				<div className="row">
-					<div className="col-3 offset-0 px-1">
-						<Link className="btn btn-outline-dark" to={'/view/all/#event-' + EventID}>
-							← Back
-						</Link>
-					</div>
+			<div className="col-12 col-md-6 position-fixed half-page-fixed" id="sessiondetailcontainer">
+				<h3>
+					<a className="btn btn-outline-dark" onClick={this.props.unsetSessionID}>
+						← Back
+					</a>
+					&nbsp;
+					{SessionName}
+					&nbsp;
+				</h3>
+				<h5>
+					<span className={dateClassHelper(SessionDate)}>{SessionDate}</span>{' '}
+					<span className="badge badge-info">
+						{convertTimes(StartTime)} - {convertTimes(EndTime)}
+					</span>{' '}
+					<span className="badge badge-warning">{SessionLocation}</span>{' '}
+					<span className="badge badge-success">#{EventID}</span>
+				</h5>
+				{SessionSpeakers && <p className="lead">Speakers: {stringifySpeakers(SessionSpeakers)}</p>}
+				<div className="bg-light px-2">
+					<small>{ArtsVisionNotes}</small>
 				</div>
-				<div className="container">
-					<h2>
-						<span className="badge badge-success">{EventID}</span> {SessionName}
-					</h2>
-					<h4>
-						<span className={dateClassHelper(SessionDate)}>{SessionDate}</span>{' '}
-						<span className="badge badge-info">
-							{convertTimes(StartTime)} - {convertTimes(EndTime)}
-						</span>{' '}
-						<span className="badge badge-warning">{SessionLocation}</span>
-					</h4>
-					{SessionSpeakers && (
-						<Fragment>
-							<p className="lead">Speakers: {stringifySpeakers(SessionSpeakers)}</p>
-						</Fragment>
-					)}
-					<div className="bg-light px-2">
-						<small>{ArtsVisionNotes}</small>
-					</div>
-					<hr />
-					<div className="card">
-						<h5 className="card-header text-primary">
-							<a data-toggle="collapse" href="#coveragePlanForm" aria-expanded="true" className="d-block">
-								Coverage &nbsp;
-								<i className="fa fa-chevron-down pull-right" />
-							</a>
-						</h5>
-						<SessionCoverage
-							details={AspenCoverageFork}
-							updateSession={this.updateSession}
-							user={this.state.user}
-						/>
-					</div>
-					<hr />
-					<div className="card">
-						<h5 className="card-header text-primary">
-							<a data-toggle="collapse" href="#workflowContainer" aria-expanded="true" className="d-block">
-								Workflow &nbsp;
-								<i className="fa fa-chevron-down pull-right" />
-							</a>
-						</h5>
-						<SessionWorkflow
-							details={AspenChecklistFork}
-							updateSession={this.updateSession}
-							user={this.state.user}
-						/>
-					</div>
+				<hr />
+				<div className="card">
+					<h5 className="card-header text-primary">
+						<a data-toggle="collapse" href="#coveragePlanForm" aria-expanded="true" className="d-block">
+							Coverage &nbsp;
+							<i className="fa fa-chevron-down pull-right" />
+						</a>
+					</h5>
+					<SessionCoverage
+						details={AspenCoverageFork}
+						updateSession={this.updateSession}
+						user={this.state.user}
+					/>
 				</div>
-				<br/>
-				<br/>
-				<br/>
-				<br/>
+				<hr />
+				<div className="card">
+					<h5 className="card-header text-primary">
+						<a data-toggle="collapse" href="#workflowContainer" aria-expanded="true" className="d-block">
+							Workflow &nbsp;
+							<i className="fa fa-chevron-down pull-right" />
+						</a>
+					</h5>
+					<SessionWorkflow
+						details={AspenChecklistFork}
+						updateSession={this.updateSession}
+						user={this.state.user}
+					/>
+				</div>
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
+				<br />
 			</div>
 		);
 	}
 }
 
-export default Session;
+export default SessionSPA;

@@ -29,8 +29,9 @@ class SessionListItem extends React.Component {
 				Restriction
 			}
 		} = this.props.data;
-		const userName = this.props.userName ? this.props.userName : '';
-		const seasonClass = () => {
+		const avStatus = this.props.data.ArtsVisionFork.Meta.Status;
+		//const userName = this.props.userName ? this.props.userName : sessionStorage.getItem('username');
+		const seasonClass = function() {
 			if (Helpers.seasonMarker(SessionFest) === 'Aspen Ideas Health') {
 				return 'purple__aspen';
 			} else {
@@ -57,26 +58,45 @@ class SessionListItem extends React.Component {
 					</span>
 				</div>
 				<div className="card-body">
-					<Link
-						to={{
-							pathname: '/session/' + EventID,
-							state: { user: userName }
-						}}
-						className="text-dark"
-					>
-						<div className="row">
-							<div className="col-10">
-								<h4>{SessionName}</h4>
+					<div className="row">
+						<div className="col-10">
+							<div id="mobileDisplayController_full">
+								<a
+									onClick={() => this.props.setSessionID(EventID)}
+									className="text-dark"
+									href={'#' + EventID}
+								>
+									<h5 className="inline-link">{SessionName}</h5>
+								</a>
+								<Link
+									to={{
+										pathname: '/session/' + EventID
+									}}
+									className="ml-2 text-dark inline-link"
+									//target="_blank"
+								>
+									<figure className="align-text-top fas fa-external-link-alt" />
+								</Link>
 							</div>
-							<div className="col-2">
-								<h5 className="text-right">
-									<strong className="align-middle">#{EventID}</strong>
-									&nbsp;
-									<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
-								</h5>
+							{/** id mobileDisplayController_small has display:none w/ width < 1024 **/}
+							<div id="mobileDisplayController_small">
+								<Link to={'/session/' + EventID} className="ml-2 text-dark inline-link">
+									<h5>{SessionName}</h5>
+								</Link>
 							</div>
 						</div>
-					</Link>
+						<div className="col-2">
+							<h6 className="text-right">
+								<strong className="align-middle">#{EventID}</strong>
+								&nbsp;
+								{avStatus === 'cancelled' ? (
+									<span className={'h5 badge ' + Helpers.classHelper(avStatus)}>{avStatus}</span>
+								) : (
+									<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
+								)}
+							</h6>
+						</div>
+					</div>
 					<Link
 						onClick={this.props.filter}
 						to={'/view/location/' + encodeURIComponent(SessionLocation)}
@@ -94,7 +114,7 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Video'}
 							className="badge badge-pill badge-dark"
 						>
-							Recording ✓
+							Record ✓
 						</Link>
 					)}
 					&nbsp;
@@ -104,7 +124,7 @@ class SessionListItem extends React.Component {
 							to={'/view/type/Rover'}
 							className="badge badge-pill badge-dark"
 						>
-							Send Rover ✓
+							Rover ✓
 						</Link>
 					)}
 					&nbsp;
@@ -167,13 +187,23 @@ class SessionListItem extends React.Component {
 						</Link>
 					)}
 					&nbsp;
+					{Quotes && (
+						<Link
+							onClick={this.props.filter}
+							to={'/view/type/Quotes'}
+							className="badge badge-pill badge-dark"
+						>
+							Quotes ✓
+						</Link>
+					)}
+					&nbsp;
 					{Rundown && (
 						<Link
 							onClick={this.props.filter}
 							to={'/view/type/Rundown'}
 							className="badge badge-pill badge-dark"
 						>
-							Session Rundown ✓
+							Rundown ✓
 						</Link>
 					)}
 					&nbsp;

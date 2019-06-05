@@ -13,14 +13,19 @@ var sessionSchema = new Schema({
 		EndTime: String,
 		SessionLocation: String,
 		ArtsVisionNotes: String,
-		Meta: {
-			Status: String,
-			LastEdit: {
-				type: String
-			},
-			LastUser: String,
-			Updated: Boolean
-		}
+		Status: {
+			type: String,
+			default: ''
+		},
+		LastEdit: {
+			type: String,
+			default: ''
+		},
+		LastUser: {
+			type: String,
+			default: ''
+		},
+		Updated: Boolean
 	},
 	AspenCoverageFork: {
 		Video: {
