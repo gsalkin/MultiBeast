@@ -29,7 +29,8 @@ class SessionListItem extends React.Component {
 				Restriction
 			}
 		} = this.props.data;
-		// const userName = this.props.userName ? this.props.userName : ''
+		const avStatus = this.props.data.ArtsVisionFork.Meta.Status;
+		//const userName = this.props.userName ? this.props.userName : sessionStorage.getItem('username');
 		const seasonClass = function() {
 			if (Helpers.seasonMarker(SessionFest) === 'Aspen Ideas Health') {
 				return 'purple__aspen';
@@ -59,19 +60,40 @@ class SessionListItem extends React.Component {
 				<div className="card-body">
 					<div className="row">
 						<div className="col-10">
-							<a
-								onClick={() => this.props.setSessionID(EventID)}
-								className="text-dark stretched-link"
-								href={'#' + EventID}
-							>
-								<h5>{SessionName}</h5>
-							</a>
+							<div id="mobileDisplayController_full">
+								<a
+									onClick={() => this.props.setSessionID(EventID)}
+									className="text-dark"
+									href={'#' + EventID}
+								>
+									<h5 className="inline-link">{SessionName}</h5>
+								</a>
+								<Link
+									to={{
+										pathname: '/session/' + EventID
+									}}
+									className="ml-2 text-dark inline-link"
+									//target="_blank"
+								>
+									<figure className="align-text-top fas fa-external-link-alt" />
+								</Link>
+							</div>
+							{/** id mobileDisplayController_small has display:none w/ width < 1024 **/}
+							<div id="mobileDisplayController_small">
+								<Link to={'/session/' + EventID} className="ml-2 text-dark inline-link">
+									<h5>{SessionName}</h5>
+								</Link>
+							</div>
 						</div>
 						<div className="col-2">
 							<h6 className="text-right">
 								<strong className="align-middle">#{EventID}</strong>
 								&nbsp;
-								<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
+								{avStatus === 'cancelled' ? (
+									<span className={'h5 badge ' + Helpers.classHelper(avStatus)}>{avStatus}</span>
+								) : (
+									<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>
+								)}
 							</h6>
 						</div>
 					</div>

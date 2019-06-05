@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import QuickClip from './QuickClip';
 
 class SessionWorkflow extends React.Component {
@@ -10,12 +10,11 @@ class SessionWorkflow extends React.Component {
 		};
 	}
 
-	componentWillReceiveProps(props) { 
-		console.log(props.details.QuickClip);
+	componentWillReceiveProps(props) {
 		// Technically we shouldn't use componentWillRecieveProps because it will be deprecated in React 17, but 🤷🏻‍♂️
 		this.setState({
-		qc: !props.details.QuickClip ? [] : props.details.QuickClip
-		})
+			qc: !props.details.QuickClip ? [] : props.details.QuickClip
+		});
 	}
 
 	// Quickclip Refs
@@ -87,8 +86,8 @@ class SessionWorkflow extends React.Component {
 	markComplete = () => {
 		this.setState({
 			status: 'Complete'
-		})
-	}
+		});
+	};
 
 	render() {
 		return (
@@ -177,6 +176,12 @@ class SessionWorkflow extends React.Component {
 							ref={this.youtubeURLRef}
 							id="youtubeURLInput"
 						/>
+						{this.props.details.YouTubeURL && (
+							<a href={this.props.details.YouTubeURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.YouTubeURL} <figure className="align-text-top fas fa-external-link-alt" />
+							</a>
+						)}
+						<br/>
 						<label htmlFor="sessionURLInput">Session URL</label>
 						<input
 							type="text"
@@ -185,6 +190,12 @@ class SessionWorkflow extends React.Component {
 							ref={this.sessionURLRef}
 							id="sessionURLInput"
 						/>
+						{this.props.details.SessionURL && (
+							<a href={this.props.details.SessionURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.SessionURL} <figure className="align-text-top fas fa-external-link-alt" />
+							</a>
+						)}
+						<br/>
 						<label htmlFor="albumURLInput">Album URL</label>
 						<input
 							type="text"
@@ -193,6 +204,12 @@ class SessionWorkflow extends React.Component {
 							ref={this.albumURLRef}
 							id="albumURLInput"
 						/>
+						{this.props.details.AlbumURL && (
+							<a href={this.props.details.AlbumURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.AlbumURL} <figure className="align-text-top fas fa-external-link-alt" />
+							</a>
+						)}
+						<br/>
 						<label htmlFor="audioURLInput">Audio URL</label>
 						<input
 							type="text"
@@ -201,6 +218,12 @@ class SessionWorkflow extends React.Component {
 							ref={this.audioURLRef}
 							id="audioURLInput"
 						/>
+						{this.props.details.AudioURL && (
+							<a href={this.props.details.AudioURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.AudioURL} <figure className="align-text-top fas fa-external-link-alt" />
+							</a>
+						)}
+						<br/>
 						<label htmlFor="transcriptURLInput">Transcript URL</label>
 						<input
 							type="text"
@@ -209,6 +232,11 @@ class SessionWorkflow extends React.Component {
 							ref={this.transcriptURLRef}
 							id="transcriptURLInput"
 						/>
+						{this.props.details.TranscriptURL && (
+							<a href={this.props.details.TranscriptURL} target="_blank" rel="noopener noreferrer">
+								{this.props.details.TranscriptURL}
+							</a>
+						)}
 					</div>
 				</form>
 				<br />

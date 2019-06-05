@@ -1,5 +1,4 @@
 import React from 'react';
-import Header from './Header';
 
 class Login extends React.Component {
 	constructor(props) {
@@ -70,8 +69,7 @@ class Login extends React.Component {
 							<div className="jumbotron">
 								<h1 className="display-4">MultiBeast</h1>
 								<p className="lead">
-									MultiBeast organizes and filters Aspen Ideas Festival sessions based on the Aspen
-									Institute's coverage strategy.
+									MultiBeast organizes and filters Aspen Ideas Festival sessions based on the Aspen Institute's coverage strategy.
 								</p>
 								<hr className="my-4" />
 								<form onSubmit={this.appLogin}>

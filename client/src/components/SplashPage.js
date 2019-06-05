@@ -29,7 +29,7 @@ class SplashPage extends React.Component {
                     <div className="row">
                         <div className="text-center col-4 offset-4">
                             <Link to={this.state.link}>
-                                <img src="../../images/MultiBeast_skull.png" alt="MultiBeast Logo" className='img-fluid' alt="Enter..."/>
+                                <img src="../../images/MultiBeast_skull.png" className='img-fluid' alt="Enter..."/>
                             </Link>
                         </div>
                     </div>

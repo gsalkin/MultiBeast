@@ -1,9 +1,7 @@
-import $ from 'jquery';
 import React, { Fragment } from 'react';
 import SessionListItem from './SessionListItem';
 import Header from './Header';
-import SideNav from './SideNav';
-import SessionSPA from './SessionSPA';
+import Session from './Session';
 
 class App extends React.Component {
 	constructor(props) {
@@ -249,7 +247,7 @@ class App extends React.Component {
 
 	renderSession = id => {
 		if (id) {
-			return <SessionSPA key={id} id={id} unsetSessionID={this.unsetSessionID} reRenderApp={this.reRenderApp} />;
+			return <Session key={id} id={id} unsetSessionID={this.unsetSessionID} reRenderApp={this.reRenderApp} />;
 		} else {
 			return (
 				<div className="col-6">
@@ -264,14 +262,13 @@ class App extends React.Component {
 			<>
 				<Header
 					status="active"
-					filter={this.resetOnHardLink}
 					setFilterQueue={this.setFilterQueue}
 					slug={this.props.match.params.type}
 					linkResets={this.resetOnHardLink}
 				/>
 				<div className="container-fluid header-override">
 					<div className="row">
-						<div className="col-12 col-md-6" id="sessionlistcontainer">
+						<div className="col-12 col-xl-6" id="sessionlistcontainer">
 							<p className="h4">
 								{this.state.filterData.dateFilter && (
 									<span>
@@ -327,7 +324,7 @@ class App extends React.Component {
 							</p>
 							{this.renderResults()}
 						</div>
-						{this.renderSession(this.state.selectedEventID)}
+						{this.state.selectedEventID && this.renderSession(this.state.selectedEventID)}
 					</div>
 				</div>
 			</>

@@ -1,16 +1,14 @@
 import React, { Fragment } from 'react';
 import { HashLink as Link } from 'react-router-hash-link';
-import Header from './Header';
 import SessionCoverage from './SessionCoverage';
 import SessionWorkflow from './SessionWorkflow';
-import Session from './SessionSPA';
-import { convertTimes, stringifySpeakers, dateClassHelper } from '../helpers';
+import * as Helpers from '../helpers';
 
-class Session extends React.Component {
+class SessionPage extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: this.props.history.location.state.user,
+			user: sessionStorage.getItem('user_name'),
 			ArtsVisionFork: {},
 			AspenChecklistFork: {},
 			AspenCoverageFork: {}
@@ -69,44 +67,59 @@ class Session extends React.Component {
 	};
 
 	render() {
+		const { ArtsVisionFork, AspenCoverageFork, AspenChecklistFork } = this.state;
 		const {
 			SessionName,
 			SessionDate,
 			SessionLocation,
+			SessionTrack,
+			SessionFest,
 			SessionSpeakers,
 			StartTime,
 			EndTime,
 			ArtsVisionNotes,
-			EventID
-		} = this.state.ArtsVisionFork;
+			EventID,
+			Status
+		} = ArtsVisionFork;
+		const seasonClass = function() {
+			if (Helpers.seasonMarker(SessionFest) === 'Aspen Ideas Health') {
+				return 'purple__aspen';
+			} else {
+				return 'brightblue__aspen';
+			}
+		};
 		return (
 			<div className="container-fluid">
-				<Header />
-				<div className="row">
-					<div className="col-3 offset-0 px-1">
+				<nav className="navbar navbar-light">
+					<Link className="navbar-brand" to="/view/all" onClick={this.props.filter}>
+						<img src="/images/favicon/apple-icon.png" width="50" height="50" alt="" />
+						&nbsp; MultiBeast
+					</Link>
+				</nav>
+				<div className="container">
+					<h2>
 						<Link className="btn btn-outline-dark" to={'/view/all/#event-' + EventID}>
 							← Back
 						</Link>
-					</div>
-				</div>
-				<div className="container">
-					<h2>
-						<span className="badge badge-success">{EventID}</span> {SessionName}
+						<span className="ml-2">{SessionName}</span>
 					</h2>
 					<h4>
-						<span className={dateClassHelper(SessionDate)}>{SessionDate}</span>{' '}
+						<span className="badge badge-success">{EventID}</span>{' '}
+						<span className={'badge ' + seasonClass()}>{Helpers.seasonMarker(SessionFest)}</span>{' '}
+						<span className={Helpers.dateClassHelper(SessionDate)}>{SessionDate}</span>{' '}
 						<span className="badge badge-info">
-							{convertTimes(StartTime)} - {convertTimes(EndTime)}
+							{Helpers.convertTimes(StartTime)} - {Helpers.convertTimes(EndTime)}
 						</span>{' '}
-						<span className="badge badge-warning">{SessionLocation}</span>
+						<span className="badge badge-warning">{SessionLocation}</span>{' '}
+						{Status === 'Cancelled' && <span className="badge badge-warning">{Status}</span>}
 					</h4>
 					{SessionSpeakers && (
 						<Fragment>
-							<p className="lead">Speakers: {stringifySpeakers(SessionSpeakers)}</p>
+							<p className="lead">Speakers: {Helpers.stringifySpeakers(SessionSpeakers)}</p>
 						</Fragment>
 					)}
-					<div className="bg-light">
-						<p className="p-3 border">{ArtsVisionNotes}</p>
+					<div className="bg-light px-2">
+						<small>{ArtsVisionNotes}</small>
 					</div>
 					<hr />
 					<div className="card">
@@ -117,7 +130,7 @@ class Session extends React.Component {
 							</a>
 						</h5>
 						<SessionCoverage
-							details={this.state.AspenCoverageFork}
+							details={AspenCoverageFork}
 							updateSession={this.updateSession}
 							user={this.state.user}
 						/>
@@ -125,21 +138,30 @@ class Session extends React.Component {
 					<hr />
 					<div className="card">
 						<h5 className="card-header text-primary">
-							<a data-toggle="collapse" href="#workflowContainer" aria-expanded="true" className="d-block">
+							<a
+								data-toggle="collapse"
+								href="#workflowContainer"
+								aria-expanded="true"
+								className="d-block"
+							>
 								Workflow &nbsp;
 								<i className="fa fa-chevron-down pull-right" />
 							</a>
 						</h5>
 						<SessionWorkflow
-							details={this.state.AspenChecklistFork}
+							details={AspenChecklistFork}
 							updateSession={this.updateSession}
 							user={this.state.user}
 						/>
 					</div>
 				</div>
+				<br />
+				<br />
+				<br />
+				<br />
 			</div>
 		);
 	}
 }
 
-export default Session;
+export default SessionPage;

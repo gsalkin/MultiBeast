@@ -1,6 +1,24 @@
 /* Assistive Styles */
-.header-override {
-    padding-top: 80px;
+@media only screen and (min-width:1025px) { 
+	.header-override {
+        padding-top: 80px;
+    }
+
+    #mobileDisplayController_full {
+        display: block
+    }
+    #mobileDisplayController_small {
+        display: none
+    }
+}
+
+@media only screen and (max-width:1024px) { 
+    #mobileDisplayController_full {
+        display: none
+    }
+    #mobileDisplayController_small {
+        display: block
+    }
 }
 
 .half-page-fixed {
@@ -10,10 +28,9 @@
     padding-bottom:80px;
 }
 
-/* input[type=checkbox] {
-    width: 20px;
-    height: 20px;
-} */
+.inline-link {
+    display: inline;
+}
 
 .card-header .fa {
     transition: .3s transform ease-in-out;

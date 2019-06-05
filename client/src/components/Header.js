@@ -80,6 +80,17 @@ class Header extends React.Component {
 		);
 	};
 
+	headerDisplayController = () => {
+		const width = window.innerWidth;
+		let headerCSS;
+		if (width > 1025) {
+			headerCSS = 'fixed-top';
+		} else {
+			headerCSS = '';
+		}
+		return headerCSS;
+	};
+
 	render() {
 		const today = format(new Date(), 'YYYY-MM-DD');
 		const dates = filterData.Dates;
@@ -87,7 +98,7 @@ class Header extends React.Component {
 		const types = filterData.Types;
 		return (
 			<Fragment>
-				<nav className="navbar navbar-light fixed-top bg-light">
+				<nav className={'navbar navbar-light ' + this.headerDisplayController() + ' bg-light'}>
 					<NavLink className="navbar-brand" to="/view/all" onClick={this.props.filter}>
 						<img src="/images/favicon/apple-icon.png" width="50" height="50" alt="" />
 						&nbsp; MultiBeast
@@ -110,7 +121,7 @@ class Header extends React.Component {
 								</select>
 							</div>
 						</form>
-						<form action="" id="locationForm">
+						<form id="locationForm">
 							<div className="input-group mb-3">
 								<div className="input-group-prepend">
 									<label className="input-group-text" htmlFor="inputLocation">
@@ -131,7 +142,7 @@ class Header extends React.Component {
 								</select>
 							</div>
 						</form>
-						<form action="" id="metaForm">
+						<form id="metaForm">
 							<div className="input-group mb-3">
 								<div className="input-group-prepend">
 									<label className="input-group-text" htmlFor="inputMeta">
@@ -150,10 +161,9 @@ class Header extends React.Component {
 						</form>
 					</div>
 					<ul className="nav justify-content-end">
-					<li className="nav-item dropdown">
+						<li className="nav-item dropdown">
 							<a
 								className="nav-link dropdown-toggle"
-								href="#"
 								id="navbarDropdownMenuLink"
 								role="button"
 								data-toggle="dropdown"
@@ -170,7 +180,7 @@ class Header extends React.Component {
 								</li>
 								<li>
 									<NavLink
-										onClick={this.props.filter}
+										onClick={this.props.linkResets}
 										to="/view/season/SH%202018"
 										className="dropdown-item"
 									>
@@ -179,8 +189,7 @@ class Header extends React.Component {
 								</li>
 								<li>
 									<NavLink
-										href="#"
-										onClick={this.props.filter}
+										onClick={this.props.linkResets}
 										to="/view/season/AIF%202018"
 										className="dropdown-item"
 									>
@@ -211,19 +220,18 @@ class Header extends React.Component {
 									</NavLink>
 								</li>
 								<li>
-									<NavLink to="" className="dropdown-item" onClick={this.props.linkResets}>
+									<NavLink
+										to="/view/type/Complete"
+										className="dropdown-item"
+										onClick={this.props.linkResets}
+									>
 										Completed
 									</NavLink>
 								</li>
 							</ul>
 						</li>
 						<li className="nav-item">
-							<NavLink
-								className={'nav-link ' + this.props.status}
-								to="/admin"
-								tabIndex="-1"
-								aria-disabled="true"
-							>
+							<NavLink className={'nav-link ' + this.props.status} to="/admin" tabIndex="-1">
 								Admin
 							</NavLink>
 						</li>
