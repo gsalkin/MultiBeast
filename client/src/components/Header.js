@@ -133,7 +133,7 @@ class Header extends React.Component {
 								>
 									<option defaultValue="all">All</option>
 									{Object.entries(Locations).map(([key, value]) =>(
-										<option value={key} type="location">
+										<option key={key} value={key} type="location">
 											{value}
 										</option>
 									))}
@@ -217,7 +217,7 @@ class Header extends React.Component {
 										All Video
 									</NavLink>
 								</li>
-								<li>
+								{/* <li>
 									<NavLink
 										to="/view/type/Complete"
 										className="dropdown-item"
@@ -225,7 +225,7 @@ class Header extends React.Component {
 									>
 										Completed
 									</NavLink>
-								</li>
+								</li> */}
 							</ul>
 						</li>
 						<li className="nav-item">

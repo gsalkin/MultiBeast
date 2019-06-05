@@ -60,6 +60,11 @@
                     "field": "Type",
                     "operator": "NotContains",
                     "value": "Registration"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Special Event"
                 }
             ],
             "orderby": [

@@ -55,34 +55,37 @@ export function classHelper(status) {
 export function dateClassHelper(date) {
 	let className = '';
 	switch (date) {
-		case '2018-06-21':
+		case '2019-06-20':
+				className = 'badge badge-warning';
+				break;
+		case '2019-06-21':
 			className = 'badge badge-light';
 			break;
-		case '2018-06-22':
+		case '2019-06-22':
 			className = 'badge badge-secondary';
 			break;
-		case '2018-06-23':
+		case '2019-06-23':
 			className = 'badge badge-info';
 			break;
-		case '2018-06-24':
+		case '2019-06-24':
 			className = 'badge badge-primary';
 			break;
-		case '2018-06-25':
+		case '2019-06-25':
 			className = 'badge badge-success';
 			break;
-		case '2018-06-26':
+		case '2019-06-26':
 			className = 'badge badge-dark';
 			break;
-		case '2018-06-27':
+		case '2019-06-27':
 			className = 'badge badge-light';
 			break;
-		case '2018-06-28':
+		case '2019-06-28':
 			className = 'badge badge-secondary';
 			break;
-		case '2018-06-29':
+		case '2019-06-29':
 			className = 'badge badge-info';
 			break;
-		case '2018-06-30':
+		case '2019-06-30':
 			className = 'badge badge-primary';
 			break;
 		default:
