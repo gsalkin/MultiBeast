@@ -29,7 +29,7 @@ class SessionListItem extends React.Component {
 				Restriction
 			}
 		} = this.props.data;
-		const avStatus = this.props.data.ArtsVisionFork.Meta.Status;
+		const avStatus = this.props.data.ArtsVisionFork.Status;
 		//const userName = this.props.userName ? this.props.userName : sessionStorage.getItem('username');
 		const seasonClass = function() {
 			if (Helpers.seasonMarker(SessionFest) === 'Aspen Ideas Health') {
