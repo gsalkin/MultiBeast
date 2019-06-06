@@ -42,11 +42,6 @@
     /* Modified from https://disjfa.github.io/bootstrap-tricks/card-collapse-tricks/ */
 }
 
-input[type=checkbox] {
-    width: 30px;
-    height: 30px;
-}
-
 .card-header .fa {
     transition: .3s transform ease-in-out;
     /* Modified from https://disjfa.github.io/bootstrap-tricks/card-collapse-tricks/ */
