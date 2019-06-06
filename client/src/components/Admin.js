@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header';
+import {Link} from 'react-router-dom';
 
 class Admin extends React.Component {
 	constructor(props) {
@@ -74,7 +74,12 @@ class Admin extends React.Component {
 	render() {
 		return (
 			<div className="container-fluid">
-				<Header status="disabled" />
+				<nav className="navbar navbar-light">
+					<Link className="navbar-brand" to="/view/all" onClick={this.props.filter}>
+						<img src="/images/favicon/apple-icon.png" width="50" height="50" alt="" />
+						&nbsp; MultiBeast
+					</Link>
+				</nav>
 				<div className="container">
 					<div className="row">
 						<div className="col-6">
