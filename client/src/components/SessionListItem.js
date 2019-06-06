@@ -26,7 +26,8 @@ class SessionListItem extends React.Component {
 				Transcript,
 				Quotes,
 				Rundown,
-				Restriction
+				Restriction, 
+				AspenNotes
 			}
 		} = this.props.data;
 		const avStatus = this.props.data.ArtsVisionFork.Status;
@@ -186,16 +187,7 @@ class SessionListItem extends React.Component {
 							Quotes ✓
 						</Link>
 					)}
-					&nbsp;
-					{Quotes && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/Quotes'}
-							className="badge badge-pill badge-dark"
-						>
-							Quotes ✓
-						</Link>
-					)}
+					
 					&nbsp;
 					{Rundown && (
 						<Link
@@ -204,6 +196,16 @@ class SessionListItem extends React.Component {
 							className="badge badge-pill badge-dark"
 						>
 							Rundown ✓
+						</Link>
+					)}
+					&nbsp;
+					{AspenNotes && (
+						<Link
+							onClick={() => this.props.setSessionID(EventID)}
+							//to={'/view/type/Restriction'}
+							className="badge badge-pill badge-warning"
+						>
+							See Notes ●
 						</Link>
 					)}
 					&nbsp;
