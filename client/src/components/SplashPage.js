@@ -18,14 +18,14 @@ class SplashPage extends React.Component {
     }
 	render() {
 		return (
-			<div class="card bg-dark text-white">
+			<div className="card bg-dark text-white">
 				<img
 					src="https://aspenideasfestival.imgix.net/c42dbb12-f28a-4b09-bea6-28c304316957/28454537747_d5b99527d2_o1.jpg?auto=compress%2Cformat&dpr=1&fit=min&fm=jpg&w=1920&q=80"
 					class="card-img"
                     alt="Aspen Campus"
 				/>
-				<div class="card-img-overlay">
-					<h1 class="display-1 text-center">MultiBeast</h1>
+				<div className="card-img-overlay">
+					<h1 className="display-1 text-center">MultiBeast</h1>
                     <div className="row">
                         <div className="text-center col-4 offset-4">
                             <Link to={this.state.link}>

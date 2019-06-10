@@ -200,13 +200,13 @@ class SessionListItem extends React.Component {
 					)}
 					&nbsp;
 					{AspenNotes && (
-						<Link
+						<a
 							onClick={() => this.props.setSessionID(EventID)}
-							//to={'/view/type/Restriction'}
+							href={'#' + EventID}
 							className="badge badge-pill badge-warning"
 						>
 							See Notes ●
-						</Link>
+						</a>
 					)}
 					&nbsp;
 					{Restriction && (
