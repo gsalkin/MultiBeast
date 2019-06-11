@@ -1,6 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
-const postBody = require('../postBody.json')
+const postBody = require('../postBody.json');
 const Session = require('./models/session.js');
 const Utils = require('./utils.js');
 
@@ -28,10 +28,10 @@ var apiEngine = {
 			.exec();
 		return dataBase;
 	},
-	addToDB: async function(loopStart, loopEnd, api, db, callback) {
+	addToDB: async function(dbCount, apiCount, api, db, callback) {
 		let database = db;
-		console.log('Adding ' + (loopEnd - loopStart) + ' session(s) to database');
-		for (let i = loopStart; i < loopEnd; i++) {
+		console.log('Adding ' + (apiCount - dbCount) + ' session(s) to database');
+		for (let i = dbCount; i < apiCount; i++) {
 			let newSession = new Session({
 				ArtsVisionFork: {
 					EventID: api[i].Data['Event Id'],
@@ -50,13 +50,33 @@ var apiEngine = {
 					Status: api[i].Data.StatusName,
 					LastEdit: api[i].Data.UpdateDate,
 					LastUser: api[i].Data.UpdateUser
-			}
+				}
 			});
 			newSession.save();
 		}
 
 		if (callback) {
-			callback(database, api, loopEnd);
+			callback(database, api, apiCount);
+		}
+	},
+	removeFromDB: async function(dbCount, apiCount, api, db, callback) {
+		let database = db;
+		let apiIDs = [];
+		console.log('Removing ' + (dbCount - apiCount) + ' session(s) from database');
+		for (let i = 0; i < apiCount; i++) {
+			apiIDs.push(api[i].Data['Event Id']);
+		}
+		console.log(apiIDs);
+		for (let i = 0; i < dbCount; i++) {
+			if (!apiIDs.includes(db[i].ArtsVisionFork.EventID)) {
+				console.log(db[i].ArtsVisionFork.SessionName);
+				Session.deleteOne({ 'ArtsVisionFork.EventID': db[i].ArtsVisionFork.EventID }, function(err, doc) {
+					console.log(doc);
+				});
+			}
+		}
+		if (callback) {
+			callback(database, api, apiCount);
 		}
 	},
 	populateDB: function() {
@@ -74,40 +94,43 @@ var apiEngine = {
 					.then(() => {
 						var apiCount = api.length;
 						var dbCount = db.length;
-
-						this.addToDB(dbCount, apiCount, api, db, this.compareData);
+						if (apiCount == dbCount) {
+							this.compareData(db, api, apiCount);
+						} else if (apiCount > dbCount) {
+							this.addToDB(dbCount, apiCount, api, db, this.compareData);
+						} else if (apiCount < dbCount) {
+							this.removeFromDB(dbCount, apiCount, api, db, this.compareData);
+						}
 					});
 			});
 	},
 	compareData: function(db, api, count) {
 		console.log('Comparing data for changes to existing sessions');
 		for (let i = 0; i < count; i++) {
-			if (db[i].ArtsVisionFork.LastEdit !== api[i].Data.UpdateDate) {
-				Session.findOneAndUpdate(
-					{ 'ArtsVisionFork.EventID': db[i].ArtsVisionFork.EventID },
-					{
-						'ArtsVisionFork.SessionTrack': api[i].Data.ProjectName,
-						'ArtsVisionFork.SessionType': api[i].Data.Type,
-						'ArtsVisionFork.SessionFest': api[i].Data.Season,
-						'ArtsVisionFork.SessionSpeakers': api[i].Entities
-							? Utils.collateSpeakers(api[i].Entities['AspenInstEvent.Participant'].Rows)
-							: 'N/A',
-						'ArtsVisionFork.SessionName': api[i].Data.Text,
-						'ArtsVisionFork.SessionDate': api[i].Data.Date,
-						'ArtsVisionFork.SessionLocation': api[i].Data.Location,
-						'ArtsVisionFork.StartTime': api[i].Data.StartTime,
-						'ArtsVisionFork.EndTime': api[i].Data.EndTime,
-						'ArtsVisionFork.ArtsVisionNotes': api[i].Data.Notes,
-						'ArtsVisionFork.Status': api[i].Data.StatusName,
-						'ArtsVisionFork.LastEdit': api[i].Data.UpdateDate,
-						'ArtsVisionFork.LastUser': api[i].Data.UpdateUser
-					},
-					{ new: true },
-					function(err, doc) {
-						console.log(doc);
-					}
-				);
-			}
+			Session.findOneAndUpdate(
+				{ 'ArtsVisionFork.EventID': api[i].Data['Event Id'] },
+				{
+					'ArtsVisionFork.SessionTrack': api[i].Data.ProjectName,
+					'ArtsVisionFork.SessionType': api[i].Data.Type,
+					'ArtsVisionFork.SessionFest': api[i].Data.Season,
+					'ArtsVisionFork.SessionSpeakers': api[i].Entities
+						? Utils.collateSpeakers(api[i].Entities['AspenInstEvent.Participant'].Rows)
+						: 'N/A',
+					'ArtsVisionFork.SessionName': api[i].Data.Text,
+					'ArtsVisionFork.SessionDate': api[i].Data.Date,
+					'ArtsVisionFork.SessionLocation': api[i].Data.Location,
+					'ArtsVisionFork.StartTime': api[i].Data.StartTime,
+					'ArtsVisionFork.EndTime': api[i].Data.EndTime,
+					'ArtsVisionFork.ArtsVisionNotes': api[i].Data.Notes,
+					'ArtsVisionFork.Status': api[i].Data.StatusName,
+					'ArtsVisionFork.LastEdit': api[i].Data.UpdateDate,
+					'ArtsVisionFork.LastUser': api[i].Data.UpdateUser
+				},
+				{ new: true },
+				function(err, doc) {
+					console.log(doc);
+				}
+			);
 		}
 	}
 };

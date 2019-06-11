@@ -110,6 +110,10 @@ var sessionSchema = new Schema({
 			type: String,
 			default: ''
 		},
+		ReadySend: {
+			type: Boolean,
+			default: false,
+		},
 		Sent: {
 			type: Boolean,
 			default: false
