@@ -22,11 +22,10 @@ class Header extends React.Component {
 			document.getElementById('inputDateSelect').setAttribute('disabled', '');
 		}
 	}
-
-	dateSelectChange = e => {
+	selectChange = e => {
 		this.setState(
 			{
-				filterType: 'date',
+				filterType: e.target.dataset.type,
 				filterValue: e.target.value
 			},
 			() => {
@@ -34,45 +33,13 @@ class Header extends React.Component {
 				let value = this.state.filterValue;
 
 				if (value === 'all') {
+					this.setState({
+						filterType: false,
+						filterValue: false
+					});
 					return;
-				} else {
-					this.props.setFilterQueue(type, value);
-				}
-			}
-		);
-	};
-
-	locationSelectChange = e => {
-		this.setState(
-			{
-				filterType: 'location',
-				filterValue: e.target.value
-			},
-			() => {
-				let type = this.state.filterType;
-				let value = this.state.filterValue;
-
-				if (value === 'all') {
-					return;
-				} else {
-					this.props.setFilterQueue(type, value);
-				}
-			}
-		);
-	};
-
-	metaSelectChange = e => {
-		this.setState(
-			{
-				filterType: 'meta',
-				filterValue: e.target.value
-			},
-			() => {
-				let type = this.state.filterType;
-				let value = this.state.filterValue;
-
-				if (value === 'all') {
-					return;
+				} else if (type === 'status') {
+					this.props.localFilter(value);
 				} else {
 					this.props.setFilterQueue(type, value);
 				}
@@ -93,7 +60,7 @@ class Header extends React.Component {
 
 	render() {
 		const today = format(new Date(), 'YYYY-MM-DD');
-		const { Dates, Locations, Types } = filterData
+		const { Dates, Locations, Types, Status } = filterData;
 		return (
 			<Fragment>
 				<nav className={'navbar navbar-light ' + this.headerDisplayController() + ' bg-light'}>
@@ -104,35 +71,36 @@ class Header extends React.Component {
 					<div className="form-inline">
 						<form id="dateForm">
 							<div className="input-group mb-3">
-								<div className="input-group-prepend">
-									<label className="input-group-text" htmlFor="inputDateSelect">
+								<select
+									onChange={this.selectChange}
+									className="form-control form-control-sm"
+									id="inputDateSelect"
+									data-type="date"
+								>
+									<option defaultValue="all" value="all">
 										Date
-									</label>
-								</div>
-								<select onChange={this.dateSelectChange} className="custom-select" id="inputDateSelect">
-									<option defaultValue="all">All</option>
-									{Dates.map((item, index) => (
-										<option key={index} value={item} type="date">
-											{item}
+									</option>
+									{Object.entries(Dates).map(([key, value]) => (
+										<option key={key} value={key} type="date">
+											{value}
 										</option>
 									))}
 								</select>
 							</div>
 						</form>
+						&nbsp;
 						<form id="locationForm">
 							<div className="input-group mb-3">
-								<div className="input-group-prepend">
-									<label className="input-group-text" htmlFor="inputLocation">
-										Venue
-									</label>
-								</div>
 								<select
-									onChange={this.locationSelectChange}
-									className="custom-select"
+									onChange={this.selectChange}
+									className="form-control form-control-sm"
 									id="inputLocationSelect"
+									data-type="location"
 								>
-									<option defaultValue="all">All</option>
-									{Object.entries(Locations).map(([key, value]) =>(
+									<option defaultValue="all" value="all">
+										Location
+									</option>
+									{Object.entries(Locations).map(([key, value]) => (
 										<option key={key} value={key} type="location">
 											{value}
 										</option>
@@ -140,18 +108,41 @@ class Header extends React.Component {
 								</select>
 							</div>
 						</form>
+						&nbsp;
 						<form id="metaForm">
 							<div className="input-group mb-3">
-								<div className="input-group-prepend">
-									<label className="input-group-text" htmlFor="inputMeta">
+								<select
+									onChange={this.selectChange}
+									className="form-control form-control-sm"
+									id="inputMetaSelect"
+									data-type="meta"
+								>
+									<option defaultValue="all" value="all">
 										Type
-									</label>
-								</div>
-								<select onChange={this.metaSelectChange} className="custom-select" id="inputMetaSelect">
-									<option defaultValue="all">All</option>
+									</option>
 									{Types.map((item, index) => (
 										<option key={index} value={item} type="meta">
 											{camelCaseBreaker(item)}
+										</option>
+									))}
+								</select>
+							</div>
+						</form>
+						&nbsp;
+						<form id="statusForm">
+							<div className="input-group mb-3">
+								<select
+									onChange={this.selectChange}
+									className="form-control form-control-sm"
+									id="inputStatusSelect"
+									data-type="status"
+								>
+									<option defaultValue="all" value="all">
+										Status
+									</option>
+									{Object.entries(Status).map(([key, value]) => (
+										<option key={key} value={key} type="status">
+											{value}
 										</option>
 									))}
 								</select>

@@ -11,7 +11,8 @@ class App extends React.Component {
 			filterData: {
 				dateFilter: null,
 				locationFilter: null,
-				metaFilter: null
+				metaFilter: null,
+				statusFilter: null
 			},
 			sessions: {}
 		};
@@ -63,8 +64,8 @@ class App extends React.Component {
 	};
 
 	reRenderApp = () => {
-		const { locationFilter, dateFilter, metaFilter } = this.state.filterData;
-		this.filterData(dateFilter, locationFilter, metaFilter);
+		const { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
+		this.filterData(dateFilter, locationFilter, metaFilter, statusFilter);
 	};
 
 	setSessionID = id => {
@@ -85,7 +86,8 @@ class App extends React.Component {
 				filterData: {
 					dateFilter: null,
 					locationFilter: null,
-					metaFilter: null
+					metaFilter: null, 
+					statusFilter: null
 				}
 			},
 			() => {
@@ -127,8 +129,8 @@ class App extends React.Component {
 		});
 	};
 
-	filterData = (date, location, meta) => {
-		if (!date && !location && !meta) {
+	filterData = (date, location, meta, status) => {
+		if (!date && !location && !meta && !status) {
 			this.props.history.push('/view/all');
 			this.populateApp();
 			return;
@@ -184,18 +186,19 @@ class App extends React.Component {
 	};
 
 	setFilterQueue = (type, data) => {
-		const { locationFilter, dateFilter, metaFilter } = this.state.filterData;
+		const { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
 		this.setState(
 			{
 				filterData: {
 					dateFilter: type === 'date' ? data : dateFilter,
 					locationFilter: type === 'location' ? data : locationFilter,
-					metaFilter: type === 'meta' ? data : metaFilter
+					metaFilter: type === 'meta' ? data : metaFilter,
+					statusFilter: type === 'status' ? data : statusFilter
 				}
 			},
 			() => {
-				let { locationFilter, dateFilter, metaFilter } = this.state.filterData;
-				this.filterData(dateFilter, locationFilter, metaFilter);
+				let { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
+				this.filterData(dateFilter, locationFilter, metaFilter, statusFilter);
 			}
 		);
 	};
@@ -204,18 +207,19 @@ class App extends React.Component {
 		const filterType = e.target.value;
 		const form = document.getElementById(filterType + 'Form');
 		form.reset();
-		const { locationFilter, dateFilter, metaFilter } = this.state.filterData;
+		const { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
 		this.setState(
 			{
 				filterData: {
 					dateFilter: filterType === 'date' ? null : dateFilter,
 					locationFilter: filterType === 'location' ? null : locationFilter,
-					metaFilter: filterType === 'meta' ? null : metaFilter
+					metaFilter: filterType === 'meta' ? null : metaFilter,
+					statusFilter: filterType === 'status' ? null : statusFilter
 				}
 			},
 			() => {
-				let { locationFilter, dateFilter, metaFilter } = this.state.filterData;
-				this.filterData(dateFilter, locationFilter, metaFilter);
+				let { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
+				this.filterData(dateFilter, locationFilter, metaFilter, statusFilter);
 			}
 		);
 	};
@@ -257,12 +261,23 @@ class App extends React.Component {
 		}
 	};
 
+	localFilter = status => {
+		const filterState = this.state.sessions.filter(session => session.AspenChecklistFork[status] == true);
+		this.setState({
+			filterData: {
+				statusFilter: status
+			},
+			sessions: filterState
+		});
+	};
+
 	render() {
 		return (
 			<>
 				<Header
 					status="active"
 					setFilterQueue={this.setFilterQueue}
+					localFilter={this.localFilter}
 					slug={this.props.match.params.type}
 					linkResets={this.resetOnHardLink}
 				/>
@@ -314,6 +329,23 @@ class App extends React.Component {
 												className="close"
 												aria-label="Close"
 												value="meta"
+												onClick={this.unsetFilterQueue}
+											>
+												✖️
+											</button>
+										</span>{' '}
+									</span>
+								)}
+								{this.state.filterData.statusFilter && (
+									<span>
+										<span className="badge badge-secondary">
+											{this.state.filterData.statusFilter}
+											&nbsp;
+											<button
+												type="button"
+												className="close"
+												aria-label="Close"
+												value="status"
 												onClick={this.unsetFilterQueue}
 											>
 												✖️
