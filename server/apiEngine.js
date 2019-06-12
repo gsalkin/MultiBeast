@@ -126,10 +126,7 @@ var apiEngine = {
 					'ArtsVisionFork.LastEdit': api[i].Data.UpdateDate,
 					'ArtsVisionFork.LastUser': api[i].Data.UpdateUser
 				},
-				{ new: true },
-				function(err, doc) {
-					console.log(doc);
-				}
+				{ new: true }
 			);
 		}
 	}

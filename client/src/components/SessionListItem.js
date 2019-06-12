@@ -26,7 +26,7 @@ class SessionListItem extends React.Component {
 				Transcript,
 				Quotes,
 				Rundown,
-				Restriction, 
+				Restriction,
 				AspenNotes
 			}
 		} = this.props.data;
@@ -110,113 +110,135 @@ class SessionListItem extends React.Component {
 				</div>
 				<div className="card-footer">
 					{Video && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/Video'}
-							className="badge badge-pill badge-dark"
-						>
-							Record ✓
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/Video'}
+								className="badge badge-pill badge-dark"
+							>
+								Record ✓
+							</Link>
+							&nbsp;
+						</>
 					)}
-					&nbsp;
 					{Rover && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/Rover'}
-							className="badge badge-pill badge-dark"
-						>
-							Rover ✓
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/Rover'}
+								className="badge badge-pill badge-dark"
+							>
+								Rover ✓
+							</Link>
+							&nbsp;
+						</>
 					)}
-					&nbsp;
 					{LiveStream && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/LiveStream'}
-							className="badge badge-pill badge-dark"
-						>
-							Livestream ✓
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/LiveStream'}
+								className="badge badge-pill badge-dark"
+							>
+								Livestream ✓
+							</Link>
+							&nbsp;
+						</>
 					)}
-					&nbsp;
 					{QuickClip && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/QuickClip'}
-							className="badge badge-pill badge-dark"
-						>
-							Key Moments ✓
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/QuickClip'}
+								className="badge badge-pill badge-dark"
+							>
+								Key Moments ✓
+							</Link>
+							&nbsp;
+						</>
 					)}
-					&nbsp;
 					{Photo && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/Photo'}
-							className="badge badge-pill badge-dark"
-						>
-							Photo ✓
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/Photo'}
+								className="badge badge-pill badge-dark"
+							>
+								Photo ✓
+							</Link>
+							&nbsp;
+						</>
 					)}
-					&nbsp;
 					{Audio && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/Audio'}
-							className="badge badge-pill badge-dark"
-						>
-							Audio/Podcast ✓
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/Audio'}
+								className="badge badge-pill badge-dark"
+							>
+								Audio/Podcast ✓
+							</Link>
+							&nbsp;
+						</>
 					)}
-					&nbsp;
 					{Transcript && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/Transcript'}
-							className="badge badge-pill badge-dark"
-						>
-							Transcript ✓
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/Transcript'}
+								className="badge badge-pill badge-dark"
+							>
+								Transcript ✓
+							</Link>
+							&nbsp;
+						</>
 					)}
 					{Quotes && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/Quotes'}
-							className="badge badge-pill badge-dark"
-						>
-							Quotes ✓
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/Quotes'}
+								className="badge badge-pill badge-dark"
+							>
+								Quotes ✓
+							</Link>
+							&nbsp;
+						</>
 					)}
-					
-					&nbsp;
 					{Rundown && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/Rundown'}
-							className="badge badge-pill badge-dark"
-						>
-							Rundown ✓
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/Rundown'}
+								className="badge badge-pill badge-dark"
+							>
+								Rundown ✓
+							</Link>
+							&nbsp;
+						</>
 					)}
-					&nbsp;
 					{AspenNotes && (
-						<a
-							onClick={() => this.props.setSessionID(EventID)}
-							href={'#' + EventID}
-							className="badge badge-pill badge-warning"
-						>
-							See Notes ●
-						</a>
+						<>
+							<Link
+								onClick={() => this.props.setSessionID(EventID)}
+								to={'#' + EventID}
+								className="badge badge-pill badge-warning"
+							>
+								See Notes ●
+							</Link>
+							&nbsp;
+						</>
 					)}
-					&nbsp;
 					{Restriction && (
-						<Link
-							onClick={this.props.filter}
-							to={'/view/type/Restriction'}
-							className="badge badge-pill badge-danger"
-						>
-							Restriction ✕
-						</Link>
+						<>
+							<Link
+								onClick={this.props.filter}
+								to={'/view/type/Restriction'}
+								className="badge badge-pill badge-danger"
+							>
+								Restriction ✕
+							</Link>
+						</>
 					)}
 				</div>
 			</div>
