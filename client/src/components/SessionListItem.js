@@ -90,7 +90,7 @@ class SessionListItem extends React.Component {
 							<h6 className="text-right">
 								<strong className="align-middle">#{EventID}</strong>
 								&nbsp;
-								{avStatus === 'cancelled' ? (
+								{avStatus === 'Cancelled' || avStatus === 'Confirmed' ? (
 									<span className={'h5 badge ' + Helpers.classHelper(avStatus)}>{avStatus}</span>
 								) : (
 									<span className={'h5 badge ' + Helpers.classHelper(Status)}>{Status}</span>

@@ -34,6 +34,9 @@ export function classHelper(status) {
 		case 'In Progress':
 		case 'Recorded':
 		case 'Rendered':
+		case 'Uploaded':
+		case 'Ready to Send':
+		case 'Sent':
 			className = 'badge-primary';
 			break;
 		case 'Complete':
@@ -42,7 +45,7 @@ export function classHelper(status) {
 		case 'Cancelled':
 			className = 'badge-danger';
 			break;
-		case 'Conflict':
+		case 'Confirmed':
 			className = 'badge-warning';
 			break;
 		default:

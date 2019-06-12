@@ -30,29 +30,37 @@ var apiEngine = {
 	},
 	addToDB: async function(dbCount, apiCount, api, db, callback) {
 		let database = db;
+		let dbIDs = [];
+		for (let i = 0; i < dbCount; i++) {
+			dbIDs.push(db[i].ArtsVisionFork.EventID);
+		}
+		console.log(dbIDs);
 		console.log('Adding ' + (apiCount - dbCount) + ' session(s) to database');
-		for (let i = dbCount; i < apiCount; i++) {
-			let newSession = new Session({
-				ArtsVisionFork: {
-					EventID: api[i].Data['Event Id'],
-					SessionName: api[i].Data.Text,
-					SessionSpeakers: api[i].Entities
-						? Utils.collateSpeakers(api[i].Entities['AspenInstEvent.Participant'].Rows)
-						: 'N/A',
-					SessionTrack: api[i].Data.ProjectName,
-					SessionType: api[i].Data.Type,
-					SessionFest: api[i].Data.Season,
-					SessionDate: api[i].Data.Date,
-					StartTime: api[i].Data.StartTime,
-					EndTime: api[i].Data.EndTime,
-					SessionLocation: api[i].Data.Location,
-					ArtsVisionNotes: api[i].Data.Notes,
-					Status: api[i].Data.StatusName,
-					LastEdit: api[i].Data.UpdateDate,
-					LastUser: api[i].Data.UpdateUser
-				}
-			});
-			newSession.save();
+		for (let i = 0; i < apiCount; i++) {
+			if (!dbIDs.includes(api[i].Data['Event Id'])) {
+				console.log(api[i].Data.Text);
+				let newSession = new Session({
+					ArtsVisionFork: {
+						EventID: api[i].Data['Event Id'],
+						SessionName: api[i].Data.Text,
+						SessionSpeakers: api[i].Entities
+							? Utils.collateSpeakers(api[i].Entities['AspenInstEvent.Participant'].Rows)
+							: 'N/A',
+						SessionTrack: api[i].Data.ProjectName,
+						SessionType: api[i].Data.Type,
+						SessionFest: api[i].Data.Season,
+						SessionDate: api[i].Data.Date,
+						StartTime: api[i].Data.StartTime,
+						EndTime: api[i].Data.EndTime,
+						SessionLocation: api[i].Data.Location,
+						ArtsVisionNotes: api[i].Data.Notes,
+						Status: api[i].Data.StatusName,
+						LastEdit: api[i].Data.UpdateDate,
+						LastUser: api[i].Data.UpdateUser
+					}
+				})
+				newSession.save();
+			}
 		}
 
 		if (callback) {
@@ -62,11 +70,11 @@ var apiEngine = {
 	removeFromDB: async function(dbCount, apiCount, api, db, callback) {
 		let database = db;
 		let apiIDs = [];
-		console.log('Removing ' + (dbCount - apiCount) + ' session(s) from database');
 		for (let i = 0; i < apiCount; i++) {
 			apiIDs.push(api[i].Data['Event Id']);
 		}
 		console.log(apiIDs);
+		console.log('Removing ' + (dbCount - apiCount) + ' session(s) from database');
 		for (let i = 0; i < dbCount; i++) {
 			if (!apiIDs.includes(db[i].ArtsVisionFork.EventID)) {
 				console.log(db[i].ArtsVisionFork.SessionName);
