@@ -111,6 +111,7 @@ class SessionPage extends React.Component {
 							{Helpers.convertTimes(StartTime)} - {Helpers.convertTimes(EndTime)}
 						</span>{' '}
 						<span className="badge badge-warning">{SessionLocation}</span>{' '}
+						<span className="badge badge-info">Track: {SessionTrack}</span>
 						{Status === 'Cancelled' && <span className="badge badge-warning">{Status}</span>}
 					</h4>
 					{SessionSpeakers && (

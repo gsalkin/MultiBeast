@@ -85,7 +85,7 @@ class SessionSPA extends React.Component {
 		return (
 			<div className="col-12 col-md-6 position-fixed half-page-fixed" id="sessiondetailcontainer">
 				<h3>
-					<a className="btn btn-outline-dark" onClick={this.props.unsetSessionID}>
+					<a className="btn btn-outline-dark" onClick={this.props.unsetSessionID} href={'#' + EventID}>
 						← Back
 					</a>
 					&nbsp;

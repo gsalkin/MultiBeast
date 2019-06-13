@@ -262,7 +262,7 @@ class App extends React.Component {
 	};
 
 	localFilter = status => {
-		const filterState = this.state.sessions.filter(session => session.AspenChecklistFork[status] == true);
+		const filterState = this.state.sessions.filter(session => session.AspenChecklistFork[status] !== false);
 		this.setState({
 			filterData: {
 				statusFilter: status
