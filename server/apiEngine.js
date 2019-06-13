@@ -58,7 +58,7 @@ var apiEngine = {
 						LastEdit: api[i].Data.UpdateDate,
 						LastUser: api[i].Data.UpdateUser
 					}
-				})
+				});
 				newSession.save();
 			}
 		}
@@ -102,9 +102,13 @@ var apiEngine = {
 					.then(() => {
 						var apiCount = api.length;
 						var dbCount = db.length;
-						if (apiCount == dbCount) {
-							this.compareData(db, api, apiCount);
-						} else if (apiCount > dbCount) {
+						console.log(apiCount);
+						console.log(dbCount);
+						
+						
+						this.compareData(db, api, apiCount);
+
+						if (apiCount > dbCount) {
 							this.addToDB(dbCount, apiCount, api, db, this.compareData);
 						} else if (apiCount < dbCount) {
 							this.removeFromDB(dbCount, apiCount, api, db, this.compareData);
@@ -134,7 +138,10 @@ var apiEngine = {
 					'ArtsVisionFork.LastEdit': api[i].Data.UpdateDate,
 					'ArtsVisionFork.LastUser': api[i].Data.UpdateUser
 				},
-				{ new: true }
+				{ new: true },
+				function(err, doc) {
+					console.log(doc);
+				}
 			);
 		}
 	}

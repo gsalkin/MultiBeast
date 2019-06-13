@@ -65,6 +65,16 @@
                     "field": "Type",
                     "operator": "NotContains",
                     "value": "Special Event"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Book Signings"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Misc"
                 }
             ],
             "orderby": [
