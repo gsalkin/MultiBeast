@@ -34,7 +34,6 @@ var apiEngine = {
 		for (let i = 0; i < dbCount; i++) {
 			dbIDs.push(db[i].ArtsVisionFork.EventID);
 		}
-		console.log(dbIDs);
 		console.log('Adding ' + (apiCount - dbCount) + ' session(s) to database');
 		for (let i = 0; i < apiCount; i++) {
 			if (!dbIDs.includes(api[i].Data['Event Id'])) {
@@ -73,7 +72,6 @@ var apiEngine = {
 		for (let i = 0; i < apiCount; i++) {
 			apiIDs.push(api[i].Data['Event Id']);
 		}
-		console.log(apiIDs);
 		console.log('Removing ' + (dbCount - apiCount) + ' session(s) from database');
 		for (let i = 0; i < dbCount; i++) {
 			if (!apiIDs.includes(db[i].ArtsVisionFork.EventID)) {
@@ -104,11 +102,10 @@ var apiEngine = {
 						var dbCount = db.length;
 						console.log(apiCount);
 						console.log(dbCount);
-						
-						
-						this.compareData(db, api, apiCount);
-
-						if (apiCount > dbCount) {
+						if (apiCount == dbCount) {
+							this.compareData(db, api, apiCount);
+						}
+						else if (apiCount > dbCount) {
 							this.addToDB(dbCount, apiCount, api, db, this.compareData);
 						} else if (apiCount < dbCount) {
 							this.removeFromDB(dbCount, apiCount, api, db, this.compareData);
@@ -140,7 +137,9 @@ var apiEngine = {
 				},
 				{ new: true },
 				function(err, doc) {
-					console.log(doc);
+					if (err) {
+						console.error(err);
+					}
 				}
 			);
 		}

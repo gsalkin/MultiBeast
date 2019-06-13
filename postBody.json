@@ -70,11 +70,6 @@
                     "field": "Type",
                     "operator": "NotContains",
                     "value": "Book Signings"
-                },
-                {
-                    "field": "Type",
-                    "operator": "NotContains",
-                    "value": "Misc"
                 }
             ],
             "orderby": [
