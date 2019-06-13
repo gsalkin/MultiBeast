@@ -2,6 +2,7 @@ const Mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const Schema = Mongoose.Schema;
 const saltRounds = 10;
+Mongoose.set('useCreateIndex', true);
 
 var userSchema = new Schema({
 	username: {

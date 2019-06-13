@@ -1,5 +1,6 @@
 var Mongoose = require('mongoose');
 var Schema = Mongoose.Schema;
+Mongoose.set('useCreateIndex', true);
 var sessionSchema = new Schema({
 	ArtsVisionFork: {
 		EventID: Number,
