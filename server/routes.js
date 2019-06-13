@@ -341,6 +341,7 @@ router.post('/api/v1/update/session/:id', userAuthenticated, async (req, res) =>
 					'AspenChecklistFork.TranscriptURL': req.body.workflow.transcriptURL,
 					'AspenChecklistFork.AudioURL': req.body.workflow.audioURL,
 					'AspenChecklistFork.Status': req.body.workflow.status,
+					'AspenChecklistFork.ReadySend': req.body.workflow.readysend,
 					'AspenChecklistFork.Sent': req.body.workflow.sent,
 					'AspenChecklistFork.Complete': req.body.workflow.complete
 				}

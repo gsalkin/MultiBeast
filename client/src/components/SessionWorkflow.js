@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import QuickClip from './QuickClip';
 
 class SessionWorkflow extends React.Component {
@@ -36,9 +36,10 @@ class SessionWorkflow extends React.Component {
 	audioURLRef = React.createRef();
 	completeRef = React.createRef();
 	sentToSpeakerRef = React.createRef();
+	readyToSendRef = React.createRef();
 
-	updateWorkflow = event => {
-		event.preventDefault();
+	updateWorkflow = e => {
+		e.preventDefault();
 		const body = {
 			workflow: {
 				recorded: this.recordedRef.current.checked,
@@ -51,6 +52,7 @@ class SessionWorkflow extends React.Component {
 				transcriptURL: this.transcriptURLRef.current.value,
 				audioURL: this.audioURLRef.current.value,
 				status: this.state.status ? this.state.status : 'In Progress',
+				readysend: this.readyToSendRef.current.checked,
 				sent: this.sentToSpeakerRef.current.checked,
 				complete: this.completeRef.current.checked
 			}
@@ -59,8 +61,8 @@ class SessionWorkflow extends React.Component {
 		alert('Saved!');
 	};
 
-	saveQuickClip = event => {
-		event.preventDefault();
+	saveQuickClip = e => {
+		e.preventDefault();
 		const qcInstance = {
 			qcTitle: this.qcTitleRef.current.value,
 			timecodeIn: this.timecodeInRef.current.value,
@@ -70,12 +72,12 @@ class SessionWorkflow extends React.Component {
 			caption: this.captionRef.current.value
 		};
 		this.setState({ qc: [...this.state.qc, qcInstance] });
-		event.currentTarget.reset();
+		e.currentTarget.reset();
 	};
 
-	deleteQuickClip = event => {
-		event.preventDefault();
-		let index = event.target.parentNode.id;
+	deleteQuickClip = e => {
+		e.preventDefault();
+		let index = e.target.parentNode.id;
 		let array = this.state.qc;
 		array.splice(index, 1);
 		this.setState({
@@ -83,11 +85,24 @@ class SessionWorkflow extends React.Component {
 		});
 	};
 
-	markComplete = () => {
-		this.setState({
-			status: 'Complete'
-		});
-	};
+	statusController = (e) => {
+		const {value, checked} = e.target	
+		if(checked) {
+			this.setState({
+				status: value
+			})
+		} else if (!checked) {
+			this.setState({
+				status: ''
+			})
+		}
+	}
+
+	// markComplete = () => {
+	// 	this.setState({
+	// 		status: 'Complete'
+	// 	});
+	// };
 
 	render() {
 		return (
@@ -103,6 +118,7 @@ class SessionWorkflow extends React.Component {
 								id="inputRecorded"
 								defaultChecked={this.props.details.Recorded}
 								value="Recorded"
+								onClick={this.statusController}
 							/>
 							<label htmlFor="inputRecorded" className="form-check-label">
 								Recorded
@@ -117,6 +133,7 @@ class SessionWorkflow extends React.Component {
 								ref={this.renderedRef}
 								defaultChecked={this.props.details.Rendered}
 								value="Rendered"
+								onClick={this.statusController}
 							/>
 							<label htmlFor="inputRendered" className="form-check-label">
 								Rendered
@@ -130,9 +147,26 @@ class SessionWorkflow extends React.Component {
 								id="inputQuickClipRendered"
 								ref={this.quickclipRenderedRef}
 								defaultChecked={this.props.details.QuickClipRendered}
+								value="KM Rendered"
+								onClick={this.statusController}
 							/>
 							<label htmlFor="inputQuickClipRendered" className="form-check-label">
 								Key Moments Rendered
+							</label>
+						</div>
+						<div className="form-check">
+							<input
+								className="form-check-input"
+								type="checkbox"
+								name="readytosend"
+								id="inputSent"
+								ref={this.readyToSendRef}
+								defaultChecked={this.props.details.ReadySend}
+								value="Ready to Send"
+								onClick={this.statusController}
+							/>
+							<label htmlFor="inputSent" className="form-check-label">
+								Ready to Send
 							</label>
 						</div>
 						<div className="form-check">
@@ -143,6 +177,8 @@ class SessionWorkflow extends React.Component {
 								id="inputSent"
 								ref={this.sentToSpeakerRef}
 								defaultChecked={this.props.details.Sent}
+								value="Sent"
+								onClick={this.statusController}
 							/>
 							<label htmlFor="inputSent" className="form-check-label">
 								Sent to Speaker(s)
@@ -156,7 +192,8 @@ class SessionWorkflow extends React.Component {
 								id="inputComplete"
 								ref={this.completeRef}
 								defaultChecked={this.props.details.Complete}
-								onClick={this.markComplete}
+								value="Complete"
+								onClick={this.statusController}
 							/>
 							<label htmlFor="inputComplete" className="form-check-label">
 								Complete

@@ -39,7 +39,6 @@ class Admin extends React.Component {
 				return res.json();
 			})
 			.then(json => {
-                console.log(json);
 				this.setState({
 					userList: json
 				})
@@ -59,7 +58,6 @@ class Admin extends React.Component {
 				admin: admin
 			})
 		}).then(res => {
-			console.log(res);
 			if (res.status === 200) {
 				return res.json();
 			} else {
