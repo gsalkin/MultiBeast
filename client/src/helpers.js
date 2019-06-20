@@ -17,7 +17,7 @@ export function stringifySpeakers(array) {
 
 export function convertTimes(time) {
 	if (time) {	
-		let dateTime = new Date('1970-01-01T' + time);
+		let dateTime = new Date('1970-01-01T' + time + '-07:00')
 		let newTime = format(dateTime, 'h:mm A');
 		return newTime;
 	} else {
