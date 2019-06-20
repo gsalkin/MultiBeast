@@ -128,3 +128,8 @@ export function headerClassSwitch(mediaQuery) {
 		return
 	}
 }
+
+export function scrollToTop() {
+	document.body.scrollTop = 0; //Safari
+	document.documentElement.scrollTop = 0;
+}

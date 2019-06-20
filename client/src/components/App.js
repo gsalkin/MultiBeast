@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import SessionListItem from './SessionListItem';
 import Header from './Header';
 import Session from './Session';
+import {scrollToTop} from '../helpers'
 
 class App extends React.Component {
 	constructor(props) {
@@ -284,6 +285,11 @@ class App extends React.Component {
 				<div className="container-fluid header-override">
 					<div className="row">
 						<div className="col-12 col-xl-6" id="sessionlistcontainer">
+						<button onClick={scrollToTop} id="myBtn" title="Go to top">
+						<i className="fa fa-chevron-up pull-right" />
+						&nbsp;
+						Scroll To Top
+						</button>
 							<p className="h4">
 								{this.state.filterData.dateFilter && (
 									<span>
