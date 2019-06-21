@@ -56,7 +56,6 @@ class SessionSPA extends React.Component {
 			.then(response => {
 				if (response.status === 200) {
 					document.getElementById('inputCoverageNotes').value = '';
-					this.props.reRenderApp();
 				}
 				return response.json();
 			})

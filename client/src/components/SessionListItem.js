@@ -42,17 +42,9 @@ class SessionListItem extends React.Component {
 		return (
 			<div className="card" id={'event-' + EventID} data-session-label={SessionName}>
 				<div className="card-header">
-					<Link to={'/view/season/' + encodeURIComponent(SessionFest)} className={'badge ' + seasonClass()}>
-						{Helpers.seasonMarker(SessionFest)}
-					</Link>
+					<span className={'badge ' + seasonClass()}>{Helpers.seasonMarker(SessionFest)}</span>
 					&nbsp;
-					<Link
-						onClick={this.props.filter}
-						className={Helpers.dateClassHelper(SessionDate)}
-						to={'/view/date/' + SessionDate}
-					>
-						{SessionDate}
-					</Link>
+					<span className={Helpers.dateClassHelper(SessionDate)}>{SessionDate}</span>
 					&nbsp;
 					<span className="badge border border-primary rounded-lg">
 						{Helpers.convertTimes(StartTime)} to {Helpers.convertTimes(EndTime)}
@@ -98,147 +90,105 @@ class SessionListItem extends React.Component {
 							</h6>
 						</div>
 					</div>
-					<Link
-						onClick={this.props.filter}
+					<span
+						// onClick={this.props.filter}
 						to={'/view/location/' + encodeURIComponent(SessionLocation)}
-						className="mb-1"
+						className="mb-1 text-primary"
 					>
 						{SessionLocation}
-					</Link>
+					</span>
 					<br />
 					<small>{Helpers.stringifySpeakers(SessionSpeakers)}</small>
 				</div>
 				<div className="card-footer">
 					{Video && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/Video'}
-								className="badge badge-pill badge-dark"
-							>
-								Record ✓
-							</Link>
-							&nbsp;
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'Video')}
+							className="badge badge-pill badge-dark mr-1"
+						>
+							Record ✓
+						</button>
 					)}
 					{Rover && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/Rover'}
-								className="badge badge-pill badge-dark"
-							>
-								Rover ✓
-							</Link>
-							&nbsp;
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'Rover')}
+							className="badge badge-pill badge-dark mr-1"
+						>
+							Rover ✓
+						</button>
 					)}
 					{LiveStream && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/LiveStream'}
-								className="badge badge-pill badge-dark"
-							>
-								Livestream ✓
-							</Link>
-							&nbsp;
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'LiveStream')}
+							className="badge badge-pill badge-dark mr-1"
+						>
+							Livestream ✓
+						</button>
 					)}
 					{QuickClip && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/QuickClip'}
-								className="badge badge-pill badge-dark"
-							>
-								Key Moments ✓
-							</Link>
-							&nbsp;
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'QuickClip')}
+							className="badge badge-pill badge-dark mr-1"
+						>
+							Key Moments ✓
+						</button>
 					)}
 					{Photo && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/Photo'}
-								className="badge badge-pill badge-dark"
-							>
-								Photo ✓
-							</Link>
-							&nbsp;
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'Photo')}
+							className="badge badge-pill badge-dark mr-1"
+						>
+							Photo ✓
+						</button>
 					)}
 					{Audio && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/Audio'}
-								className="badge badge-pill badge-dark"
-							>
-								Audio/Podcast ✓
-							</Link>
-							&nbsp;
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'Audio')}
+							className="badge badge-pill badge-dark mr-1"
+						>
+							Audio/Podcast ✓
+						</button>
 					)}
 					{Transcript && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/Transcript'}
-								className="badge badge-pill badge-dark"
-							>
-								Transcript ✓
-							</Link>
-							&nbsp;
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'Transcript')}
+							className="badge badge-pill badge-dark mr-1"
+						>
+							Transcript ✓
+						</button>
 					)}
 					{Quotes && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/Quotes'}
-								className="badge badge-pill badge-dark"
-							>
-								Quotes ✓
-							</Link>
-							&nbsp;
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'Quotes')}
+							className="badge badge-pill badge-dark mr-1"
+						>
+							Quotes ✓
+						</button>
 					)}
 					{Rundown && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/Rundown'}
-								className="badge badge-pill badge-dark"
-							>
-								Rundown ✓
-							</Link>
-							&nbsp;
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'Rundown')}
+							className="badge badge-pill badge-dark mr-1"
+						>
+							Rundown ✓
+						</button>
 					)}
 					{AspenNotes && (
-						<>
-							<Link
-								onClick={() => this.props.setSessionID(EventID)}
-								to={'#' + EventID}
-								className="badge badge-pill badge-warning"
-							>
-								See Notes ●
-							</Link>
-							&nbsp;
-						</>
+						<Link
+							onClick={() => this.props.setSessionID(EventID)}
+							to={'#' + EventID}
+							className="badge badge-pill badge-warning mr-1"
+						>
+							See Notes ●
+						</Link>
 					)}
 					{Restriction && (
-						<>
-							<Link
-								onClick={this.props.filter}
-								to={'/view/type/Restriction'}
-								className="badge badge-pill badge-danger"
-							>
-								Restriction ✕
-							</Link>
-						</>
+						<button
+							onClick={() => this.props.filter('meta', 'Restriction')}
+							className="badge badge-pill badge-danger mr-1"
+						>
+							Restriction ✕
+						</button>
 					)}
 				</div>
 			</div>

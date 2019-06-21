@@ -12,17 +12,37 @@ class Header extends React.Component {
 			filterValue: false
 		};
 	}
-
-	componentDidMount() {
-		const slug = this.props.slug;
-		if (slug === 'location') {
-			document.getElementById('inputLocationSelect').setAttribute('disabled', '');
-		}
-		if (slug === 'date') {
-			document.getElementById('inputDateSelect').setAttribute('disabled', '');
+	componentDidUpdate() {
+		const { metaFilter } = this.props.filterState;
+		if (metaFilter) {
+			this.filterDisableController();
 		}
 	}
+
+	filterDisableController = () => {
+		document.querySelector('#metaForm')[0].disabled = true;
+	};
+
+	clearFilters = () => {
+		this.setState({
+			filterType: '',
+			filterValue: ''
+		});
+		const forms = {
+			date: document.querySelector('#dateForm'),
+			location: document.querySelector('#locationForm'),
+			meta: document.querySelector('#metaForm'),
+			status: document.querySelector('#statusForm')
+		};
+		Object.keys(forms).forEach(key => {
+			forms[key][0].disabled = false;
+			forms[key].reset();
+		});
+		this.props.resetFilters();
+	};
+
 	selectChange = e => {
+		e.target.disabled = true;
 		this.setState(
 			{
 				filterType: e.target.dataset.type,
@@ -31,17 +51,14 @@ class Header extends React.Component {
 			() => {
 				let type = this.state.filterType;
 				let value = this.state.filterValue;
-
 				if (value === 'all') {
 					this.setState({
 						filterType: false,
 						filterValue: false
 					});
 					return;
-				} else if (type === 'status') {
-					this.props.localFilter(value);
 				} else {
-					this.props.setFilterQueue(type, value);
+					this.props.localFilter(type, value);
 				}
 			}
 		);
@@ -64,13 +81,20 @@ class Header extends React.Component {
 		return (
 			<Fragment>
 				<nav className={'navbar navbar-light ' + this.headerDisplayController() + ' bg-light'}>
-					<NavLink className="navbar-brand" to="/view/all" onClick={this.props.filter}>
+					<NavLink className="navbar-brand" to="/view/all" onClick={this.props.resetFilters}>
 						<img src="/images/favicon/apple-icon.png" width="50" height="50" alt="" />
 						&nbsp; MultiBeast
+						{this.props.slug === 'video' && ' | ' + this.props.slug.toUpperCase()}
 					</NavLink>
 					<div className="form-inline">
+						{this.state.filterType && (
+							<button type="button" className="btn btn-dark btn-sm mb-3" onClick={this.clearFilters}>
+								Clear Filters
+							</button>
+						)}
+						&nbsp;
 						<form id="dateForm">
-							<div className="input-group mb-3">
+							<div className="input-group mb-3 mr-1">
 								<select
 									onChange={this.selectChange}
 									className="form-control form-control-sm"
@@ -88,9 +112,8 @@ class Header extends React.Component {
 								</select>
 							</div>
 						</form>
-						&nbsp;
 						<form id="locationForm">
-							<div className="input-group mb-3">
+							<div className="input-group mb-3 mr-1">
 								<select
 									onChange={this.selectChange}
 									className="form-control form-control-sm"
@@ -108,9 +131,8 @@ class Header extends React.Component {
 								</select>
 							</div>
 						</form>
-						&nbsp;
 						<form id="metaForm">
-							<div className="input-group mb-3">
+							<div className="input-group mb-3 mr-1">
 								<select
 									onChange={this.selectChange}
 									className="form-control form-control-sm"
@@ -128,9 +150,8 @@ class Header extends React.Component {
 								</select>
 							</div>
 						</form>
-						&nbsp;
 						<form id="statusForm">
-							<div className="input-group mb-3">
+							<div className="input-group mb-3 mr-1">
 								<select
 									onChange={this.selectChange}
 									className="form-control form-control-sm"
@@ -158,19 +179,18 @@ class Header extends React.Component {
 								data-toggle="dropdown"
 								aria-haspopup="true"
 								aria-expanded="false"
-								
 							>
 								Quick Links
 							</a>
 							<ul className="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 								<li>
-									<NavLink to="/view/all" className="dropdown-item" onClick={this.props.linkResets}>
+									<NavLink to="/view/all" className="dropdown-item" onClick={this.props.resetFilters}>
 										All
 									</NavLink>
 								</li>
 								<li>
 									<NavLink
-										onClick={this.props.linkResets}
+										onClick={this.props.resetFilters}
 										to="/view/season/SH%202018"
 										className="dropdown-item"
 									>
@@ -179,7 +199,7 @@ class Header extends React.Component {
 								</li>
 								<li>
 									<NavLink
-										onClick={this.props.linkResets}
+										onClick={this.props.resetFilters}
 										to="/view/season/AIF%202018"
 										className="dropdown-item"
 									>
@@ -190,7 +210,7 @@ class Header extends React.Component {
 									<NavLink
 										to={'/view/date/' + today}
 										className="dropdown-item"
-										onClick={this.props.linkResets}
+										onClick={this.props.resetFilters}
 									>
 										Today
 									</NavLink>
@@ -199,25 +219,20 @@ class Header extends React.Component {
 									<NavLink
 										to="/view/type/LiveStream"
 										className="dropdown-item"
-										onClick={this.props.linkResets}
+										onClick={this.props.resetFilters}
 									>
 										Live Streams
 									</NavLink>
 								</li>
 								<li>
-									<NavLink to="/view/video" className="dropdown-item" onClick={this.props.linkResets}>
+									<NavLink
+										to="/view/video"
+										className="dropdown-item"
+										onClick={this.props.resetFilters}
+									>
 										All Video
 									</NavLink>
 								</li>
-								{/* <li>
-									<NavLink
-										to="/view/type/Complete"
-										className="dropdown-item"
-										onClick={this.props.linkResets}
-									>
-										Completed
-									</NavLink>
-								</li> */}
 							</ul>
 						</li>
 						<li className="nav-item">

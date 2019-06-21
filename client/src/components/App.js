@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import SessionListItem from './SessionListItem';
 import Header from './Header';
 import Session from './Session';
-import {scrollToTop} from '../helpers'
+import { scrollToTop } from '../helpers';
 
 class App extends React.Component {
 	constructor(props) {
@@ -60,13 +60,8 @@ class App extends React.Component {
 					metaFilter: type === 'type' ? param : null
 				},
 				sessions: body
-			});
+			})
 		});
-	};
-
-	reRenderApp = () => {
-		const { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
-		this.filterData(dateFilter, locationFilter, metaFilter, statusFilter);
 	};
 
 	setSessionID = id => {
@@ -81,146 +76,18 @@ class App extends React.Component {
 		});
 	};
 
-	resetOnHardLink = () => {
+	resetFilters = () => {
 		this.setState(
 			{
 				filterData: {
 					dateFilter: null,
 					locationFilter: null,
-					metaFilter: null, 
+					metaFilter: null,
 					statusFilter: null
 				}
 			},
 			() => {
 				this.populateApp();
-			}
-		);
-	};
-
-	filterDate = date => {
-		let url = '/api/v1/date/' + date;
-		this.callApi(url).then(body => {
-			this.setState({
-				sessions: body
-			});
-		});
-	};
-
-	filterLocation = location => {
-		let url = '/api/v1/location/' + location;
-		this.callApi(url).then(body => {
-			this.setState({
-				filterData: {
-					locationFilter: location
-				},
-				sessions: body
-			});
-		});
-	};
-
-	filterMeta = meta => {
-		let url = '/api/v1/type/' + meta;
-		this.callApi(url).then(body => {
-			this.setState({
-				filterData: {
-					metaFilter: meta
-				},
-				sessions: body
-			});
-		});
-	};
-
-	filterData = (date, location, meta, status) => {
-		if (!date && !location && !meta && !status) {
-			this.props.history.push('/view/all');
-			this.populateApp();
-			return;
-		}
-		if (date && !location && !meta) {
-			this.filterDate(date);
-			return;
-		}
-		if (date && location && !meta) {
-			let url = '/api/v1/location/' + encodeURIComponent(location) + '/date/' + date;
-			this.callApi(url).then(body => {
-				this.setState({
-					sessions: body
-				});
-			});
-			return;
-		}
-		if (date && !location && meta) {
-			let url = '/api/v1/type/' + meta + '/date/' + date;
-			this.callApi(url).then(body => {
-				this.setState({
-					sessions: body
-				});
-			});
-			return;
-		}
-		if (!date && location && !meta) {
-			this.filterLocation(location);
-			return;
-		}
-		if (!date && location && meta) {
-			let url = '/api/v1/type/' + meta + '/location/' + encodeURIComponent(location);
-			this.callApi(url).then(body => {
-				this.setState({
-					sessions: body
-				});
-			});
-			return;
-		}
-		if (!date && !location && meta) {
-			this.filterMeta(meta);
-			return;
-		}
-		if (date && location && meta) {
-			let url = '/api/v1/type' + meta + '/location/' + encodeURIComponent(location) + '/date/' + date;
-			this.callApi(url).then(body => {
-				this.setState({
-					sessions: body
-				});
-			});
-			return;
-		}
-	};
-
-	setFilterQueue = (type, data) => {
-		const { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
-		this.setState(
-			{
-				filterData: {
-					dateFilter: type === 'date' ? data : dateFilter,
-					locationFilter: type === 'location' ? data : locationFilter,
-					metaFilter: type === 'meta' ? data : metaFilter,
-					statusFilter: type === 'status' ? data : statusFilter
-				}
-			},
-			() => {
-				let { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
-				this.filterData(dateFilter, locationFilter, metaFilter, statusFilter);
-			}
-		);
-	};
-
-	unsetFilterQueue = e => {
-		const filterType = e.target.value;
-		const form = document.getElementById(filterType + 'Form');
-		form.reset();
-		const { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
-		this.setState(
-			{
-				filterData: {
-					dateFilter: filterType === 'date' ? null : dateFilter,
-					locationFilter: filterType === 'location' ? null : locationFilter,
-					metaFilter: filterType === 'meta' ? null : metaFilter,
-					statusFilter: filterType === 'status' ? null : statusFilter
-				}
-			},
-			() => {
-				let { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
-				this.filterData(dateFilter, locationFilter, metaFilter, statusFilter);
 			}
 		);
 	};
@@ -240,7 +107,7 @@ class App extends React.Component {
 				<Fragment key={key}>
 					<SessionListItem
 						data={this.state.sessions[key]}
-						filter={this.resetOnHardLink}
+						filter={this.localFilter}
 						userName={userName}
 						setSessionID={this.setSessionID}
 					/>
@@ -262,11 +129,27 @@ class App extends React.Component {
 		}
 	};
 
-	localFilter = status => {
-		const filterState = this.state.sessions.filter(session => (session.AspenChecklistFork[status] !== false || session.AspenChecklistFork[status].length > 1));
+	localFilter = (type, data) => {
+		let filterState = '';
+		const { locationFilter, dateFilter, metaFilter, statusFilter } = this.state.filterData;
+		if (type === 'date') {
+			filterState = this.state.sessions.filter(session => session.ArtsVisionFork.SessionDate === data);
+		}
+		if (type === 'location') {
+			filterState = this.state.sessions.filter(session => session.ArtsVisionFork.SessionLocation === data);
+		}
+		if (type === 'meta') {
+			filterState = this.state.sessions.filter(session => session.AspenCoverageFork[data] === true);
+		}
+		if (type === 'status') {
+			filterState = this.state.sessions.filter(session => session.AspenChecklistFork[data] === true);
+		}
 		this.setState({
 			filterData: {
-				statusFilter: status
+				dateFilter: type === 'date' ? data : dateFilter,
+				locationFilter: type === 'location' ? data : locationFilter,
+				metaFilter: type === 'meta' ? data : metaFilter,
+				statusFilter: type === 'status' ? data : statusFilter
 			},
 			sessions: filterState
 		});
@@ -277,86 +160,41 @@ class App extends React.Component {
 			<>
 				<Header
 					status="active"
-					setFilterQueue={this.setFilterQueue}
-					localFilter={this.localFilter}
+					filterState={this.state.filterData}
+					resetFilters={this.resetFilters}
 					slug={this.props.match.params.type}
-					linkResets={this.resetOnHardLink}
+					localFilter={this.localFilter}
 				/>
 				<div className="container-fluid header-override">
 					<div className="row">
 						<div className="col-12 col-xl-6" id="sessionlistcontainer">
-						<button onClick={scrollToTop} id="myBtn" title="Go to top">
-						<i className="fa fa-chevron-up pull-right" />
-						&nbsp;
-						Scroll To Top
-						</button>
+							<button onClick={scrollToTop} id="myBtn" title="Go to top">
+								<i className="fa fa-chevron-up pull-right" />
+								&nbsp; Scroll To Top
+							</button>
 							<p className="h4">
 								{this.state.filterData.dateFilter && (
 									<span>
-										<span className="badge badge-info">
-											{this.state.filterData.dateFilter}
-											&nbsp;
-											<button
-												type="button"
-												className="close"
-												aria-label="Close"
-												value="date"
-												onClick={this.unsetFilterQueue}
-											>
-												✖️
-											</button>
-										</span>{' '}
+										<span className="badge badge-info mr-1">{this.state.filterData.dateFilter}</span>
 									</span>
 								)}
 								{this.state.filterData.locationFilter && (
 									<span>
-										<span className="badge badge-info">
-											{this.state.filterData.locationFilter}
-											&nbsp;
-											<button
-												type="button"
-												className="close"
-												aria-label="Close"
-												value="location"
-												onClick={this.unsetFilterQueue}
-											>
-												✖️
-											</button>
-										</span>{' '}
+										<span className="badge badge-info mr-1">{this.state.filterData.locationFilter}</span>
 									</span>
 								)}
 								{this.state.filterData.metaFilter && (
 									<span>
-										<span className="badge badge-secondary">
+										<span className="badge badge-secondary mr-1">
 											{this.state.filterData.metaFilter}
-											&nbsp;
-											<button
-												type="button"
-												className="close"
-												aria-label="Close"
-												value="meta"
-												onClick={this.unsetFilterQueue}
-											>
-												✖️
-											</button>
-										</span>{' '}
+										</span>
 									</span>
 								)}
 								{this.state.filterData.statusFilter && (
 									<span>
-										<span className="badge badge-secondary">
+										<span className="badge badge-secondary mr-1">
 											{this.state.filterData.statusFilter}
-											&nbsp;
-											<button
-												type="button"
-												className="close"
-												aria-label="Close"
-												value="status"
-												onClick={this.unsetFilterQueue}
-											>
-												✖️
-											</button>
-										</span>{' '}
+										</span>
 									</span>
 								)}
 							</p>
