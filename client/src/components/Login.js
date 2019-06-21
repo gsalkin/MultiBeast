@@ -65,7 +65,7 @@ class Login extends React.Component {
 			<div className="container-fluid">
 				<div className="container">
 					<div className="row">
-						<div className="col-8 offset-2">
+						<div className="col-12">
 							<div className="jumbotron">
 								<h1 className="display-4">MultiBeast</h1>
 								<p className="lead">
