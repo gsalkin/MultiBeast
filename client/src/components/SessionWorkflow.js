@@ -98,12 +98,6 @@ class SessionWorkflow extends React.Component {
 		}
 	}
 
-	// markComplete = () => {
-	// 	this.setState({
-	// 		status: 'Complete'
-	// 	});
-	// };
-
 	render() {
 		return (
 			<div className="container-fluid collapse" id="workflowContainer">
@@ -200,7 +194,7 @@ class SessionWorkflow extends React.Component {
 							</label>
 						</div>
 						<button type="submit" form="workflowForm" className="btn btn-primary">
-							Save Coverage
+							Save Workflow
 						</button>
 					</div>
 					<br />
@@ -331,8 +325,11 @@ class SessionWorkflow extends React.Component {
 						<label htmlFor="captionSuggestion">Caption Suggestion</label>
 						<textarea className="form-control" id="captionSuggestion" rows="3" ref={this.captionRef} />
 					</div>
-					<button type="submit" form="quickclipEntry" className="btn btn-primary">
-						Add QuickClip Entry <br />
+					<button type="submit" form="quickclipEntry" className="btn btn-primary mr-1">
+						Add QuickClip Entry
+					</button>
+					<button type="submit" form="workflowForm" className="btn btn-dark">
+						SAVE Workflow!
 					</button>
 				</form>
 				<>
