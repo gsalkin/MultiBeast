@@ -190,20 +190,9 @@ class Header extends React.Component {
 								</li>
 								<li>
 									<NavLink
-										onClick={this.props.resetFilters}
-										to="/view/season/SH%202018"
-										className="dropdown-item"
-									>
-										Aspen Ideas Health
-									</NavLink>
-								</li>
-								<li>
-									<NavLink
-										onClick={this.props.resetFilters}
-										to="/view/season/AIF%202018"
-										className="dropdown-item"
-									>
-										Aspen Ideas Festival
+										to={'/page/worksheet'}
+										className="dropdown-item">
+										Rundown Lists
 									</NavLink>
 								</li>
 								<li>
@@ -216,13 +205,13 @@ class Header extends React.Component {
 									</NavLink>
 								</li>
 								<li>
-									<NavLink
-										to="/view/type/LiveStream"
+									<a
+										//to="/view/type/LiveStream"
 										className="dropdown-item"
-										onClick={this.props.resetFilters}
+										onClick={()=>this.props.localFilter('meta', 'LiveStream')}
 									>
 										Live Streams
-									</NavLink>
+									</a>
 								</li>
 								<li>
 									<NavLink
