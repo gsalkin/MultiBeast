@@ -203,65 +203,69 @@ class SessionWorkflow extends React.Component {
 						<input
 							type="text"
 							className="form-control"
-							placeholder={this.props.details.YouTubeURL}
 							ref={this.youtubeURLRef}
 							id="youtubeURLInput"
+							defaultValue={this.props.details.YouTubeURL}
 						/>
 						{this.props.details.YouTubeURL && (
 							<a href={this.props.details.YouTubeURL} target="_blank" rel="noopener noreferrer">
-								{this.props.details.YouTubeURL} <figure className="align-text-top fas fa-external-link-alt" />
+								{this.props.details.YouTubeURL}{' '}
+								<figure className="align-text-top fas fa-external-link-alt" />
 							</a>
 						)}
-						<br/>
+						<br />
 						<label htmlFor="sessionURLInput">Session URL</label>
 						<input
 							type="text"
 							className="form-control"
-							placeholder={this.props.details.SessionURL}
 							ref={this.sessionURLRef}
 							id="sessionURLInput"
+							defaultValue={this.props.details.SessionURL}
 						/>
 						{this.props.details.SessionURL && (
 							<a href={this.props.details.SessionURL} target="_blank" rel="noopener noreferrer">
-								{this.props.details.SessionURL} <figure className="align-text-top fas fa-external-link-alt" />
+								{this.props.details.SessionURL}{' '}
+								<figure className="align-text-top fas fa-external-link-alt" />
 							</a>
 						)}
-						<br/>
+						<br />
 						<label htmlFor="albumURLInput">Album URL</label>
 						<input
 							type="text"
 							className="form-control"
-							placeholder={this.props.details.AlbumURL}
 							ref={this.albumURLRef}
 							id="albumURLInput"
+							defaultValue={this.props.details.AlbumURL}
 						/>
 						{this.props.details.AlbumURL && (
 							<a href={this.props.details.AlbumURL} target="_blank" rel="noopener noreferrer">
-								{this.props.details.AlbumURL} <figure className="align-text-top fas fa-external-link-alt" />
+								{this.props.details.AlbumURL}{' '}
+								<figure className="align-text-top fas fa-external-link-alt" />
 							</a>
 						)}
-						<br/>
+						<br />
 						<label htmlFor="audioURLInput">Audio URL</label>
 						<input
 							type="text"
 							className="form-control"
-							placeholder={this.props.details.AudioURL}
 							ref={this.audioURLRef}
 							id="audioURLInput"
+							defaultValue={this.props.details.AudioURL}
 						/>
 						{this.props.details.AudioURL && (
 							<a href={this.props.details.AudioURL} target="_blank" rel="noopener noreferrer">
-								{this.props.details.AudioURL} <figure className="align-text-top fas fa-external-link-alt" />
+								{this.props.details.AudioURL}{' '}
+								<figure className="align-text-top fas fa-external-link-alt" />
 							</a>
 						)}
-						<br/>
+						<br />
 						<label htmlFor="transcriptURLInput">Transcript URL</label>
 						<input
 							type="text"
 							className="form-control"
-							placeholder={this.props.details.TranscriptURL}
 							ref={this.transcriptURLRef}
 							id="transcriptURLInput"
+							defaultValue={this.props.details.TranscriptURL}
 						/>
 						{this.props.details.TranscriptURL && (
 							<a href={this.props.details.TranscriptURL} target="_blank" rel="noopener noreferrer">
