@@ -15,11 +15,19 @@ class ListView extends React.Component {
 	populateApp = () => {
 		const { type, param } = this.props.match.params;
 		const url = '/api/v1/' + type + '/' + encodeURI(param);
-		this.callApi(url).then(body => {
-			this.setState({
-				sessions: body.filter(session => session.AspenCoverageFork.Video === true || session.AspenCoverageFork.Rover === true)
+		if (type === 'type') {
+			this.callApi(url).then(body => {
+				this.setState({
+					sessions: body
+				});
 			});
-		});
+		} else {
+			this.callApi(url).then(body => {
+				this.setState({
+					sessions: body.filter(session => session.AspenCoverageFork.Video === true || session.AspenCoverageFork.Rover === true)
+				});
+			});
+		}
 	};
 
 	callApi = async url => {
@@ -59,6 +67,18 @@ class ListView extends React.Component {
 			return (
 				<thead>
 					<tr>
+						<th scope="col">Event ID</th>
+						<th scope="col">Location</th>
+						<th scope="col">Session Name</th>
+						<th scope="col">Time</th>
+					</tr>
+				</thead>
+			)
+		} else if (type === 'type') {
+			return (
+				<thead>
+					<tr>
+						<th scope="col">Date</th>
 						<th scope="col">Event ID</th>
 						<th scope="col">Location</th>
 						<th scope="col">Session Name</th>

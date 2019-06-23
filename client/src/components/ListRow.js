@@ -19,13 +19,23 @@ class ListRow extends React.Component {
                 </tr>
             );
         } else if (type === 'date') {
-            return(
+            return (
                 <tr>
-                <td>{EventID}</td>
-                <td>{SessionLocation}</td>
-                <td>{SessionName}</td>
-                <td>{convertTimes(StartTime)} - {convertTimes(EndTime)}</td>
-            </tr>
+                    <td>{EventID}</td>
+                    <td>{SessionLocation}</td>
+                    <td>{SessionName}</td>
+                    <td>{convertTimes(StartTime)} - {convertTimes(EndTime)}</td>
+                </tr>
+            )
+        } else if (type === 'type') {
+            return (
+                <tr>
+                    <td>{SessionDate}</td>
+                    <td>{EventID}</td>
+                    <td>{SessionLocation}</td>
+                    <td>{SessionName}</td>
+                    <td>{convertTimes(StartTime)} - {convertTimes(EndTime)}</td>
+                </tr>
             )
         }
     }
