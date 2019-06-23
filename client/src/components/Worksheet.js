@@ -14,7 +14,8 @@ class Worksheet extends React.Component {
 					</Link>
 				</nav>
 				<div className="row">
-					<div className="col-12 col-md-4">
+					<div className="col-12 col-md-4 px-4">
+						<h4>Dates</h4>
 						<div className="list-group">
 							{Object.entries(Dates).map(([key, value]) => (
 								<Link
@@ -27,7 +28,8 @@ class Worksheet extends React.Component {
 							))}
 						</div>
 					</div>
-					<div className="col-12 col-md-4">
+					<div className="col-12 col-md-4 px-4">
+						<h4>Locations</h4>
 						<div className="list-group">
 							{Object.entries(Locations).map(([key, value]) => (
 								<Link
@@ -40,9 +42,10 @@ class Worksheet extends React.Component {
 							))}
 						</div>
 					</div>
-                    <div className="col-12 col-md-4">
+					<div className="col-12 col-md-4 px-4">
+						<h4>Coverage</h4>
 						<div className="list-group">
-							{Types.map((item, index) =>
+							{Types.map((item, index) => (
 								<Link
 									className="list-group-item list-group-item-action"
 									key={index}
@@ -50,7 +53,7 @@ class Worksheet extends React.Component {
 								>
 									Rundown for {item}
 								</Link>
-							)}
+							))}
 						</div>
 					</div>
 				</div>
