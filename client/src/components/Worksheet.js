@@ -4,7 +4,7 @@ import filterData from '../filterData';
 
 class Worksheet extends React.Component {
 	render() {
-		const { Dates, Locations } = filterData;
+		const { Dates, Locations, Types } = filterData;
 		return (
 			<div classNameName="container-fluid">
 				<nav classNameName="navbar navbar-light">
@@ -27,7 +27,7 @@ class Worksheet extends React.Component {
 							))}
 						</div>
 					</div>
-					<div className="col-12 col-md-6">
+					<div className="col-12 col-md-4">
 						<div className="list-group">
 							{Object.entries(Locations).map(([key, value]) => (
 								<Link
@@ -38,6 +38,19 @@ class Worksheet extends React.Component {
 									Rundown for {value}
 								</Link>
 							))}
+						</div>
+					</div>
+                    <div className="col-12 col-md-4">
+						<div className="list-group">
+							{Types.map((item, index) =>
+								<Link
+									className="list-group-item list-group-item-action"
+									key={index}
+									to={'/view/type/' + item}
+								>
+									Rundown for {item}
+								</Link>
+							)}
 						</div>
 					</div>
 				</div>
