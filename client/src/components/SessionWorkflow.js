@@ -5,7 +5,7 @@ class SessionWorkflow extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			status: '',
+			status: this.props.details.Status,
 			qc: []
 		};
 	}
@@ -51,7 +51,7 @@ class SessionWorkflow extends React.Component {
 				youtubeURL: this.youtubeURLRef.current.value,
 				transcriptURL: this.transcriptURLRef.current.value,
 				audioURL: this.audioURLRef.current.value,
-				status: this.state.status ? this.state.status : 'In Progress',
+				status: this.state.status,
 				readysend: this.readyToSendRef.current.checked,
 				sent: this.sentToSpeakerRef.current.checked,
 				complete: this.completeRef.current.checked

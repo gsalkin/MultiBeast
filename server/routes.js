@@ -120,23 +120,6 @@ router.get('/api/v1/location/:location', userAuthenticated, async (req, res) => 
 	});
 });
 
-
-// router.get('/api/v1/type/status/:param', userAuthenticated, async (req, res) => {
-// 	let searchKey = 'AspenChecklistFork.' + req.params.param;
-// 	await Session.find(
-// 		{
-// 			[searchKey]: true
-// 		},
-// 		(err, result) => {
-// 			res.json(result);
-// 		}
-// 	).sort({
-// 		'ArtsVisionFork.SessionDate': 1,
-// 		'ArtsVisionFork.StartTime': 1
-// 	})
-// })
-
-
 // Catch-all coverage routes for Rover/QuickClip/LiveStream
 router.get('/api/v1/type/:meta', userAuthenticated, async (req, res) => {
 	let searchKey = 'AspenCoverageFork.' + req.params.meta;
