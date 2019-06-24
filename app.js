@@ -10,6 +10,7 @@ const port = process.env.PORT || 8081;
 require('./server/auth');
 
 /* Custom libraries */
+require('./server/dataWatcher');
 const apiEngine = require('./server/apiEngine');
 const router = require('./server/routes');
 
