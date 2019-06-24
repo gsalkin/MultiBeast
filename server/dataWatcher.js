@@ -14,7 +14,7 @@ const trackedFields = [
 
 slackMessager().catch(error => console.error(error));
 
-slackMessager = async () => {
+async function slackMessager() {
 	await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
 	Session.watch().on('change', data => {
 		const documentKey = data.documentKey;
