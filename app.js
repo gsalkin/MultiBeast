@@ -6,7 +6,7 @@ const compression = require('compression');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 3001;
 require('./server/auth');
 
 /* Custom libraries */
