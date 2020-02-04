@@ -23,7 +23,7 @@ class Login extends React.Component {
 	};
 
 	loginUser = (username, password) => {
-		fetch('/login', {
+		fetch('/admin/login', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
