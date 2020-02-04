@@ -7,12 +7,16 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const port = process.env.PORT || 3001;
-require('./server/auth');
+
+if (process.env.PASSPORT_SECRET && process.env.SECRET_TOKEN) {
+	require('./server/auth');
+}
 
 /* Custom libraries */
 require('./server/dataWatcher');
 const apiEngine = require('./server/apiEngine');
-const router = require('./server/routes');
+const routes = require('./server/routes');
+const api = require('./server/apiEndpoints');
 
 // app setup
 const app = express();
@@ -20,7 +24,9 @@ app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(passport.initialize());
-app.use(router);
+// app.use('/admin', routes);
+// app.use('/api', api);
+app.use(routes)
 
 //production mode
 if (process.env.NODE_ENV === 'production') {
@@ -31,7 +37,6 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 mongoose.set('useFindAndModify', false);
-//mongoose.set('debug', true);
 mongoose
 	.connect(process.env.MONGO_URI, { useNewUrlParser: true })
 	.then(() => console.log('MongoDB Connected!'))
