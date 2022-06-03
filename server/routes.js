@@ -3,11 +3,11 @@ const Session = require('./models/session');
 const User = require('./models/user');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const exjwt = require('express-jwt');
+const { expressjwt: exjwt } = require("express-jwt");
 const router = express.Router();
 
 //Authentication routing
-const userAuthenticated = exjwt({ secret: process.env.SECRET_TOKEN });
+const userAuthenticated = process.env.ENABLE_AUTH ? exjwt({ secret: process.env.SECRET_TOKEN, algorithms: ["HS256"] }) : () => { };
 
 router.post('/admin/login', async (req, res, next) => {
 	passport.authenticate('local-login', async (err, user) => {
@@ -46,7 +46,7 @@ router.post('/admin/signup', passport.authenticate('local-signup', { session: fa
 	});
 });
 
-router.get('/admin/users', userAuthenticated, async (req, res) => {
+router.get('/admin/users', async (req, res) => {
 	await User.find({}, 'username isAdmin', (err, result) => {
 		console.log(result);
 		res.json(result);
@@ -56,6 +56,7 @@ router.get('/admin/users', userAuthenticated, async (req, res) => {
 /* view all route */
 router.get('/api/v1/all', userAuthenticated, async (req, res) => {
 	await Session.find({}, (err, result) => {
+		console.log(result);
 		res.json(result);
 	}).sort({
 		'ArtsVisionFork.SessionDate': 1,

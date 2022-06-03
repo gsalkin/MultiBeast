@@ -13,7 +13,9 @@ if (process.env.PASSPORT_SECRET && process.env.SECRET_TOKEN) {
 }
 
 /* Custom libraries */
-require('./server/dataWatcher');
+if (process.env.ENABLE_SLACK !== false) {
+	require('./server/dataWatcher');
+}
 const apiEngine = require('./server/apiEngine');
 const routes = require('./server/routes');
 const api = require('./server/apiEndpoints');
@@ -36,9 +38,7 @@ if (process.env.NODE_ENV === 'production') {
 	});
 }
 
-mongoose.set('useFindAndModify', false);
-mongoose
-	.connect(process.env.MONGO_URI, { useNewUrlParser: true })
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true })
 	.then(() => console.log('MongoDB Connected!'))
 	.then(() => apiEngine.populateDB())
 	.catch(err => console.log(err));
