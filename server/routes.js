@@ -3,11 +3,11 @@ const Session = require('./models/session');
 const User = require('./models/user');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const exjwt = require('express-jwt');
+const { expressjwt: exjwt } = require("express-jwt");
 const router = express.Router();
 
 //Authentication routing
-//const userAuthenticated = exjwt({ secret: process.env.SECRET_TOKEN });
+const userAuthenticated = process.env.ENABLE_AUTH ? exjwt({ secret: process.env.SECRET_TOKEN, algorithms: ["HS256"] }) : () => { };
 
 router.post('/admin/login', async (req, res, next) => {
 	passport.authenticate('local-login', async (err, user) => {
@@ -54,8 +54,9 @@ router.get('/admin/users', async (req, res) => {
 });
 
 /* view all route */
-router.get('/api/v1/all', async (req, res) => {
+router.get('/api/v1/all', userAuthenticated, async (req, res) => {
 	await Session.find({}, (err, result) => {
+		console.log(result);
 		res.json(result);
 	}).sort({
 		'ArtsVisionFork.SessionDate': 1,
@@ -63,7 +64,7 @@ router.get('/api/v1/all', async (req, res) => {
 	});
 });
 
-router.get('/api/v1/season/:season', async (req, res) => {
+router.get('/api/v1/season/:season', userAuthenticated, async (req, res) => {
 	let season = decodeURI(req.params.season);
 	await Session.find(
 		{
@@ -79,7 +80,7 @@ router.get('/api/v1/season/:season', async (req, res) => {
 });
 
 /* Individual session routes */
-router.get('/api/v1/session/:id', async (req, res) => {
+router.get('/api/v1/session/:id', userAuthenticated, async (req, res) => {
 	await Session.find(
 		{
 			'ArtsVisionFork.EventID': req.params.id
@@ -91,7 +92,7 @@ router.get('/api/v1/session/:id', async (req, res) => {
 });
 
 /* Routes for date */
-router.get('/api/v1/date/:date', async (req, res) => {
+router.get('/api/v1/date/:date', userAuthenticated, async (req, res) => {
 	await Session.find(
 		{
 			'ArtsVisionFork.SessionDate': req.params.date
@@ -105,7 +106,7 @@ router.get('/api/v1/date/:date', async (req, res) => {
 });
 
 /* Routes for location */
-router.get('/api/v1/location/:location', async (req, res) => {
+router.get('/api/v1/location/:location', userAuthenticated, async (req, res) => {
 	let location = decodeURI(req.params.location);
 	await Session.find(
 		{
@@ -121,7 +122,7 @@ router.get('/api/v1/location/:location', async (req, res) => {
 });
 
 // Catch-all coverage routes for Rover/QuickClip/LiveStream
-router.get('/api/v1/type/:meta', async (req, res) => {
+router.get('/api/v1/type/:meta', userAuthenticated, async (req, res) => {
 	let searchKey = 'AspenCoverageFork.' + req.params.meta;
 	await Session.find(
 		{
@@ -137,7 +138,7 @@ router.get('/api/v1/type/:meta', async (req, res) => {
 });
 
 // Video is a special route that includes all video & rover sessions
-router.get('/api/v1/video', async (req, res) => {
+router.get('/api/v1/video', userAuthenticated, async (req, res) => {
 	await Session.find(
 		{ $or: [{ 'AspenCoverageFork.Video': true }, { 'AspenCoverageFork.Rover': true }] },
 		(err, result) => {
@@ -149,7 +150,7 @@ router.get('/api/v1/video', async (req, res) => {
 	});
 });
 
-router.get('/api/v1/video/location/:location', async (req, res) => {
+router.get('/api/v1/video/location/:location', userAuthenticated, async (req, res) => {
 	let location = decodeURI(req.params.location);
 	await Session.find(
 		{
@@ -167,7 +168,7 @@ router.get('/api/v1/video/location/:location', async (req, res) => {
 	});
 });
 
-router.get('/api/v1/video/date/:date', async (req, res) => {
+router.get('/api/v1/video/date/:date', userAuthenticated, async (req, res) => {
 	let date = req.params.date;
 	await Session.find(
 		{
@@ -184,7 +185,7 @@ router.get('/api/v1/video/date/:date', async (req, res) => {
 	});
 });
 
-router.get('/api/v1/video/location/:location/date/:date', async (req, res) => {
+router.get('/api/v1/video/location/:location/date/:date', userAuthenticated, async (req, res) => {
 	let location = decodeURI(req.params.location);
 	let date = req.params.date;
 	await Session.find(
@@ -206,7 +207,7 @@ router.get('/api/v1/video/location/:location/date/:date', async (req, res) => {
  * Filter Location by Date
  * Client sends same request regardless of origin URL being location or date
  * **/
-router.get('/api/v1/location/:location/date/:date', async (req, res) => {
+router.get('/api/v1/location/:location/date/:date', userAuthenticated, async (req, res) => {
 	let location = decodeURI(req.params.location);
 	let date = req.params.date;
 	await Session.find(
@@ -225,7 +226,7 @@ router.get('/api/v1/location/:location/date/:date', async (req, res) => {
 /**
  * Filter Truth/False metas by date
  */
-router.get('/api/v1/type/:meta/date/:date', async (req, res) => {
+router.get('/api/v1/type/:meta/date/:date', userAuthenticated, async (req, res) => {
 	let searchKey = 'AspenCoverageFork.' + req.params.meta;
 	let date = req.params.date;
 	await Session.find(
@@ -244,7 +245,7 @@ router.get('/api/v1/type/:meta/date/:date', async (req, res) => {
 /**
  * Filter Truth/False metas by location
  */
-router.get('/api/v1/type/:meta/location/:location', async (req, res) => {
+router.get('/api/v1/type/:meta/location/:location', userAuthenticated, async (req, res) => {
 	let searchKey = 'AspenCoverageFork.' + req.params.meta;
 	let location = req.params.location;
 	await Session.find(
@@ -261,7 +262,7 @@ router.get('/api/v1/type/:meta/location/:location', async (req, res) => {
 	});
 });
 
-router.get('/api/v1/type/:meta/location/:location/date/:date', async (req, res) => {
+router.get('/api/v1/type/:meta/location/:location/date/:date', userAuthenticated, async (req, res) => {
 	let searchKey = 'AspenCoverageFork.' + req.params.meta;
 	let location = decodeURI(req.params.location);
 	let date = req.params.date;
@@ -280,7 +281,7 @@ router.get('/api/v1/type/:meta/location/:location/date/:date', async (req, res) 
 });
 
 /* POST Route to update Sessions */
-router.post('/api/v1/update/session/:id', async (req, res) => {
+router.post('/api/v1/update/session/:id', userAuthenticated, async (req, res) => {
 	if (req.body.coverage) {
 		await Session.findOneAndUpdate(
 			{ 'ArtsVisionFork.EventID': req.params.id },
