@@ -36,12 +36,12 @@ class SessionSPA extends React.Component {
 				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			}
 		});
-		let status = await response.status;
+		let status = response.status;
+		let session;
 		if (status >= 200 && status < 300) {
-			return await response.json();
-		} else {
-			throw Error(await response.statusText);
+			session = response.json();
 		}
+		return session;
 	};
 
 	updateSession = data => {
