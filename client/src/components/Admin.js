@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class Admin extends React.Component {
 	constructor(props) {
@@ -23,30 +23,26 @@ class Admin extends React.Component {
 		let username = this.usernameRef.current.value;
 		let password = this.passwordRef.current.value;
 		let admin = this.adminRef.current.checked;
-        this.addUserToDatabase(username, password, admin);
-        e.currentTarget.reset();
+		this.addUserToDatabase(username, password, admin);
+		e.currentTarget.reset();
 	};
 
-	fetchUsers = () => {
-		fetch('/admin/users', {
+	fetchUsers = async () => {
+		let res = await fetch('/admin/users', {
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
 				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			}
 		})
-			.then(res => {
-				return res.json();
-			})
-			.then(json => {
-				this.setState({
-					userList: json
-				})
-			});
+		let users = await res.json();
+		this.setState({
+			userList: users
+		})
 	};
 
-	addUserToDatabase = (username, password, admin) => {
-		fetch('/signup', {
+	addUserToDatabase = async (username, password, admin) => {
+		let res = await fetch('/admin/signup', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
@@ -57,19 +53,17 @@ class Admin extends React.Component {
 				password: password,
 				admin: admin
 			})
-		}).then(res => {
-			if (res.status === 200) {
-				return res.json();
-			} else {
-				alert('User creation error. Check express logs');
-			}
-        })
-        .then( () => {
-            this.fetchUsers()
-        })
+		})
+		if (res.status === 200) {
+			return res.json();
+		} else {
+			alert('User creation error. Check express logs');
+		}
+		this.fetchUsers()
 	};
 
 	render() {
+		const { userList } = this.state;
 		return (
 			<div className="container-fluid">
 				<nav className="navbar navbar-light">
@@ -108,7 +102,7 @@ class Admin extends React.Component {
 									/>
 								</div>
 								<div className="form-group form-check">
-									<input type="checkbox" className="form-check-input" id="admincheckbox" ref={this.adminRef}/>
+									<input type="checkbox" className="form-check-input" id="admincheckbox" ref={this.adminRef} />
 									<label className="form-check-label" htmlFor="admincheckbox">
 										Is Admin?
 									</label>
@@ -119,11 +113,11 @@ class Admin extends React.Component {
 							</form>
 						</div>
 						<div className="col-6">
-                        <h3>Existing Users:</h3>
+							<h3>Existing Users:</h3>
 							<div className="list-group">
-								{Object.keys(this.state.userList).map(key => (
+								{Object.keys(userList).map(key => (
 									<button key={key} href="#" className="list-group-item list-group-item-action">
-									{this.state.userList[key].username} | Admin: {this.state.userList[key].isAdmin.toString()}
+										{userList[key].username}
 									</button>
 								))}
 							</div>
