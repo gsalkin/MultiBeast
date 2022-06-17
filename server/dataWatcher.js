@@ -40,7 +40,7 @@ sendMessage = async (documentKey, updatedFields) => {
 						pretext: 'A Session has been updated in ArtsVision',
 						color: '#A82890',
 						title: session.ArtsVisionFork.SessionName + ', #' + session.ArtsVisionFork.EventID,
-						title_link: 'https://multibeast.aspenideas.org',
+						title_link: 'https://multibeast2022.herokuapp.com',
 						fields: [
 							{
 								color: 'danger',
