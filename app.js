@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const passport = require('passport');
 const compression = require('compression');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 const port = process.env.PORT || 3001;
@@ -13,22 +12,22 @@ if (process.env.PASSPORT_SECRET && process.env.SECRET_TOKEN) {
 }
 
 /* Custom libraries */
-if (process.env.ENABLE_SLACK !== false) {
-	require('./server/dataWatcher');
-}
+// if (process.env.ENABLE_SLACK !== false) {
+// 	require('./server/dataWatcher');
+// }
 const apiEngine = require('./server/apiEngine');
 const routes = require('./server/routes');
-const api = require('./server/apiEndpoints');
+//const api = require('./server/apiEndpoints');
 
 // app setup
 const app = express();
 app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 // app.use('/admin', routes);
 // app.use('/api', api);
-app.use(routes)
+app.use(routes);
 
 //production mode
 if (process.env.NODE_ENV === 'production') {
