@@ -9,12 +9,17 @@
                 {
                     "field": "Date",
                     "operator": "GreaterOrEqual",
-                    "value": "2022-06-20"
+                    "value": "2022-06-22"
                 },
                 {
                     "field": "Date",
                     "operator": "LessOrEqual",
-                    "value": "2022-07-02"
+                    "value": "2022-07-01"
+                },
+                {
+                    "field": "Event Id",
+                    "operator": "NotEqual",
+                    "value": null
                 },
                 {
                     "field": "Type",
