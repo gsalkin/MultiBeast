@@ -7,17 +7,23 @@ const api = express.Router();
 const userAuthenticated = process.env.ENABLE_AUTH ? exjwt({ secret: process.env.SECRET_TOKEN, algorithms: ["HS256"] }) : () => {};
 const sortPattern = { 'ArtsVisionFork.SessionDate': 1, 'ArtsVisionFork.StartTime': 1 }
 
+const queryConstructor = async (req) => {
+	let queryObject = {};
+
+	let { date, location, type, status } = req.query;
+
+	date && (queryObject['ArtsVisionFork.SessionDate'] = date);
+	location && (queryObject['ArtsVisionFork.SessionLocation'] = location)
+	type && (queryObject['AspenCoverageFork.' + type] = true)
+	status && (queryObject['AspenChecklistFork.Status'] = status)
+
+	return queryObject;
+}
+
 /* view all route */
 api.get('/api/v2/sessions', userAuthenticated, asyncHandler(async (req, res) => {
-	var query = {};
-
-	req.query.date && (query['ArtsVisionFork.SessionDate'] = req.query.date);
-	req.query.location && (query['ArtsVisionFork.SessionLocation'] = req.query.location)
-	req.query.type && (query['AspenCoverageFork.' + req.query.type] = true)
-	req.query.status && (query['AspenChecklistFork.Status'] = req.query.status)
-
+	let query = await queryConstructor(req);
 	let result = await Session.find(query).sort(sortPattern);
-
 	res.json(result);
 }));
 
@@ -89,7 +95,7 @@ api.post('/api/v2/session/:id/update', userAuthenticated, async (req, res) => {
 			}
 		)
 		.then(() => {
-			return Session.find({ 'ArtsVisionFork.EventID': req.params.id }).limit(1);
+			return Session.find({ 'ArtsVisionFork.EventID': id }).limit(1);
 		})
 		.then(session => {
 			res.json(session);
