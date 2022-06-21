@@ -39,43 +39,43 @@ passport.use('local-login',new localStrategy({
 	})
 );
 
-// passport.use('jwt', new JWTstrategy({
-//     secretOrKey: process.env.SECRET_TOKEN,
-//     jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken('secret_token')
-// }, async (token, done) => {
-//     try {
-//         return done(null, token.user)
-//     } catch (error) {
-//         done(error)
-//     }
-// }))
+passport.use('jwt', new JWTstrategy({
+    secretOrKey: process.env.SECRET_TOKEN,
+    jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken('secret_token')
+}, async (token, done) => {
+    try {
+        return done(null, token.user)
+    } catch (error) {
+        done(error)
+    }
+}))
 
 // Sign-up strategy
-// passport.use('local-signup', new localStrategy({
-//     usernameField: 'username',
-//     passwordField: 'password',
-//     passReqToCallback: true
-//     },  async (req, username, password, done) => {
-//         try {
-//             const user = await User.findOne({ username: username });
-//             if (user) {
-//                 return done(null, false, console.log('User already exists')
-//                 )
-//             } else {
-//                 let newUser = new User()
-//                 newUser.username = username
-//                 newUser.passwordHash = newUser.generateHash(password)
-//                 newUser.isAdmin = req.body.admin
-//                 newUser.save( err => {
-//                     if (err) {
-//                         return done(null, err, {message: 'Issue creating user'})
-//                     }
-//                     return done(null, newUser, {message: 'Account ' + username + ' created!'})
-//                 })
+passport.use('local-signup', new localStrategy({
+    usernameField: 'username',
+    passwordField: 'password',
+    passReqToCallback: true
+    },  async (req, username, password, done) => {
+        try {
+            const user = await User.findOne({ username: username });
+            if (user) {
+                return done(null, false, console.log('User already exists')
+                )
+            } else {
+                let newUser = new User()
+                newUser.username = username
+                newUser.passwordHash = newUser.generateHash(password)
+                newUser.isAdmin = req.body.admin
+                newUser.save( err => {
+                    if (err) {
+                        return done(null, err, {message: 'Issue creating user'})
+                    }
+                    return done(null, newUser, {message: 'Account ' + username + ' created!'})
+                })
 
-//             }
-//         } catch (error) {
-//             done(error)
-//         }
-//     })
-// );
+            }
+        } catch (error) {
+            done(error)
+        }
+    })
+);

@@ -17,7 +17,7 @@
                     "value": "2022-07-01"
                 },
                 {
-                    "field": "Event Id",
+                    "field": "Id",
                     "operator": "NotEqual",
                     "value": null
                 },
@@ -74,7 +74,7 @@
             ],
             "orderby": [
                 {
-                    "field": "Event Id",
+                    "field": "Id",
                     "descending": "false"
                 }, 
                 {
