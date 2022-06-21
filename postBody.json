@@ -34,6 +34,31 @@
                 {
                     "field": "Type",
                     "operator": "NotContains",
+                    "value": "Registration"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Special Event"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Misc"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Excursion"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
+                    "value": "Book Signings"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotContains",
                     "value": "Sunrise Session"
                 },
                 {
@@ -45,36 +70,15 @@
                     "field": "Type",
                     "operator": "NotContains",
                     "value": "Private Underwriter Event"
-                },
-                {
-                    "field": "Type",
-                    "operator": "NotContains",
-                    "value": "Private Underwriter Dinner"
-                },
-                {
-                    "field": "Type",
-                    "operator": "NotContains",
-                    "value": "Luncheon Roundtable"
-                },
-                {
-                    "field": "Type",
-                    "operator": "NotContains",
-                    "value": "Registration"
-                },
-                {
-                    "field": "Type",
-                    "operator": "NotContains",
-                    "value": "Special Event"
-                },
-                {
-                    "field": "Type",
-                    "operator": "NotContains",
-                    "value": "Book Signings"
                 }
             ],
             "orderby": [
                 {
                     "field": "Event Id",
+                    "descending": "false"
+                }, 
+                {
+                    "field": "Date",
                     "descending": "false"
                 }
             ],
