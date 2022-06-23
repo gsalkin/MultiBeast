@@ -36,11 +36,11 @@ var apiEngine = {
 		}
 		console.log('Adding ' + (apiCount - dbCount) + ' session(s) to database');
 		for (let i = 0; i < apiCount; i++) {
-			if (!dbIDs.includes(api[i].Data['Event Id'])) {
+			if (!dbIDs.includes(api[i].Data['Id'])) {
 				console.log(api[i].Data.Text);
 				let newSession = new Session({
 					ArtsVisionFork: {
-						EventID: api[i].Data['Event Id'],
+						EventID: api[i].Data['Id'],
 						SessionName: api[i].Data.Text,
 						SessionSpeakers: api[i].Entities
 							? Utils.collateSpeakers(api[i].Entities['AspenInstEvent.Participant'].Rows)
@@ -70,7 +70,7 @@ var apiEngine = {
 		let database = db;
 		let apiIDs = [];
 		for (let i = 0; i < apiCount; i++) {
-			apiIDs.push(api[i].Data['Event Id']);
+			apiIDs.push(api[i].Data['Id']);
 		}
 		console.log('Removing ' + (dbCount - apiCount) + ' session(s) from database');
 		for (let i = 0; i < dbCount; i++) {
@@ -98,8 +98,8 @@ var apiEngine = {
 						db = result;
 					})
 					.then(() => {
-						var apiCount = api.length;
-						var dbCount = db.length;
+						var apiCount = api && api.length;
+						var dbCount = db && db.length;
 						console.log(apiCount);
 						console.log(dbCount);
 						if (apiCount == dbCount) {
@@ -117,7 +117,7 @@ var apiEngine = {
 		console.log('Comparing data for changes to existing sessions');
 		for (let i = 0; i < count; i++) {
 			Session.findOneAndUpdate(
-				{ 'ArtsVisionFork.EventID': api[i].Data['Event Id'] },
+				{ 'ArtsVisionFork.EventID': api[i].Data['Id'] },
 				{
 					'ArtsVisionFork.SessionTrack': api[i].Data.ProjectName,
 					'ArtsVisionFork.SessionType': api[i].Data.Type,
