@@ -2,7 +2,7 @@
 	"name": "multibeast",
 	"version": "2.0.0",
 	"description": "A React-based web application for planning and processing Comms Team coverage during the Aspen Ideas Festival. Written in React + Express + MongoDB and much ❤️.",
-	"main": "app.js",
+	"main": "index.js",
 	"dependencies": {
 		"@slack/webhook": "^6.1.0",
 		"axios": "^0.27.2",
@@ -27,10 +27,10 @@
 		"node" : ">=16.0.0"
 	},
 	"scripts": {
-		"start": "node app.js",
+		"start": "node index.js",
 		"heroku-postbuild": "cd client && npm install && npm run build",
-		"development": "concurrently \"nodemon app.js\" \"cd client && npm start\"",
-		"staging": "concurrently \"node app.js\" \"cd client && npm run build\"",
+		"development": "concurrently \"nodemon index.js\" \"cd client && npm start\"",
+		"staging": "concurrently \"node index.js\" \"cd client && npm run build\"",
 		"poststart": "cd client && npm install && npm run build"
 	},
 	"keywords": [],

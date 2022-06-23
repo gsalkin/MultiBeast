@@ -23,7 +23,7 @@ Setup
 3. In order to run the API server, you will need to supply variables in a `.env` file. Use the `.env.example` file as template.
 4. To start the Express server:
 
-        node app.js
+        node index.js
 
 
 4. The React front-end is derived from the `create-react-app` project. Install the React dependencies:
@@ -40,11 +40,14 @@ For simplification, the current app is shipped as a single package. You can test
 
         npm run staging
 
-When dpeloyed to a server, it should run
+When deployed to a server, it should run
 
         npm run production
 
 The app is optimized for Heroku. `package.json` contains a `heroku-postbuild` command which will properly bundle the `build` folder used in production.
+
+#### Deployment
+Be sure to set your `ENVIRONMENT` to production. A sample `.env` is provided.
 
 Server Architecture
 ---
@@ -58,7 +61,7 @@ This file allows for the core event loop which access ArtsVision from the REST A
 1. The event is newly added (checked by cross-referencing the `EventID` value of the entity).
 2. The event's `lastEdit` value has changed from the existing date value in the database, indicating a change has been made.
 
-`apiEngine` is envoked in the core `app.js` file on a 10 minute timer.
+`apiEngine` is envoked in the core `index.js` file on a 10 minute timer.
 
 #### `routes.js`
 Express routes for the API and authentication. Note many of these endpoints are not currently used as they require extensive complexity to wire for the multiple permutations of data.
