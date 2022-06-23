@@ -37,16 +37,16 @@ class SessionPage extends React.Component {
 				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			}
 		});
-		let status = await response.status;
+		let status = response.status;
+		let session;
 		if (status >= 200 && status < 300) {
-			return await response.json();
-		} else {
-			throw Error(await response.statusText);
+			session = await response.json();
 		}
+		return session;
 	};
 
-	updateSession = data => {
-		fetch('/api/v1/update/session/' + this.state.ArtsVisionFork.EventID, {
+	updateSession = async data => {
+		let response = await fetch('/api/v1/update/session/' + this.props.id, {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
@@ -54,16 +54,16 @@ class SessionPage extends React.Component {
 			},
 			body: JSON.stringify(data)
 		})
-			.then(response => {
-				return response.json();
-			})
-			.then(json => {
-				this.setState({
-					ArtsVisionFork: json[0].ArtsVisionFork,
-					AspenChecklistFork: json[0].AspenChecklistFork,
-					AspenCoverageFork: json[0].AspenCoverageFork
-				});
-			});
+		if (response.status === 200) {
+			document.getElementById('inputCoverageNotes').value = '';
+		}
+		let json = await response.json();
+
+		this.setState({
+			ArtsVisionFork: json[0].ArtsVisionFork,
+			AspenChecklistFork: json[0].AspenChecklistFork,
+			AspenCoverageFork: json[0].AspenCoverageFork
+		});
 	};
 
 	render() {
@@ -120,7 +120,7 @@ class SessionPage extends React.Component {
 						</Fragment>
 					)}
 					<div className="bg-light px-2">
-						<small>{ArtsVisionNotes}</small>
+						<small dangerouslySetInnerHTML={{__html: ArtsVisionNotes}} />
 					</div>
 					<hr />
 					<div className="card">
