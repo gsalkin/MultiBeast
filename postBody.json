@@ -9,72 +9,87 @@
                 {
                     "field": "Date",
                     "operator": "GreaterOrEqual",
-                    "value": "2022-06-20"
+                    "value": "2022-06-22"
                 },
                 {
                     "field": "Date",
                     "operator": "LessOrEqual",
-                    "value": "2022-07-02"
+                    "value": "2022-07-01"
+                },
+                {
+                    "field": "StatusName",
+                    "operator": "Equal",
+                    "value":"Published"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
                     "value": "Workshift"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
                     "value": "Reception"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
                     "value": "Registration"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
                     "value": "Special Event"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
                     "value": "Misc"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
+                    "value": "Breakfast"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotEqual",
                     "value": "Excursion"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
+                    "value": "Field Trip"
+                },
+                {
+                    "field": "Type",
+                    "operator": "NotEqual",
                     "value": "Book Signings"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
                     "value": "Sunrise Session"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
                     "value": "Private Event"
                 },
                 {
                     "field": "Type",
-                    "operator": "NotContains",
+                    "operator": "NotEqual",
                     "value": "Private Underwriter Event"
                 }
             ],
             "orderby": [
                 {
-                    "field": "Event Id",
-                    "descending": "false"
-                }, 
-                {
                     "field": "Date",
-                    "descending": "false"
+                    "descending": false
+                },
+                {
+                    "field": "StartTime",
+                    "descending": false
                 }
             ],
             "include": [
