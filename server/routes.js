@@ -41,12 +41,12 @@ router.post('/admin/login', async (req, res, next) => {
 	})(req, res, next);
 });
 
-router.post('/admin/signup', passport.authenticate('local-signup', { session: false }), userAuthenticated, async (req, res) => {
+router.post('/admin/signup', passport.authenticate('local-signup', { session: false }), userAuthenticated, asyncHandler(async (req, res) => {
 	res.json({
 		message: 'Account Created',
 		user: req.user
 	});
-});
+}));
 
 router.get('/admin/users', userAuthenticated, asyncHandler(async (req, res) => {
 	let users = await User.find({}, ['username', 'isAdmin']).exec();
@@ -103,12 +103,8 @@ router.get('/api/v1/type/:meta', userAuthenticated, asyncHandler(async (req, res
 
 // Video is a special route that includes all video & rover sessions
 router.get('/api/v1/video', userAuthenticated, asyncHandler(async (req, res) => {
-	let response = await Session.find(
-		{ $or: [{ 'AspenCoverageFork.Video': true }, { 'AspenCoverageFork.Rover': true }] },
-		(err, result) => {
-			res.json(result);
-		}
-	).sort(sortPattern);
+	let response = await Session.find({ $or: [{ 'AspenCoverageFork.Video': true }, { 'AspenCoverageFork.Rover': true }] }).sort(sortPattern);
+	res.json(response);
 }));
 
 router.get('/api/v1/video/location/:location', userAuthenticated, asyncHandler(async (req, res) => {
@@ -120,45 +116,39 @@ router.get('/api/v1/video/location/:location', userAuthenticated, asyncHandler(a
 				{ 'ArtsVisionFork.SessionLocation': location }
 			]
 		},
-		(err, result) => {
-			res.json(result);
-		}
 	).sort(sortPattern);
+	res.json(response);
 }));
 
 router.get('/api/v1/video/date/:date', userAuthenticated, asyncHandler(async (req, res) => {
-	let date = req.params.date;
+	const { date } = req.params;
 	let response = await Session.find(
 		{
 			$and: [
 				{ $or: [{ 'AspenCoverageFork.Video': true }, { 'AspenCoverageFork.Rover': true }] },
 				{ 'ArtsVisionFork.SessionDate': date }
 			]
-		},
-		(err, result) => {
-			res.json(result);
 		}
 	).sort({
 		'ArtsVisionFork.StartTime': 1
 	});
+	res.json(response);
 }));
 
 router.get('/api/v1/video/location/:location/date/:date', userAuthenticated, asyncHandler(async (req, res) => {
-	let location = decodeURI(req.params.location);
-	let date = req.params.date;
+	const location = decodeURI(req.params.location);
+	const { date } = req.params;
 	let response = await Session.find(
 		{
 			$and: [
 				{ $or: [{ 'AspenCoverageFork.Video': true }, { 'AspenCoverageFork.Rover': true }] },
 				{ 'ArtsVisionFork.SessionDate': date, 'ArtsVisionFork.SessionLocation': location }
 			]
-		},
-		(err, result) => {
-			res.json(result);
 		}
 	).sort({
 		'ArtsVisionFork.StartTime': 1
 	});
+	res.json(response);
 }));
 
 /**
@@ -166,55 +156,49 @@ router.get('/api/v1/video/location/:location/date/:date', userAuthenticated, asy
  * Client sends same request regardless of origin URL being location or date
  * **/
 router.get('/api/v1/location/:location/date/:date', userAuthenticated, asyncHandler(async (req, res) => {
-	let location = decodeURI(req.params.location);
-	let date = req.params.date;
+	const location = decodeURI(req.params.location);
+	const { date } = req.params;
 	let response = await Session.find(
 		{
 			'ArtsVisionFork.SessionLocation': location,
 			'ArtsVisionFork.SessionDate': date
-		},
-		(err, result) => {
-			res.json(result);
 		}
 	).sort({
 		'ArtsVisionFork.StartTime': 1
 	});
+	res.json(response);
 }));
 
 /**
  * Filter Truth/False metas by date
  */
 router.get('/api/v1/type/:meta/date/:date', userAuthenticated, asyncHandler(async (req, res) => {
-	let searchKey = 'AspenCoverageFork.' + req.params.meta;
-	let date = req.params.date;
+	const searchKey = 'AspenCoverageFork.' + req.params.meta;
+	const { date } = req.params;
 	let response = await Session.find(
 		{
 			[searchKey]: true,
 			'ArtsVisionFork.SessionDate': date
-		},
-		(err, result) => {
-			res.json(result);
 		}
 	).sort({
 		'ArtsVisionFork.StartTime': 1
 	});
+	res.json(response);
 }));
 
 /**
  * Filter Truth/False metas by location
  */
 router.get('/api/v1/type/:meta/location/:location', userAuthenticated, asyncHandler(async (req, res) => {
-	let searchKey = 'AspenCoverageFork.' + req.params.meta;
-	let location = req.params.location;
+	const searchKey = 'AspenCoverageFork.' + req.params.meta;
+	const { location } = req.params;
 	let response = await Session.find(
 		{
 			[searchKey]: true,
-			'ArtsVisionFork.SessionLocation': location
-		},
-		(err, result) => {
-			res.json(result);
+			'ArtsVisionFork.SessionLocation': decodeURI(location)
 		}
 	).sort(sortPattern);
+	res.json(response);
 }));
 
 router.get('/api/v1/type/:meta/location/:location/date/:date', userAuthenticated, asyncHandler(async (req, res) => {
@@ -226,13 +210,11 @@ router.get('/api/v1/type/:meta/location/:location/date/:date', userAuthenticated
 			[searchKey]: true,
 			'ArtsVisionFork.SessionLocation': location,
 			'ArtsVisionFork.SessionDate': date
-		},
-		(err, result) => {
-			res.json(result);
 		}
 	).sort({
 		'ArtsVisionFork.StartTime': 1
 	});
+	res.json(response);
 }));
 
 /* POST Route to update Sessions */
