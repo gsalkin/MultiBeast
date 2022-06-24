@@ -6,29 +6,23 @@ class ListView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			sessions: {},
+			sessions: [],
 			type: this.props.match.params.type
 		};
+	}
+
+	componentDidMount() {
 		this.populateApp();
 	}
 
-	populateApp = () => {
+	populateApp = async () => {
 		const { type, param } = this.props.match.params;
 		const url = '/api/v1/' + type + '/' + encodeURI(param);
-		if (type === 'type') {
-			this.callApi(url).then(body => {
-				this.setState({
-					sessions: body
-				});
-			});
-		} else {
-			this.callApi(url).then(body => {
-				this.setState({
-					sessions: body.filter(session => session.AspenCoverageFork.Video === true || session.AspenCoverageFork.Rover === true)
-				});
-			});
-		}
-	};
+		let api = await this.callApi(url);
+		this.setState({
+			sessions: api
+		});
+	}
 
 	callApi = async url => {
 		let response = await fetch(url, {
@@ -38,19 +32,15 @@ class ListView extends React.Component {
 				Authorization: 'Bearer ' + sessionStorage.getItem('jwt_token')
 			}
 		})
-			.then(response => {
-				let status = response.status;
-				if (status >= 200 && status < 300) {
-					return response.json();
-				}
-			})
-			.catch(error => {
-				console.log(error);
-			});
-		return response;
+		let status = response.status;
+		let sessions;
+		if (status >= 200 && status < 300) {
+			sessions = response.json();
+		}
+		return sessions;
 	};
 
-	tableController() {
+	tableController = () => {
 		let type = this.state.type
 		if (type === 'location') {
 			return (
@@ -90,6 +80,7 @@ class ListView extends React.Component {
 	}
 
 	render() {
+		const { sessions, type } = this.state;
 		return (
 			<div className="container-fluid">
 				<nav className="navbar navbar-light">
@@ -104,8 +95,8 @@ class ListView extends React.Component {
 				<table class="table table-striped">
 					{this.tableController()}
 					<tbody>
-						{Object.keys(this.state.sessions).map(key => (
-							<ListRow key={key} data={this.state.sessions[key]} type={this.state.type}/>
+						{sessions && sessions.map((session, key) => (
+							<ListRow key={key} data={session} type={type} />
 						))}
 					</tbody>
 				</table>

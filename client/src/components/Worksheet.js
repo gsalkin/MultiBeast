@@ -17,13 +17,13 @@ class Worksheet extends React.Component {
 					<div className="col-12 col-md-4 px-4">
 						<h4>Dates</h4>
 						<div className="list-group">
-							{Object.entries(Dates).map(([key, value]) => (
+							{Dates.map((date, key) => (
 								<Link
 									className="list-group-item list-group-item-action"
 									key={key}
-									to={'/view/date/' + key}
+									to={'/view/date/' + encodeURIComponent(date)}
 								>
-									Rundown for {value}
+									Rundown for {date}
 								</Link>
 							))}
 						</div>
@@ -31,13 +31,13 @@ class Worksheet extends React.Component {
 					<div className="col-12 col-md-4 px-4">
 						<h4>Locations</h4>
 						<div className="list-group">
-							{Object.entries(Locations).map(([key, value]) => (
+							{Locations.map((location, key) => (
 								<Link
 									className="list-group-item list-group-item-action"
 									key={key}
-									to={'/view/location/' + key}
+									to={'/view/location/' + encodeURIComponent(location)}
 								>
-									Rundown for {value}
+									Rundown for {location}
 								</Link>
 							))}
 						</div>
@@ -49,7 +49,7 @@ class Worksheet extends React.Component {
 								<Link
 									className="list-group-item list-group-item-action"
 									key={index}
-									to={'/view/type/' + item}
+									to={'/view/type/' + encodeURIComponent(item)}
 								>
 									Rundown for {item}
 								</Link>
