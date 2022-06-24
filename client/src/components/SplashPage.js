@@ -26,6 +26,7 @@ class SplashPage extends React.Component {
 				/>
 				<div className="card-img-overlay">
 					<h1 className="display-1 text-center">MultiBeast</h1>
+                    <h2 className='text-center'>2022</h2>
                     <div className="row">
                         <div className="text-center col-4 offset-4">
                             <Link to={this.state.link}>

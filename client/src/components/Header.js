@@ -78,7 +78,6 @@ class Header extends React.Component {
 	render() {
 		const today = format(new Date(), 'YYYY-MM-DD');
 		const { Dates, Locations, Types, Status } = filterData;
-		//const { Dates, Locations, Types, Status } = this.props.filterOptions;
 		return (
 			<Fragment>
 				<nav className={'navbar navbar-light ' + this.headerDisplayController() + ' bg-light'}>
@@ -105,9 +104,9 @@ class Header extends React.Component {
 									<option defaultValue="all" value="all">
 										Date
 									</option>
-									{Dates.map((date, key) => (
-										<option key={key} value={date} type="date">
-											{date}
+									{Object.entries(Dates).map(([key, value]) => (
+										<option key={key} value={key} type="date">
+											{value}
 										</option>
 									))}
 								</select>
@@ -124,9 +123,9 @@ class Header extends React.Component {
 									<option defaultValue="all" value="all">
 										Location
 									</option>
-									{Locations.map((location, key) => (
-										<option key={key} value={location} type="location">
-											{location}
+									{Object.entries(Locations).map(([key, value]) => (
+										<option key={key} value={key} type="location">
+											{value}
 										</option>
 									))}
 								</select>
@@ -163,7 +162,7 @@ class Header extends React.Component {
 										Status
 									</option>
 									{Object.entries(Status).map(([key, value]) => (
-										<option key={key} value={value} type="status">
+										<option key={key} value={key} type="status">
 											{value}
 										</option>
 									))}

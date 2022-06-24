@@ -84,7 +84,7 @@ class Login extends React.Component {
 											required
 										/>
 										<small id="usernameHelp" className="form-text text-muted">
-											Username should be first initial and last name. Ex. "jsmith"
+											Username should be first name, "." and last name. Ex. "john.smith"
 										</small>
 									</div>
 									<div className="form-group">
@@ -99,7 +99,7 @@ class Login extends React.Component {
 										/>
 										<small id="passwordHelp" className="form-text text-muted">
 											Forgot password? Please contact{' '}
-											<a href="mailto:gabriel.salkin@aspeninstitute.org">Gabe Salkin</a>
+											<a href="mailto:henry.mesias@aspeninstitute.org">Henry Mesias</a>
 										</small>
 									</div>
 									<button type="submit" className="btn btn-primary">
