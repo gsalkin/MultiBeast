@@ -36,7 +36,7 @@ const SessionListItem = ({ data, filter, userName, setSessionID }) => {
 		}
 	};
 	return (
-		<div className="card" id={'event-' + EventID} data-session-label={SessionName}>
+		<div className="card" id={'event-' + EventID} data-session-label={SessionName} style={{marginBottom: '1rem'}}>
 			<div className="card-header">
 				<span className={'badge ' + seasonClass()}>{Helpers.seasonMarker(SessionFest)}</span>
 				&nbsp;

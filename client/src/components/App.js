@@ -3,6 +3,7 @@ import SessionListItem from './SessionListItem';
 import Header from './Header';
 import Session from './Session';
 import ScrollToTop from './ScrollToTop';
+import { getFilterOptions } from '../helpers';
 
 class App extends React.Component {
 	constructor(props) {
@@ -15,7 +16,7 @@ class App extends React.Component {
 				metaFilter: null,
 				statusFilter: null
 			},
-			sessions: {}
+			sessions: []
 		};
 	}
 
@@ -39,7 +40,7 @@ class App extends React.Component {
 		this.populateApp();
 	}
 
-	populateApp = () => {
+	populateApp = async () => {
 		const type = this.props.match.params.type;
 		const param = this.props.match.params.param;
 		let url = '';
@@ -48,16 +49,15 @@ class App extends React.Component {
 		} else {
 			url = '/api/v1/' + type + '/' + param;
 		}
-		this.callApi(url).then(body => {
-			this.setState({
-				filterData: {
-					dateFilter: type === 'date' ? param : null,
-					locationFilter: type === 'location' ? param : null,
-					metaFilter: type === 'type' ? param : null
-				},
-				sessions: body
-			})
-		});
+		let body = await this.callApi(url);
+		this.setState({
+			filterData: {
+				dateFilter: type === 'date' ? param : null,
+				locationFilter: type === 'location' ? param : null,
+				metaFilter: type === 'type' ? param : null
+			},
+			sessions: body
+		})
 	};
 
 	setSessionID = id => {
@@ -87,31 +87,6 @@ class App extends React.Component {
 			}
 		);
 	};
-
-	renderResults() {
-		const userName = sessionStorage.getItem('user_name');
-		if (!this.state.sessions) {
-			return (
-				<div className="card">
-					<div className="card-body">
-						<h1>No Sessions Found</h1>
-					</div>
-				</div>
-			);
-		} else {
-			return Object.keys(this.state.sessions).map(key => (
-				<Fragment key={key}>
-					<SessionListItem
-						data={this.state.sessions[key]}
-						filter={this.localFilter}
-						userName={userName}
-						setSessionID={this.setSessionID}
-					/>
-					<br />
-				</Fragment>
-			));
-		}
-	}
 
 	renderSession = id => {
 		if (id) {
@@ -152,6 +127,9 @@ class App extends React.Component {
 	};
 
 	render() {
+		const { sessions, dateFilter, filterData: { locationFilter, metaFilter, statusFilter } } = this.state;
+		const userName = sessionStorage.getItem('user_name');
+		const filterOptions = sessions && getFilterOptions(sessions);
 		return (
 			<>
 				<Header
@@ -160,38 +138,65 @@ class App extends React.Component {
 					resetFilters={this.resetFilters}
 					slug={this.props.match.params.type}
 					localFilter={this.localFilter}
+					filterOptions={filterOptions}
 				/>
 				<div className="container-fluid header-override">
 					<div className="row">
 						<div className="col-12 col-xl-6" id="sessionlistcontainer">
 							<ScrollToTop />
 							<p className="h4">
-								{this.state.filterData.dateFilter && (
+								{dateFilter && (
 									<span>
-										<span className="badge badge-info mr-1">{this.state.filterData.dateFilter}</span>
+										<span className="badge badge-info mr-1">{dateFilter}</span>
 									</span>
 								)}
-								{this.state.filterData.locationFilter && (
+								{locationFilter && (
 									<span>
-										<span className="badge badge-info mr-1">{this.state.filterData.locationFilter}</span>
+										<span className="badge badge-info mr-1">{locationFilter}</span>
 									</span>
 								)}
-								{this.state.filterData.metaFilter && (
+								{metaFilter && (
 									<span>
 										<span className="badge badge-secondary mr-1">
-											{this.state.filterData.metaFilter}
+											{metaFilter}
 										</span>
 									</span>
 								)}
-								{this.state.filterData.statusFilter && (
+								{statusFilter && (
 									<span>
 										<span className="badge badge-secondary mr-1">
-											{this.state.filterData.statusFilter}
+											{statusFilter}
 										</span>
 									</span>
 								)}
 							</p>
-							{this.renderResults()}
+							{sessions ? (
+								<>
+									{sessions.length > 0 ? sessions.map((session, idx) => (
+										<>
+											<SessionListItem
+												key={idx}
+												data={session}
+												filter={this.localFilter}
+												userName={userName}
+												setSessionID={this.setSessionID}
+											/>
+										</>
+									)) : (
+										<div className="card">
+											<div className="card-body">
+												<h1>No Sessions Found</h1>
+											</div>
+										</div>
+									)}
+								</>
+							) : (
+								<div className="card">
+									<div className="card-body">
+										<h1>No Sessions Found</h1>
+									</div>
+								</div>
+							)}
 						</div>
 						{this.state.selectedEventID && this.renderSession(this.state.selectedEventID)}
 					</div>
