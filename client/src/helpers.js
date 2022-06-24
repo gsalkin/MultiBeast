@@ -133,3 +133,44 @@ export function scrollToTop() {
 	document.body.scrollTop = 0; //Safari
 	document.documentElement.scrollTop = 0;
 }
+
+export const getFilterOptions = (sessions) => {
+	const dates = new Set(sessions.map(session => session.ArtsVisionFork.SessionDate));
+	const locations = new Set(sessions.map(session => session.ArtsVisionFork.SessionLocation));
+	const filterOptions = {
+		Dates: [
+			...dates
+		],
+		Locations: [
+			...locations
+		],
+		Types: [
+			"Video",
+			"Rover",
+			"LiveStream",
+			"QuickClip",
+			"Photo",
+			"Audio",
+			"Quotes",
+			"Rundown",
+			"Transcript",
+			"Restriction",
+			"Complete"
+		], 
+		Status: {
+			Recorded: "Recorded",
+			Rendered: "Rendered",
+			QuickClip: "QC Added",
+			QuickClipRendered: "QC Rendered",
+			AudioURL: "Audio Ready",
+			TranscriptURL: "Transcript Ready",
+			AlbumURL: "Album Ready",
+			YouTubeURL: "Youtube Ready",
+			SessionURL: "Site Page Ready",
+			ReadySend: "Ready to Send",
+			Sent: "Sent to Speaker",
+			Complete: "Complete"
+		}
+	}
+	return filterOptions;
+}
